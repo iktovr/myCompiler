@@ -38,9 +38,9 @@ namespace MPTranslator
             public Tablekey(int i, char j) { I = i; J = j; }
         }
 
-        static ArrayList Grammar = new ArrayList();  //  правила грамматики
-        static string Terminals;                     //  список терминалов
-        static string NonTerminals;                  //  список нетерминалов
+        static ArrayList Grammar = new ArrayList();  ///  правила грамматики
+        static string Terminals;                     /// список терминалов
+        static string NonTerminals;                  ///  список нетерминалов
 
         static void Execute()
         {
@@ -60,7 +60,7 @@ namespace MPTranslator
             Console.WriteLine("Терминалы : " + Terminals);
             Console.WriteLine("Нетерминалы: " + NonTerminals);
             Console.WriteLine("-----");
-            Console.ReadLine();
+            //Console.ReadLine();
 
             // генерация LR(1) таблицы
 
@@ -81,7 +81,7 @@ namespace MPTranslator
                 Console.WriteLine("First( " + str + " ): " + First(str));
             }
 
-            Console.ReadLine();
+            //Console.ReadLine();
             ArrayList[] CArray = CreateCArray(); // создать последовательность С
             Console.WriteLine("Cоздана последовательность С: \n ");
             for (int i = 0; i < CArray.Length; i++) { Console.WriteLine("I" + i + DebugArrayList(CArray[i])); }
@@ -99,7 +99,7 @@ namespace MPTranslator
             for (IDictionaryEnumerator c = GOTO.GetEnumerator(); c.MoveNext(); )
                 Console.WriteLine("GOTO[" + ((Tablekey)c.Key).I + ", " + ((Tablekey)c.Key).J + "] = " + c.Value);
 
-            Console.ReadLine();
+            //Console.ReadLine();
 
             //синтакический анализ
             string answer = "y";
@@ -153,7 +153,7 @@ namespace MPTranslator
                             stack.Push((GOTO[new Tablekey(state, rule[1][0])]).ToString());
 
                             //вывести правило
-                            Console.WriteLine(rule[1] + "->" + rule[2]); Console.ReadLine();
+                            Console.WriteLine(rule[1] + "->" + rule[2]); //Console.ReadLine();
                         }
                         else if (action[0] == 'a') //accept
                             break;
@@ -161,7 +161,7 @@ namespace MPTranslator
                     Console.WriteLine("Строка допущена"); //Console.ReadLine();
                 }
                 catch (Exception) { Console.WriteLine("Строка отвергнута"); } //Console.ReadLine(); 
-                Console.ReadLine();
+                //Console.ReadLine();
                 Console.WriteLine("\n Продолжить? (y or n) \n");
                 answer = Console.ReadLine();
             }
@@ -221,7 +221,7 @@ namespace MPTranslator
             Console.ReadLine();
         }
 
-        // список найденных комбинаций
+        /// список найденных комбинаций
         static ArrayList combinations = new ArrayList();
         static void GenerateCombinations(int depth, string s)
         {
@@ -234,7 +234,7 @@ namespace MPTranslator
             }
         }
 
-        //  создает список правил, в которых вычеркнут один или более символов А в правой части
+        ///  создает список правил, в которых вычеркнут один или более символов А в правой части
         static ArrayList GenerateRulesWithout(char A)
         {
             ArrayList result = new ArrayList();  //  итоговый список
@@ -272,7 +272,7 @@ namespace MPTranslator
             return result;
         }
 
-        static bool AcceptEmptyString;      // допускать ли пустую строку
+        static bool AcceptEmptyString;      /// допускать ли пустую строку
         static void RemoveEpsilonRules()
         {  // удаление е-правил
             AcceptEmptyString = false;      // флаг принадлежности пустой строки языку
@@ -295,7 +295,7 @@ namespace MPTranslator
             while (EpsilonRulesExist);      //  пока существуют эпсилон-правила
         }
 
-        static Hashtable FirstSets = new Hashtable();       //Набор множеств First
+        static Hashtable FirstSets = new Hashtable();       /// Набор множеств First
         public static void ComputeFirstSets()
         {
             for (int i = 0; i < Terminals.Length; i++)
@@ -328,7 +328,7 @@ namespace MPTranslator
             while (changes); //  пока вносятся изменения
         }
 
-        // функции доступа ко множествам FIRST
+        /// функции доступа ко множествам FIRST
         public static string First(char X) { return (string)FirstSets[X]; }
 
         public static string First(string X) { return First(X[0]); }
@@ -387,7 +387,7 @@ namespace MPTranslator
             return result;
         }
 
-        // Функция GoTo
+        /// Функция GoTo
         static ArrayList GoTo(ArrayList I, char X)
         {
             ArrayList J = new ArrayList();
@@ -404,7 +404,7 @@ namespace MPTranslator
             return Closure(J);
         }
 
-        //Процедура получения последовательности С
+        /// Процедура получения последовательности С
         static bool SetsEqual(ArrayList lhs, ArrayList rhs)
         {
             string[] lhsArr = new string[lhs.Count];
@@ -423,8 +423,8 @@ namespace MPTranslator
             return true;
         }
 
-        // Функция SetsEqual() используется функцией Contatains, 
-        // определяющей, является ли множество g элементом списка С
+        /// Функция SetsEqual() используется функцией Contatains, 
+        /// определяющей, является ли множество g элементом списка С
         static bool Contains(ArrayList C, ArrayList g)
         {
             for (IEnumerator item = C.GetEnumerator(); item.MoveNext(); )
@@ -457,12 +457,12 @@ namespace MPTranslator
                         ArrayList g = GoTo((ArrayList)item.Current, X);  // GoTo(Ii, X)
                         Console.WriteLine("GoTo( " + DebugArrayList((ArrayList)item.Current) + "," + X + "): \n"
                                             + DebugArrayList(g));
-                        Console.ReadLine();
+                        //Console.ReadLine();
                         // если множество g непусто и еще не включено в С
                         if (g.Count != 0 && !Contains(C, g))
                         {
                             C.Add(g); counter++;
-                            Console.WriteLine("добавлено I" + counter + " : " + DebugArrayList(g)); Console.ReadLine();
+                            Console.WriteLine("добавлено I" + counter + " : " + DebugArrayList(g)); //Console.ReadLine();
                             modified = true; break;
                         }
                     }
@@ -572,8 +572,9 @@ namespace MPTranslator
             return t;
         }
 
+        /// алгоритм разбора
         static int parsing(string s, int c, myGrammar G)
-        { // алгоритм разбора
+        { 
             Stack z = new Stack();  // магазин
             string eline = null;
             string zline = null;
@@ -684,20 +685,17 @@ namespace MPTranslator
           break;
 
           case "1":
-                        myAutomate ka = new myAutomate(new ArrayList() { "S0", "A", "B", "C", "D", "E", "F", "G",
-                                                                          "H", "I", "J", "K", "L", "M", "N", "qf" },
-                                                       new ArrayList() { "0", "1", "-", "+", "" },
-                                                       new ArrayList() { "qf" },
+                        myAutomate ka = new myAutomate(new ArrayList() { "S0", "A", "B", "C", "Bqf" },
+                                                       new ArrayList() { "0", "1", "+" },
+                                                       new ArrayList() { "Bqf" },
                                                        "S0");
-                        ka.AddRule("S0", "1", "A");
-                        ka.AddRule("A", "0", "B");
-                        ka.AddRule("B", "1", "C");
-                        ka.AddRule("C", "0", "D");
-                        ka.AddRule("D", "-", "E");
-                        ka.AddRule("E", "1", "F");
-                        ka.AddRule("F", "+", "G");
-                        ka.AddRule("G", "0", "qf");
-                        ka.AddRule("G", "1", "qf");
+                        ka.AddRule("S0", "0", "A");
+                        ka.AddRule("A", "0", "A");
+                        ka.AddRule("A", "1", "A");
+                        ka.AddRule("A", "+", "B");
+                        ka.AddRule("B", "0", "C");
+                        ka.AddRule("C", "1", "Bqf");
+                        ka.AddRule("Bqf", "0", "C");
 
                         Console.WriteLine("Enter line to execute :");
                         ka.Execute(Console.ReadLine());
@@ -720,71 +718,46 @@ namespace MPTranslator
                         break;
 
                     case "2.1":
-                        myAutomate example = new myAutomate(new ArrayList() { "S0", "1", "2", "3", "4", "5",
+                        myAutomate ka_example = new myAutomate(new ArrayList() { "S0", "1", "2", "3", "4", "5",
                                                                                "6", "7", "8", "9", "qf" },
                                                             new ArrayList() { "a", "b" },
                                                             new ArrayList() { "qf" },
                                                             "S0");
-                        example.AddRule("S0", "", "1");
-                        example.AddRule("S0", "", "7");
-                        example.AddRule("1", "", "2");
-                        example.AddRule("1", "", "4");
-                        example.AddRule("2", "a", "3");
-                        example.AddRule("4", "b", "5");
-                        example.AddRule("3", "", "6");
-                        example.AddRule("5", "", "6");
-                        example.AddRule("6", "", "1");
-                        example.AddRule("6", "", "7");
-                        example.AddRule("7", "a", "8");
-                        example.AddRule("8", "b", "9");
-                        example.AddRule("9", "b", "qf");
+                        ka_example.AddRule("S0", "", "1");
+                        ka_example.AddRule("S0", "", "7");
+                        ka_example.AddRule("1", "", "2");
+                        ka_example.AddRule("1", "", "4");
+                        ka_example.AddRule("2", "a", "3");
+                        ka_example.AddRule("4", "b", "5");
+                        ka_example.AddRule("3", "", "6");
+                        ka_example.AddRule("5", "", "6");
+                        ka_example.AddRule("6", "", "1");
+                        ka_example.AddRule("6", "", "7");
+                        ka_example.AddRule("7", "a", "8");
+                        ka_example.AddRule("8", "b", "9");
+                        ka_example.AddRule("9", "b", "qf");
 
                         myAutomate dkaEX = new myAutomate();
-                        dkaEX.BuildDeltaDKAutomate(example);
+                        dkaEX.BuildDeltaDKAutomate(ka_example);
                         dkaEX.DebugAuto();
                         Console.WriteLine("Enter line to execute :");
                         dkaEX.Execute(Console.ReadLine());
                         break;
 
                     case "2":
-                        myAutomate ndka = new myAutomate(new ArrayList() { "S0",  "1",  "2",  "3",  "4",  "5",  "6",  "7",  "8",  "9", "10",
-                                                                           "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "qf" },
-                                                         new ArrayList() { "1", "0", "+", "2" },
+                        myAutomate ndka = new myAutomate(new ArrayList() { "S0", "A", "B", "C", "qf" },
+                                                         new ArrayList() { "1", "0", "+" },
                                                          new ArrayList() { "qf" },
                                                          "S0");
                         
-                        ndka.AddRule("S0", "1", "1");          //W1
-                        ndka.AddRule("1", "0", "2");
-                        ndka.AddRule("2", "+", "3");
+                        ndka.AddRule("S0", "0", "A");
+                        ndka.AddRule("A", "0", "A");
+                        ndka.AddRule("A", "1", "A");
+                        ndka.AddRule("A", "+", "B");
+                        ndka.AddRule("B", "0", "C");
+                        ndka.AddRule("C", "1", "B");
+                        ndka.AddRule("C", "1", "qf");
 
-                        ndka.AddRule("3", "", "4");            //W2
-                        ndka.AddRule("4", "", "5");
-                        ndka.AddRule("4", "", "7");
-                        ndka.AddRule("4", "", "9");
-                        ndka.AddRule("5", "1", "6");
-                        ndka.AddRule("7", "2", "8");
-                        ndka.AddRule("6", "", "9");
-                        ndka.AddRule("8", "", "9");
-                        ndka.AddRule("9", "", "4");
-                        ndka.AddRule("9", "", "10");
-
-                        ndka.AddRule("10", "1", "11");          //W3
-                        ndka.AddRule("11", "0", "12");
-                        ndka.AddRule("12", "", "13");
-                        ndka.AddRule("13", "", "9");
-                        ndka.AddRule("13", "", "14");
-
-                        ndka.AddRule("14", "", "15");           //W4
-                        ndka.AddRule("14", "", "17");
-                        ndka.AddRule("15", "0", "16");
-                        ndka.AddRule("17", "1", "18");
-                        ndka.AddRule("16", "", "19");
-                        ndka.AddRule("18", "", "19");
-                        ndka.AddRule("19", "", "14");
-                        ndka.AddRule("19", "", "20");
-                        ndka.AddRule("20", "", "15");
-                        ndka.AddRule("14", "", "qf");
-                        ndka.AddRule("20", "", "qf");
 
                         myAutomate dka = new myAutomate();
                         dka.BuildDeltaDKAutomate(ndka);
@@ -836,14 +809,17 @@ namespace MPTranslator
                         break;
 
                     case "4": //МП - автоматы
-                        myGrammar kcGrammar = new myGrammar(new ArrayList() { "i", ":", "*", "(", ")" },
-                                                            new ArrayList() { "S", "F", "L" },
+                        /*myGrammar kcGrammar = new myGrammar(new ArrayList() { "a", "b", "d" },
+                                                            new ArrayList() { "S", "C", "S'" },
                                                             "S");
 
-                        kcGrammar.AddRule("S", new ArrayList() { "(", "F", "*", "L", ")" });
-                        kcGrammar.AddRule("F", new ArrayList() { "L", "*" });
-                        kcGrammar.AddRule("F", new ArrayList() { "i" });
-                        kcGrammar.AddRule("L", new ArrayList() { "F" });
+                        kcGrammar.AddRule("S", new ArrayList() { "a" });
+                        kcGrammar.AddRule("S", new ArrayList() { "C", "a", "S'" });
+                        kcGrammar.AddRule("S", new ArrayList() { "a", "S'" });
+                        kcGrammar.AddRule("S", new ArrayList() { "C", "a" });
+                        kcGrammar.AddRule("S'", new ArrayList() { "b", "S'" });
+                        kcGrammar.AddRule("S'", new ArrayList() { "b" });
+                        kcGrammar.AddRule("C", new ArrayList() { "d" });
 
                         Console.Write("Debug KC-Grammar ");
                         kcGrammar.DebugPrules();
@@ -853,7 +829,7 @@ namespace MPTranslator
                         MP.debugDelta();
 
                         Console.WriteLine("\nEnter the line :");
-                        Console.WriteLine(MP.Execute(Console.ReadLine()).ToString());
+                        Console.WriteLine(MP.Execute(Console.ReadLine()).ToString());*/
                         break;
 
                     case "4.1":
@@ -886,19 +862,36 @@ namespace MPTranslator
                             switch (Console.ReadLine())
                             {
                                 case "1":
-                                    myMp mpA1 = new myMp(new ArrayList() { "q0", "q1", "q2", "qf" },
-                                                         new ArrayList() { "a", "b" },
-                                                         new ArrayList() { "z0", "a", "b", "S", "A", "B" },
-                                                         "q0",
-                                                         "S",
-                                                         new ArrayList() { "qf" });
+                                    myGrammar kcGrammar = new myGrammar(new ArrayList() { "a", "b", "d" },
+                                    new ArrayList() { "S", "C", "D" },
+                                    "S");
 
-                                    mpA1.addDeltaRule("q0", "", "S", new ArrayList() { "q1" }, new ArrayList() { "a", "A", "b" });
-                                    mpA1.addDeltaRule("q1", "", "A", new ArrayList() { "q1" }, new ArrayList() { "a", "B", "b" });
-                                    mpA1.addDeltaRule("q1", "", "B", new ArrayList() { "q1" }, new ArrayList() { "a", "b" });
-                                    mpA1.addDeltaRule("q1", "a", "a", new ArrayList() { "q1" }, new ArrayList() { "" });
-                                    mpA1.addDeltaRule("q1", "b", "b", new ArrayList() { "q1" }, new ArrayList() { "" });
-                                    Console.Write("Debug Mp ");
+                                    kcGrammar.AddRule("S", new ArrayList() { "a" });
+                                    kcGrammar.AddRule("S", new ArrayList() { "C", "a", "D" });
+                                    kcGrammar.AddRule("S", new ArrayList() { "a", "D" });
+                                    kcGrammar.AddRule("S", new ArrayList() { "C", "a" });
+                                    kcGrammar.AddRule("D", new ArrayList() { "b", "D" });
+                                    kcGrammar.AddRule("D", new ArrayList() { "b" });
+                                    kcGrammar.AddRule("C", new ArrayList() { "d" });
+                                    kcGrammar.DebugPrules();
+
+                                    myMp mpA1 = new myMp(new ArrayList() { "a", "b", "d" },
+                                                         new ArrayList() { "S", "C", "D" },
+                                                         new ArrayList() { "S", "C", "D", "a", "b", "d" },
+                                                         "q",
+                                                         "S",
+                                                         new ArrayList() { "q" });
+                                    mpA1.addDeltaRule("q", "", "S", new ArrayList() { "q" }, new ArrayList() { "C", "a", "D" });
+                                    mpA1.addDeltaRule("q", "", "D", new ArrayList() { "q" }, new ArrayList() { "b" });
+                                    mpA1.addDeltaRule("q", "", "S", new ArrayList() { "q"}, new ArrayList() { "a" });
+                                    mpA1.addDeltaRule("q", "", "S", new ArrayList() {"q"}, new ArrayList() { "a", "D" });
+                                    mpA1.addDeltaRule("q", "", "S", new ArrayList() {"q"}, new ArrayList() { "C", "a" });
+                                    mpA1.addDeltaRule("q", "", "D", new ArrayList() {"q"}, new ArrayList() { "b", "D" });
+                                    mpA1.addDeltaRule("q", "", "C", new ArrayList() {"q"}, new ArrayList() { "d" });
+                                    mpA1.addDeltaRule("q", "a", "a", new ArrayList() { "q" }, new ArrayList() { "" });
+                                    mpA1.addDeltaRule("q", "b", "b", new ArrayList() { "q" }, new ArrayList() { "" });
+                                    mpA1.addDeltaRule("q", "d", "d", new ArrayList() { "q" }, new ArrayList() { "" });
+
                                     mpA1.debugDelta();
                                     Console.WriteLine("\nВведите строку :");
                                     Console.WriteLine(mpA1.Execute(Console.ReadLine()).ToString());
@@ -957,20 +950,17 @@ namespace MPTranslator
                         break;
 
                     case "5": // LL Разбор
-                        myGrammar exemple = new myGrammar(new ArrayList() { "i", "(", ")", "+", "*", "" },
-                                                          new ArrayList() { "S", "E", "T", "T'", "P" },
+                        myGrammar example = new myGrammar(new ArrayList() { "i", "=", "*", "(", ")", "" },
+                                                          new ArrayList() { "S", "S'", "F" },
                                                           "S");
 
-                        exemple.AddRule("S", new ArrayList() { "T", "E" });
-                        exemple.AddRule("E", new ArrayList() { "+", "T", "E" });
-                        exemple.AddRule("E", new ArrayList() { "" });
-                        exemple.AddRule("T", new ArrayList() { "P", "T'" });
-                        exemple.AddRule("T'", new ArrayList() { "*", "P", "T'" });
-                        exemple.AddRule("T'", new ArrayList() { "" });
-                        exemple.AddRule("P", new ArrayList() { "(", "S", ")" });
-                        exemple.AddRule("P", new ArrayList() { "i" });
+                        example.AddRule("S", new ArrayList() { "F", "S'" });
+                        example.AddRule("S'", new ArrayList() { "=", "F" });
+                        example.AddRule("S'", new ArrayList() { "" });
+                        example.AddRule("F", new ArrayList() { "(", "*", "F", ")" });
+                        example.AddRule("F", new ArrayList() { "i" });
 
-                        LLParser parser = new LLParser(exemple);
+                        LLParser parser = new LLParser(example);
                         Console.WriteLine("Введите строку: ");
                         if (parser.Parse(Console.ReadLine()))
                         {
@@ -984,19 +974,19 @@ namespace MPTranslator
                         break;
 
                     case "5.1": // LL Разбор
-                        myGrammar exemple1 = new myGrammar(new ArrayList() { "i", "(", ")", ":", "*", "" },
+                        myGrammar example1 = new myGrammar(new ArrayList() { "i", "(", ")", ":", "*", "" },
                                                            new ArrayList() { "S", "F", "L" },
                                                            "S");
                         
-                        exemple1.AddRule("S", new ArrayList() { "(", "F", ":", "L", ")" });
-                        exemple1.AddRule("S", new ArrayList() { "L", "*" });
-                        exemple1.AddRule("S", new ArrayList() { "i" });
-                        exemple1.AddRule("L", new ArrayList() { "L", "*" });
-                        exemple1.AddRule("L", new ArrayList() { "i" });
-                        exemple1.AddRule("F", new ArrayList() { "L", "*" });
-                        exemple1.AddRule("F", new ArrayList() { "i" });
+                        example1.AddRule("S", new ArrayList() { "(", "F", ":", "L", ")" });
+                        example1.AddRule("S", new ArrayList() { "L", "*" });
+                        example1.AddRule("S", new ArrayList() { "i" });
+                        example1.AddRule("L", new ArrayList() { "L", "*" });
+                        example1.AddRule("L", new ArrayList() { "i" });
+                        example1.AddRule("F", new ArrayList() { "L", "*" });
+                        example1.AddRule("F", new ArrayList() { "i" });
 
-                        LLParser parser1 = new LLParser(exemple1);
+                        LLParser parser1 = new LLParser(example1);
                         Console.WriteLine("Введите строку: ");
                         if (parser1.Parse1(Console.ReadLine()))
                         {
@@ -1088,8 +1078,8 @@ namespace MPTranslator
                         mp.addDeltaRule("q1", "b", "a", new ArrayList() { "q2" }, new ArrayList() { "e" }, new ArrayList() { "e" });
                         mp.addDeltaRule("q2", "b", "a", new ArrayList() { "q2" }, new ArrayList() { "e" }, new ArrayList() { "e" });
                         mp.addDeltaRule("q2", "e", "z0", new ArrayList() { "qf" }, new ArrayList() { "e" }, new ArrayList() { "e" });
-                        mp.addDeltaRule("q3", "e", "0", new ArrayList() { "qf" }, new ArrayList() { "e" }, new ArrayList() { "e" });
-                        mp.addDeltaRule("q3", "e", "1", new ArrayList() { "qf" }, new ArrayList() { "e" }, new ArrayList() { "e" });
+                        //mp.addDeltaRule("q3", "e", "0", new ArrayList() { "qf" }, new ArrayList() { "e" }, new ArrayList() { "e" });
+                        //mp.addDeltaRule("q3", "e", "1", new ArrayList() { "qf" }, new ArrayList() { "e" }, new ArrayList() { "e" });
                         Console.Write("Debug Mp ");
                         mp.debugDelta();
                         Console.WriteLine("\nEnter the line :");

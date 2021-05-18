@@ -17,7 +17,7 @@ namespace MPTranslator
         Hashtable FirstSet = new Hashtable();
         Hashtable FollowSet = new Hashtable();
 
-        public LLParser(myGrammar grammar) //конструктор
+        public LLParser(myGrammar grammar) /// конструктор
         {
             G = grammar;
             Table = new DataTable("ManagerTable");
@@ -150,7 +150,7 @@ namespace MPTranslator
             return true;
         }
 
-        public bool Parse1(string input)//Подробный вариант функции
+        public bool Parse1(string input) /// Подробный вариант функции
         {
             Console.WriteLine("Приступаю к чтению цепочки символов...");
             Console.Write("      (");//Просто выводит текущее состояние на экран!
@@ -331,6 +331,7 @@ namespace MPTranslator
                 }
             } //  пока вносятся изменения
         }
+        
         public List<string> First(string X) { return ((HashSet<string>)FirstSet[X]).ToList(); }
         public List<string> First(List<string> Y)
         {

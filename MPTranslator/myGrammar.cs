@@ -32,7 +32,7 @@ namespace MPTranslator
 
         public myGrammar() : base() { Prule.Count = 0; }
 
-        //порождение цепочек символов по правилам вывода
+        /// порождение цепочек символов по правилам вывода
         public override string Execute()
         {
             string bornedLine = null;
@@ -47,7 +47,7 @@ namespace MPTranslator
             return bornedLine;
         }
         
-        //проверка на принадлежность к терминалам/нетерминалам
+        /// проверка на принадлежность к терминалам/нетерминалам
         public bool isNoTerm(string v)
         {
             foreach (string vi in this.V)

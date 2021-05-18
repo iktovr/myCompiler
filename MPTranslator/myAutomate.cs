@@ -8,7 +8,7 @@ namespace MPTranslator
 {
 
     class DeltaQSigma : Rule
-    { //Q x Sigma
+    { /// Q x Sigma
         public string LeftTerm = null;
         public string RightNoTerm = null;
 

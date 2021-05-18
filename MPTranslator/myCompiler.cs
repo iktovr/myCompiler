@@ -6,16 +6,16 @@ using System.Text;
 
 namespace MPTranslator
 {
-    // Используется в удалении левой рекурсии для правила (см стр 25)
+    /// Используется в удалении левой рекурсии для правила (см стр 25)
     struct V_struct
     {
-        public string V; // Нетерминал по которому происходит левая рекусия
-        public ArrayList alpha; // Цепочка альфа, вида V -> V alpha
-        public ArrayList betta; // Цепочка бетта, вида V -> betta, где бетта не начинается с V
+        public string V; /// Нетерминал по которому происходит левая рекусия
+        public ArrayList alpha; /// Цепочка альфа, вида V -> V alpha
+        public ArrayList betta; /// Цепочка бетта, вида V -> betta, где бетта не начинается с V
     }
     
     abstract class Rule
-    { // LeftNoTerm operator Right 
+    { /// LeftNoTerm operator Right 
         public string LeftNoTerm = null;
 
         public Rule(string LeftNoTerm)
@@ -34,11 +34,11 @@ namespace MPTranslator
 
     abstract class Automate
     {
-        public ArrayList Q = null; // множество состояний
-        public ArrayList Sigma = null; // алфавит
-        public ArrayList DeltaList = null; //список правил перехода
-        public string Q0 = null; //начальное состояние
-        public ArrayList F = null; //конечное состояние
+        public ArrayList Q = null; /// множество состояний
+        public ArrayList Sigma = null; /// алфавит
+        public ArrayList DeltaList = null; /// список правил перехода
+        public string Q0 = null; /// начальное состояние
+        public ArrayList F = null; /// конечное состояние
 
         public Automate() { }
 
@@ -64,8 +64,8 @@ namespace MPTranslator
             return EpsClosure(currStates, null);
         }
 
-        // Все достижимые состояния из множества состояний states 
-        // по правилам в которых ,LeftTerm = term
+        /// Все достижимые состояния из множества состояний states 
+        /// по правилам в которых ,LeftTerm = term
         private ArrayList EpsClosure(ArrayList currStates, ArrayList ReachableStates)
         {
             if (ReachableStates == null) ReachableStates = new ArrayList();
@@ -104,8 +104,9 @@ namespace MPTranslator
             if (nextStates == null) return ReachableStates;
             else return EpsClosure(next, ReachableStates);
         }
-        //возвращает множество достижимых состояний по символу term 
-        //из currStates за один шаг
+
+        /// возвращает множество достижимых состояний по символу term 
+        /// из currStates за один шаг
         private ArrayList move(ArrayList currStates, string term)
         {
             ArrayList ReachableStates = new ArrayList();
@@ -121,8 +122,8 @@ namespace MPTranslator
             return ReachableStates;
         }
 
-        // Все состояния в которые есть переход из текущего состояния currState 
-        // по символу term за один шаг
+        /// Все состояния в которые есть переход из текущего состояния currState 
+        /// по символу term за один шаг
         private ArrayList FromStateToStates(string currState, string term)
         {
             ArrayList NextStates = new ArrayList();//{currState};
@@ -142,7 +143,7 @@ namespace MPTranslator
         }
 
         private ArrayList config = new ArrayList();
-        private ArrayList DeltaD = new ArrayList();//правила детерминированного автомата
+        private ArrayList DeltaD = new ArrayList(); /// правила детерминированного автомата
 
         private ArrayList Dtran(ArrayList currState)
         {
@@ -171,7 +172,7 @@ namespace MPTranslator
             return null;
         }
 
-        //построить Delta-правила ДКА
+        /// построить Delta-правила ДКА
         public void BuildDeltaDKAutomate(myAutomate ndka)
         {
             this.Sigma = ndka.Sigma;
@@ -212,7 +213,7 @@ namespace MPTranslator
             return newF;
         }
 
-        //состояние StateTo достижимо по дельта-правилам из состояния currState
+        /// состояние StateTo достижимо по дельта-правилам из состояния currState
         private bool ReachableStates(string currState, string StateTo)
         {
             string nextstate = currState;
@@ -339,10 +340,10 @@ namespace MPTranslator
 
     abstract class Grammar
     {
-        public string S0 = null; //начальный символ
-        public ArrayList T = null; //список терминалов
-        public ArrayList V = null; //список нетерминалов
-        public ArrayList Prules = null; //список правил порождения
+        public string S0 = null; /// начальный символ
+        public ArrayList T = null; /// список терминалов
+        public ArrayList V = null; /// список нетерминалов
+        public ArrayList Prules = null; /// список правил порождения
 
         public Grammar() { }
 
@@ -360,7 +361,7 @@ namespace MPTranslator
             this.Prules.Add(new Prule(LeftNoTerm, right));
         }
 
-        //Lina Veltman course work
+        // Lina Veltman course work
         public myAutomate Transform()
         {
             ArrayList Q = this.V;
@@ -416,7 +417,7 @@ namespace MPTranslator
             return KA;
         }
 
-        //определение множествa производящих нетерминальных символов
+        /// определение множествa производящих нетерминальных символов
         private ArrayList producingSymb()
         {
             ArrayList Vp = new ArrayList();
@@ -431,7 +432,7 @@ namespace MPTranslator
             return Vp;
         }
 
-        //определение множества достижимых символов за 1 шаг
+        /// определение множества достижимых символов за 1 шаг
         private ArrayList ReachableByOneStep(string state)
         {
             ArrayList Reachable = new ArrayList() { state };
@@ -459,7 +460,7 @@ namespace MPTranslator
             return Reachable;
         }
 
-        //определение множества достижимых символов
+        /// определение множества достижимых символов
         private ArrayList Reachable(string StartState)
         {
             ArrayList Vr = new ArrayList() { this.S0 };
@@ -475,7 +476,7 @@ namespace MPTranslator
             return Vr;
         }
 
-        //удаление бесполезных символов
+        /// удаление бесполезных символов
         public myGrammar unUsefulDelete()
         {
             Console.WriteLine("\t\tDeleting unuseful symbols");
@@ -628,7 +629,7 @@ namespace MPTranslator
         //    return new myGrammar(T1, V1, P2, this.S0);
         //}
 
-        //построение множества укорачивающих нетерминалов
+        /// построение множества укорачивающих нетерминалов
         private ArrayList ShortNoTerm()
         {
             ArrayList Ve = new ArrayList();
@@ -659,7 +660,7 @@ namespace MPTranslator
             return Ve;
         }
 
-        //удаление эпсилон правил
+        /// удаление эпсилон правил
         public myGrammar EpsDelete()
         {
             Console.WriteLine("\tDelete e-rules:");
@@ -792,8 +793,7 @@ namespace MPTranslator
         //                return new myGrammar(this.T, V1, P1, this.S0);
         //        }
 
-        //удаление цепных правил
-
+        /// удаление цепных правил
         public myGrammar ChainRuleDelete()
         {
             Console.WriteLine("\tChainRule Deleting:");
@@ -899,8 +899,7 @@ namespace MPTranslator
         //    return new myGrammar(this.T, this.V, P, this.S0);
         //}
 
-        //удаление левой рекурсии
-
+        /// удаление левой рекурсии
         public myGrammar LeftRecursDelete()
         {
             Console.WriteLine("\tLeft Recursion delete:");
@@ -1083,7 +1082,7 @@ namespace MPTranslator
             Console.WriteLine(line);
         }
 
-        //откуда можем прийти в состояние
+        /// откуда можем прийти в состояние
         private ArrayList FromWhat(string state)
         {
             ArrayList from = new ArrayList();
@@ -1100,7 +1099,7 @@ namespace MPTranslator
             else return from;
         }
 
-        //объединение множеств A or B
+        /// объединение множеств A or B
         private ArrayList Unify(ArrayList A, ArrayList B)
         {
             ArrayList unify = A;
@@ -1110,7 +1109,7 @@ namespace MPTranslator
             return unify;
         }
 
-        //пересечение множеств A & B
+        /// пересечение множеств A & B
         private ArrayList intersection(ArrayList A, ArrayList B)
         {
             ArrayList intersection = new ArrayList();
@@ -1120,7 +1119,6 @@ namespace MPTranslator
             return intersection;
         }
 
-        //Нетерминальные символы из массива
         //private ArrayList NoTermReturn(ArrayList array)
         //{
         //    ArrayList NoTerm = new ArrayList();
@@ -1130,6 +1128,7 @@ namespace MPTranslator
         //    return NoTerm;
         //}
 
+        /// Нетерминальные символы из массива
         private ArrayList NoTermReturn(ArrayList array)
         {
             ArrayList NoTerm = new ArrayList();
@@ -1156,7 +1155,7 @@ namespace MPTranslator
         }
 
 
-        //терминальные символы из массива
+        /// терминальные символы из массива
         private ArrayList TermReturn(ArrayList A)
         {
             ArrayList Term = new ArrayList();
@@ -1171,7 +1170,7 @@ namespace MPTranslator
             else return Term;
         }
 
-        //все символы в правиле
+        /// все символы в правиле
         private ArrayList SymbInRules(Prule p)
         {
             ArrayList SymbInRules = new ArrayList() { p.LeftNoTerm };
@@ -1180,7 +1179,7 @@ namespace MPTranslator
             return SymbInRules;
         }
 
-        //проверка пустоты правой цепочки
+        /// проверка пустоты правой цепочки
         private bool ContainEps(Prule p)
         {
             if (p.rightChain.Contains("")) return true;

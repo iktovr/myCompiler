@@ -8,12 +8,12 @@ using System.Data;
 namespace MPTranslator
 {
     class MTable
-    { // Put the next line into the Declarations section.
+    { /// Put the next line into the Declarations section.
 
         private System.Data.DataSet dataSet;
 
         private void MakeDataTables()
-        { // Run all of the functions. 
+        { /// Run all of the functions. 
             MakeParentTable();
             MakeChildTable();
             MakeDataRelation();
@@ -21,7 +21,7 @@ namespace MPTranslator
         }
 
         private void MakeParentTable()
-        { // Create a new DataTable.
+        { /// Create a new DataTable.
             DataTable table = new DataTable("ParentTable");
             // Declare variables for DataColumn and DataRow objects.
             DataColumn column;
@@ -141,8 +141,8 @@ namespace MPTranslator
 
         private void MakeDataRelation()
         {
-            // DataRelation requires two DataColumn 
-            // (parent and child) and a name.
+            /// DataRelation requires two DataColumn 
+            /// (parent and child) and a name.
             DataColumn parentColumn = dataSet.Tables["ParentTable"].Columns["id"];
             DataColumn childColumn = dataSet.Tables["ChildTable"].Columns["ParentID"];
             DataRelation relation = new DataRelation("parent2Child", parentColumn, childColumn);
@@ -151,9 +151,9 @@ namespace MPTranslator
 
         private void BindToDataGrid()
         {
-            // Instruct the DataGrid to bind to the DataSet, with the 
-            // ParentTable as the topmost DataTable.
-            // dataGrid.SetDataBinding(dataSet, "ParentTable");
+            /// Instruct the DataGrid to bind to the DataSet, with the 
+            /// ParentTable as the topmost DataTable.
+            /// dataGrid.SetDataBinding(dataSet, "ParentTable");
         }
     }
 }

@@ -11,9 +11,9 @@ namespace MPTranslator
     class CanonicalLRParser
     {
 
-        public ArrayList Grammar = new ArrayList();  ///  правила грамматики
-        public string Terminals;                     ///  список терминалов
-        public string NonTerminals;                  ///  список нетерминалов
+        public ArrayList Grammar = new ArrayList();  ///< правила грамматики
+        public string Terminals;                     ///< список терминалов
+        public string NonTerminals;                  ///< список нетерминалов
 
         private struct Tablekey
         {
@@ -21,7 +21,7 @@ namespace MPTranslator
             public char J;
             public Tablekey(int i, char j) { I = i; J = j; }
         }
-        
+
         public void Execute()
         {
             Console.WriteLine("\nИсходная ");
@@ -251,7 +251,7 @@ namespace MPTranslator
             return result;
         }
 
-        private bool AcceptEmptyString;      /// допускать ли пустую строку
+        private bool AcceptEmptyString;      ///< допускать ли пустую строку
         private void RemoveEpsilonRules()
         {  /// удаление е-правил
             AcceptEmptyString = false;      // флаг принадлежности пустой строки языку
@@ -274,7 +274,7 @@ namespace MPTranslator
             while (EpsilonRulesExist);      //  пока существуют эпсилон-правила
         }
 
-        private Hashtable FirstSets = new Hashtable();       /// Набор множеств First
+        private Hashtable FirstSets = new Hashtable();       ///< Набор множеств First
         private void ComputeFirstSets()
         {
             for (int i = 0; i < Terminals.Length; i++)

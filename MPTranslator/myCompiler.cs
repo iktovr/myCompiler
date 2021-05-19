@@ -9,9 +9,9 @@ namespace MPTranslator
     /// Используется в удалении левой рекурсии для правила (см стр 25)
     struct V_struct
     {
-        public string V; /// Нетерминал по которому происходит левая рекусия
-        public ArrayList alpha; /// Цепочка альфа, вида V -> V alpha
-        public ArrayList betta; /// Цепочка бетта, вида V -> betta, где бетта не начинается с V
+        public string V; ///< Нетерминал по которому происходит левая рекусия
+        public ArrayList alpha; ///< Цепочка альфа, вида V -> V alpha
+        public ArrayList betta; ///< Цепочка бетта, вида V -> betta, где бетта не начинается с V
     }
     
     abstract class Rule
@@ -34,11 +34,11 @@ namespace MPTranslator
 
     abstract class Automate
     {
-        public ArrayList Q = null; /// множество состояний
-        public ArrayList Sigma = null; /// алфавит
-        public ArrayList DeltaList = null; /// список правил перехода
-        public string Q0 = null; /// начальное состояние
-        public ArrayList F = null; /// конечное состояние
+        public ArrayList Q = null; ///< множество состояний
+        public ArrayList Sigma = null; ///< алфавит
+        public ArrayList DeltaList = null; ///< список правил перехода
+        public string Q0 = null; ///< начальное состояние
+        public ArrayList F = null; ///< конечное состояние
 
         public Automate() { }
 
@@ -143,7 +143,7 @@ namespace MPTranslator
         }
 
         private ArrayList config = new ArrayList();
-        private ArrayList DeltaD = new ArrayList(); /// правила детерминированного автомата
+        private ArrayList DeltaD = new ArrayList(); ///< правила детерминированного автомата
 
         private ArrayList Dtran(ArrayList currState)
         {
@@ -340,10 +340,10 @@ namespace MPTranslator
 
     abstract class Grammar
     {
-        public string S0 = null; /// начальный символ
-        public ArrayList T = null; /// список терминалов
-        public ArrayList V = null; /// список нетерминалов
-        public ArrayList Prules = null; /// список правил порождения
+        public string S0 = null; ///< начальный символ
+        public ArrayList T = null; ///< список терминалов
+        public ArrayList V = null; ///< список нетерминалов
+        public ArrayList Prules = null; ///< список правил порождения
 
         public Grammar() { }
 

@@ -7,8 +7,9 @@ using System.Text;
 namespace MPTranslator
 {
 
+    /// Q x Sigma
     class DeltaQSigma : Rule
-    { /// Q x Sigma
+    {
         public string LeftTerm = null;
         public string RightNoTerm = null;
 

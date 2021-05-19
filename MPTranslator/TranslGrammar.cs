@@ -9,7 +9,7 @@ namespace MPTranslator
 {
     class TranslRule : Prule
     {
-        protected ArrayList RightP = null; /// operation part
+        protected ArrayList RightP = null; ///< operation part
 
         public ArrayList rightP { get { return RightP; } set { RightP = value; } }
         public TranslRule(string Left, ArrayList Right, ArrayList RightP) : base(Left, Right)
@@ -20,7 +20,7 @@ namespace MPTranslator
     
     class TranslGrammar : myGrammar
     {
-        public ArrayList P = null; /// operation symbols
+        public ArrayList P = null; ///< operation symbols
         public TranslGrammar(ArrayList T, ArrayList V, string S0, ArrayList P) : base(T, V, S0)
         {
             this.P = P;

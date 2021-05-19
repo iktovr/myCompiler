@@ -7,12 +7,12 @@ using System.Text;
 namespace MPTranslator {
 
     class DeltaQSigmaGamma {
-        /// структура Delta отображения
-        public string LeftQ { get; set; } // = null;  /// исходное состояние
-        public string LeftT { get; set; }  /// символ входной цепочки
-        public string LeftZ { get; set; }  /// верхний символ магазин
-        public ArrayList RightQ { get; set; }  /// множество следующих состояний
-        public ArrayList RightZ { get; set; }  /// множество символов магазина
+        // структура Delta отображения
+        public string LeftQ { get; set; } // = null;  ///< исходное состояние
+        public string LeftT { get; set; }  ///< символ входной цепочки
+        public string LeftZ { get; set; }  ///< верхний символ магазин
+        public ArrayList RightQ { get; set; }  ///< множество следующих состояний
+        public ArrayList RightZ { get; set; }  ///< множество символов магазина
 
         /// Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...} } 
         ///         LeftQ    LeftT   LeftZ       RightQ       RightZ 
@@ -76,7 +76,7 @@ namespace MPTranslator {
         // DeltaList - правила перехода 
         // Q0 - начальное состояние
         // F - множество конечных состояний
-        public ArrayList Gamma = null; /// алфавит магазинных символов
+        public ArrayList Gamma = null; ///< алфавит магазинных символов
 
         public Stack Z = null;
         public string currState;
@@ -313,7 +313,7 @@ namespace MPTranslator {
 
 
         // **   Debug   **
-        public string DebugStack(Stack s) { // печать текущего состояния магазина
+        public string DebugStack(Stack s) { /// печать текущего состояния магазина
             string p = "|";
             Stack s1 = new Stack();
             while (s.Count!=0) {

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LLParser.cs" />
+    <Compile Include="LRParser.cs" />
     <Compile Include="MTable.cs" />
     <Compile Include="myAutomate.cs" />
     <Compile Include="myCompiler.cs" />

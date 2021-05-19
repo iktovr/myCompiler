@@ -80,7 +80,6 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_m_p_translator_1_1_canonical_l_r_parser_1_1_tablekey.html">Tablekey</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">список нетерминалов  <a href="struct_m_p_translator_1_1_canonical_l_r_parser_1_1_tablekey.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -95,15 +94,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadGrammar</b> ()</t
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:af16b3d7dbd199590342b6eb97e25e8a6"><td class="memItemLeft" align="right" valign="top"><a id="af16b3d7dbd199590342b6eb97e25e8a6"></a>
-ArrayList&#160;</td><td class="memItemRight" valign="bottom"><b>Grammar</b> = new ArrayList()</td></tr>
+ArrayList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#af16b3d7dbd199590342b6eb97e25e8a6">Grammar</a> = new ArrayList()</td></tr>
+<tr class="memdesc:af16b3d7dbd199590342b6eb97e25e8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">правила грамматики <br /></td></tr>
 <tr class="separator:af16b3d7dbd199590342b6eb97e25e8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac897300a42f90d282f682321be489cf7"><td class="memItemLeft" align="right" valign="top"><a id="ac897300a42f90d282f682321be489cf7"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#ac897300a42f90d282f682321be489cf7">Terminals</a></td></tr>
-<tr class="memdesc:ac897300a42f90d282f682321be489cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">правила грамматики <br /></td></tr>
+<tr class="memdesc:ac897300a42f90d282f682321be489cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">список терминалов <br /></td></tr>
 <tr class="separator:ac897300a42f90d282f682321be489cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4725327780644cb17c3151dfdd73b95c"><td class="memItemLeft" align="right" valign="top"><a id="a4725327780644cb17c3151dfdd73b95c"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#a4725327780644cb17c3151dfdd73b95c">NonTerminals</a></td></tr>
-<tr class="memdesc:a4725327780644cb17c3151dfdd73b95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">список терминалов <br /></td></tr>
+<tr class="memdesc:a4725327780644cb17c3151dfdd73b95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">список нетерминалов <br /></td></tr>
 <tr class="separator:a4725327780644cb17c3151dfdd73b95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -122,11 +122,9 @@ ArrayList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="memdesc:aba1e18a3622fc5efdd31b72f56f8bb82"><td class="mdescLeft">&#160;</td><td class="mdescRight">создает список правил, в которых вычеркнут один или более символов А в правой части <br /></td></tr>
 <tr class="separator:aba1e18a3622fc5efdd31b72f56f8bb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ab213ba4df453a977326129e504a32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#a41ab213ba4df453a977326129e504a32">RemoveEpsilonRules</a> ()</td></tr>
-<tr class="memdesc:a41ab213ba4df453a977326129e504a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">допускать ли пустую строку  <a href="class_m_p_translator_1_1_canonical_l_r_parser.html#a41ab213ba4df453a977326129e504a32">More...</a><br /></td></tr>
 <tr class="separator:a41ab213ba4df453a977326129e504a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a042f592600d8a8d9144d18366318fd92"><td class="memItemLeft" align="right" valign="top"><a id="a042f592600d8a8d9144d18366318fd92"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#a042f592600d8a8d9144d18366318fd92">ComputeFirstSets</a> ()</td></tr>
-<tr class="memdesc:a042f592600d8a8d9144d18366318fd92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Набор множеств First. <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeFirstSets</b> ()</td></tr>
 <tr class="separator:a042f592600d8a8d9144d18366318fd92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66d6eba026b9f0f874882b14e804616b"><td class="memItemLeft" align="right" valign="top"><a id="a66d6eba026b9f0f874882b14e804616b"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#a66d6eba026b9f0f874882b14e804616b">First</a> (char X)</td></tr>
@@ -168,10 +166,12 @@ ArrayList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="memdesc:a3e13d9bcb548bcddc511f3ef04695517"><td class="mdescLeft">&#160;</td><td class="mdescRight">список найденных комбинаций <br /></td></tr>
 <tr class="separator:a3e13d9bcb548bcddc511f3ef04695517"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa1caf2018415a6f186b7c7e4e261d35"><td class="memItemLeft" align="right" valign="top"><a id="aaa1caf2018415a6f186b7c7e4e261d35"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptEmptyString</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#aaa1caf2018415a6f186b7c7e4e261d35">AcceptEmptyString</a></td></tr>
+<tr class="memdesc:aaa1caf2018415a6f186b7c7e4e261d35"><td class="mdescLeft">&#160;</td><td class="mdescRight">допускать ли пустую строку <br /></td></tr>
 <tr class="separator:aaa1caf2018415a6f186b7c7e4e261d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a730a7ebb6aef7c14de48434b029f6082"><td class="memItemLeft" align="right" valign="top"><a id="a730a7ebb6aef7c14de48434b029f6082"></a>
-Hashtable&#160;</td><td class="memItemRight" valign="bottom"><b>FirstSets</b> = new Hashtable()</td></tr>
+Hashtable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_canonical_l_r_parser.html#a730a7ebb6aef7c14de48434b029f6082">FirstSets</a> = new Hashtable()</td></tr>
+<tr class="memdesc:a730a7ebb6aef7c14de48434b029f6082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Набор множеств First. <br /></td></tr>
 <tr class="separator:a730a7ebb6aef7c14de48434b029f6082"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -234,8 +234,6 @@ Hashtable&#160;</td><td class="memItemRight" valign="bottom"><b>FirstSets</b> = 
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>допускать ли пустую строку </p>
 <p>удаление е-правил</p>
 
 </div>

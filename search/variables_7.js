@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['prules_162',['Prules',['../class_m_p_translator_1_1_grammar.html#ad17e833deb46145f4d859d0375d02280',1,'MPTranslator::Grammar']]]
+  ['nonterminals_165',['NonTerminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#a4725327780644cb17c3151dfdd73b95c',1,'MPTranslator::CanonicalLRParser']]]
 ];

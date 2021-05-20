@@ -479,15 +479,16 @@ namespace MPTranslator
                         lrParser.Execute();
                         break;
                     case "6.1":
-                        CanonicalLRParser lrExample = new CanonicalLRParser();
-                        lrExample.Terminals = "+*i()";
-                        lrExample.NonTerminals = "STP";
-                        lrExample.Grammar.Add("S S+T");
-                        lrExample.Grammar.Add("S T");
-                        lrExample.Grammar.Add("T T*P");
-                        lrExample.Grammar.Add("T P");
-                        lrExample.Grammar.Add("P i");
-                        lrExample.Grammar.Add("P (S)");
+                        myGrammar lrGrammar = new myGrammar(new ArrayList() { "+", "*", "i", "(", ")" },
+                                                            new ArrayList() { "S", "T", "P" },
+                                                            "S");
+                        lrGrammar.AddRule("S", new ArrayList() { "S", "+", "T" });
+                        lrGrammar.AddRule("S", new ArrayList() { "T" });
+                        lrGrammar.AddRule("T", new ArrayList() { "T", "*", "P" });
+                        lrGrammar.AddRule("T", new ArrayList() { "P" });
+                        lrGrammar.AddRule("P", new ArrayList() { "i" });
+                        lrGrammar.AddRule("P", new ArrayList() { "(", "S", ")" });
+                        CanonicalLRParser lrExample = new CanonicalLRParser(lrGrammar);
                         lrExample.Execute();
                         break;
 

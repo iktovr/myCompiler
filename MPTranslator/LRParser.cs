@@ -8,12 +8,25 @@ using System.Text;
 namespace MPTranslator
 {
 
+    /// \details ! Начальным нетерминалом может быть только S.
     class CanonicalLRParser
     {
 
-        public ArrayList Grammar = new ArrayList();  ///< правила грамматики
-        public string Terminals;                     ///< список терминалов
-        public string NonTerminals;                  ///< список нетерминалов
+        private ArrayList Grammar = new ArrayList();  ///< правила грамматики
+        private string Terminals;                     ///< список терминалов
+        private string NonTerminals;                  ///< список нетерминалов
+
+        public CanonicalLRParser() { }
+
+        public CanonicalLRParser(myGrammar grammar) {
+            Terminals = string.Join("", grammar.T.ToArray());
+            NonTerminals = string.Join("", grammar.V.ToArray());
+            Grammar.Clear();
+            foreach (Prule rule in grammar.Prules)
+            {
+                Grammar.Add(rule.LeftNoTerm + " " + string.Join("", rule.RightChain.ToArray()));
+            }
+        }
 
         private struct Tablekey
         {

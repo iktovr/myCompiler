@@ -396,54 +396,54 @@ namespace MPTranslator {
         }
         ///????????????????????????????????????
         
-         public override bool Execute(string str) {
-                 string currState = this.Q0;
-                 DeltaQSigmaGamma delta = null;
-                 int i = 0;
-                 str = str + "e";
-                 for (; ; )  // empty step
-                 {
-                         delta = findDelta(currState, str[i].ToString());
-                         if (delta == null) return false;
-                         if (delta.LeftT != "e")
-                         {
-                                 for (; i < str.Length;)
-                                 {
-                                         this.Q = delta.RightQ;
-                                         currState = arrToStr(delta.RightQ);
-                                         if (delta.LeftZ == Z.Peek().ToString() && delta.RightZ[0].ToString() == "e")
-                                         {
-                                                 ans1 += delta.LeftT;
-                                                 this.Z.Pop();
-                                         }
-                                         else
-                                         {
-                                                 ans2 += delta.LeftT;
-                                                 this.Z.Push(delta.LeftT);
-                                         }
+        public override bool Execute(string str) {
+            string currState = this.Q0;
+            DeltaQSigmaGamma delta = null;
+            int i = 0;
+            str = str + "e";
+            for (; ; )  // empty step
+            {
+                delta = findDelta(currState, str[i].ToString());
+                if (delta == null) return false;
+                if (delta.LeftT != "e")
+                {
+                    for (; i < str.Length;)
+                    {
+                        this.Q = delta.RightQ;
+                        currState = arrToStr(delta.RightQ);
+                        if (delta.LeftZ == Z.Peek().ToString() && delta.RightZ[0].ToString() == "e")
+                        {
+                            ans1 += delta.LeftT;
+                            this.Z.Pop();
+                        }
+                        else
+                        {
+                            ans2 += delta.LeftT;
+                            this.Z.Push(delta.LeftT);
+                        }
 
-                                         i++;
-                                         break;
-                                 }
-                         }
-                         else if (delta.LeftT == "e")
-                         {
-                                 this.Q = delta.RightQ;
-                                 this.Z.Pop();
-                                 if (this.Z.Count == 0)
-                                 {
-                                         for (int j = 0; j < ans2.Length; j++)
-                                         {
-                                                 ans += ans2[j];
-                                                 ans += ans1[j];
-                                         }
-                                         Console.WriteLine(ans);
-                                         return true;
-                                 }
-                                 else return false;
-                         }
-                 } // end for
-         } // end Execute_  
+                        i++;
+                        break;
+                    }
+                }
+                else if (delta.LeftT == "e")
+                {
+                    this.Q = delta.RightQ;
+                    this.Z.Pop();
+                    if (this.Z.Count == 0)
+                    {
+                        for (int j = 0; j < ans2.Length; j++)
+                        {
+                            ans += ans2[j];
+                            ans += ans1[j];
+                        }
+                        Console.WriteLine(ans);
+                        return true;
+                    }
+                    else return false;
+                }
+            } // end for
+        } // end Execute_  
          
     } //end class translMp
 }

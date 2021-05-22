@@ -321,11 +321,11 @@ namespace MPTranslator
         {
             Console.WriteLine(step + ": (" + d.leftNoTerm + " , " + d.leftTerm + " ) -> " + d.RightNoTerm);
         }
-    public void debugDeltaRule(string step, DeltaQSigmaGamma d)
-    {
-//      Console.WriteLine(step + ": (" + d.leftNoTerm + " , " + d.leftTerm + " ) -> " + d.RightNoTerm);
-    }
-    public void DebugAuto()
+        public void debugDeltaRule(string step, DeltaQSigmaGamma d)
+        {
+            // Console.WriteLine(step + ": (" + d.leftNoTerm + " , " + d.leftTerm + " ) -> " + d.RightNoTerm);
+        }
+        public void DebugAuto()
         {
             Console.WriteLine("\nAutomate config:");
             Debug("Q", this.Q);
@@ -639,15 +639,14 @@ namespace MPTranslator
                     Ve.Add(p.leftNoTerm);
             }
             int i = 0;///!!!
-           // if (Ve.Count == 0) return null;
+            // if (Ve.Count == 0) return null;
 
-/*                                 
-          foreach (string v in Ve) { 
-           //  if ( FromWhat(vg()) != null) {
+            foreach (string v in Ve) { 
+                // if ( FromWhat(vg()) != null) {
                 Ve = Unify(Ve, FromWhat(v.ToString()));
-           //  } 
-           }          
- */           
+                // }
+            }          
+
             if (Ve.Count != 0)
                 //Console.WriteLine("  {0}",Ve.Count);                
                 while ( (FromWhat(Ve[i].ToString()) != null) && (Ve.Count < i ) ) 
@@ -759,39 +758,39 @@ namespace MPTranslator
             }
         }
 
-        //        public myGrammar EpsDelete()
+        // public myGrammar EpsDelete()
+        // {
+        //    Console.WriteLine("\t\tDeleting epsylon rules");
+        //    Console.WriteLine("Executing: ");
+        //    ArrayList Ve = ShortNoTerm(); Debug("Ve", Ve);
+        //    ArrayList P1 = new ArrayList();
+        //    ArrayList V1 = this.V;
+        //    foreach (Prule p in Prules)
+        //    {
+        //        if (!ContainEps(p))
         //        {
-        //            Console.WriteLine("\t\tDeleting epsylon rules");
-        //            Console.WriteLine("Executing: ");
-        //            ArrayList Ve = ShortNoTerm(); Debug("Ve", Ve);
-        //            ArrayList P1 = new ArrayList();
-        //            ArrayList V1 = this.V;
-        //            foreach (Prule p in Prules)
+        //            //DebugPrule(p);
+        //            P1.Add(p);
+        //            Prule p1 = new Prule(p.leftNoTerm, TermReturn(p.rightChain));
+        // //                    DebugPrule(p1);
+        //            if (p.rightChain.Count != 1)
         //            {
-        //                if (!ContainEps(p))
-        //                {
-        //                    //DebugPrule(p);
-        //                    P1.Add(p);
-        //                    Prule p1 = new Prule(p.leftNoTerm, TermReturn(p.rightChain));
-        ////                    DebugPrule(p1);
-        //                    if (p.rightChain.Count != 1)
-        //                    {
-        //                        Console.WriteLine("No contain");
-        //                        P1.Add(p1);
-        //                    }
-        //                    else Console.WriteLine("Contain");
-        //                }
+        //                Console.WriteLine("No contain");
+        //                P1.Add(p1);
         //            }
-        //            if (Ve.Contains(this.S0))
-        //            {
-        //                V1.Add("S1");
-        //                P1.Add(new Prule("S1", new ArrayList() { this.S0 }));
-        //                P1.Add(new Prule("S1", new ArrayList() { "" }));
-        //                return new myGrammar(this.T, V1, P1, "S1");
-        //            }
-        //            else
-        //                return new myGrammar(this.T, V1, P1, this.S0);
+        //            else Console.WriteLine("Contain");
         //        }
+        //    }
+        //    if (Ve.Contains(this.S0))
+        //    {
+        //        V1.Add("S1");
+        //        P1.Add(new Prule("S1", new ArrayList() { this.S0 }));
+        //        P1.Add(new Prule("S1", new ArrayList() { "" }));
+        //        return new myGrammar(this.T, V1, P1, "S1");
+        //    }
+        //    else
+        //        return new myGrammar(this.T, V1, P1, this.S0);
+        // }
 
         /// удаление цепных правил
         public myGrammar ChainRuleDelete()
@@ -1001,52 +1000,52 @@ namespace MPTranslator
             return new myGrammar(this.T, V1, P, this.S0);
         }
 
-            //public myGrammar LeftRecursDelete()
-            //{
-            //    Console.WriteLine("\t\tDeleting left Recurs");
-            //    Console.WriteLine("Executing: ");
-            //    ArrayList LeftRecurs = new ArrayList();
-            //    ArrayList P1 = new ArrayList();
-            //    int i = 0;
-            //    foreach (Prule p in this.Prules)
-            //    {
-            //        if (p.rightChain.Contains(p.leftNoTerm) && p.RightChain[0].ToString() == p.leftNoTerm)
-            //        {
-            //            DebugPrule(p);
-            //            LeftRecurs.Add(p);
-            //        }
-            //        else P1.Add(p);
-            //    }
-            //    foreach (Prule p in LeftRecurs)
-            //    {
-            //        ArrayList right = new ArrayList();
-            //        string alfa = "";
-            //        for (int j = 1; j < p.RightChain.Count; j++)
-            //        {
-            //            alfa += p.RightChain[j].ToString();
-            //        }
-            //        Debug("alfa", alfa);
-            //        if (alfa == null) { }
-            //        else
-            //        {
-            //            P1.Add(new Prule(p.leftNoTerm, new ArrayList() { "S" + i.ToString() }));
-            //            this.V.Add("S" + i.ToString());
-            //            for (int k = 0; k < alfa.Length; k++)
-            //            {
-            //                right.Add(alfa.Substring(k, 1));
-            //            }
-            //            right.Add("S" + i.ToString());
-            //            P1.Add(new Prule("S" + i.ToString(), right));
-            //        }
-            //        i++;
-            //    }
-            //    return new myGrammar(this.T, this.V, P1, this.S0);
-            //}
+        // public myGrammar LeftRecursDelete()
+        // {
+        //    Console.WriteLine("\t\tDeleting left Recurs");
+        //    Console.WriteLine("Executing: ");
+        //    ArrayList LeftRecurs = new ArrayList();
+        //    ArrayList P1 = new ArrayList();
+        //    int i = 0;
+        //    foreach (Prule p in this.Prules)
+        //    {
+        //        if (p.rightChain.Contains(p.leftNoTerm) && p.RightChain[0].ToString() == p.leftNoTerm)
+        //        {
+        //            DebugPrule(p);
+        //            LeftRecurs.Add(p);
+        //        }
+        //        else P1.Add(p);
+        //    }
+        //    foreach (Prule p in LeftRecurs)
+        //    {
+        //        ArrayList right = new ArrayList();
+        //        string alfa = "";
+        //        for (int j = 1; j < p.RightChain.Count; j++)
+        //        {
+        //            alfa += p.RightChain[j].ToString();
+        //        }
+        //        Debug("alfa", alfa);
+        //        if (alfa == null) { }
+        //        else
+        //        {
+        //            P1.Add(new Prule(p.leftNoTerm, new ArrayList() { "S" + i.ToString() }));
+        //            this.V.Add("S" + i.ToString());
+        //            for (int k = 0; k < alfa.Length; k++)
+        //            {
+        //                right.Add(alfa.Substring(k, 1));
+        //            }
+        //            right.Add("S" + i.ToString());
+        //            P1.Add(new Prule("S" + i.ToString(), right));
+        //        }
+        //        i++;
+        //    }
+        //    return new myGrammar(this.T, this.V, P1, this.S0);
+        // }
 
 
 
-            // **   Debug   **
-            public void DebugPrules()
+        // **   Debug   **
+        public void DebugPrules()
         {
             Console.WriteLine("Prules:");
             foreach (Prule p in this.Prules)

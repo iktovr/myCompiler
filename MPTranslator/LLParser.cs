@@ -10,9 +10,9 @@ namespace MPTranslator
     
     class LLParser
     {
-        private myGrammar G;
-        private Stack<string> Stack;
-        private DataTable Table;
+        protected myGrammar G;
+        protected Stack<string> Stack;
+        protected DataTable Table;
         public string OutputConfigure = "";
         Hashtable FirstSet = new Hashtable();
         Hashtable FollowSet = new Hashtable();
@@ -86,6 +86,37 @@ namespace MPTranslator
                     }
                 }
                 Table.Rows.Add(workRow);
+            }
+            // DebugMTable();
+        }
+
+        public void DebugMTable()
+        {
+            foreach(DataColumn dataColumn in Table.Columns)
+            {
+                Console.Write(dataColumn.Caption);
+                Console.Write(" | ");
+            }
+            foreach(DataRow dataRow in Table.Rows)
+            {
+                Console.WriteLine("");
+                for(var i = 0;  i < dataRow.ItemArray.Length; ++i)
+                {
+                    if (dataRow[i].GetType() == typeof(Prule))
+                    {
+                        Console.Write(((Prule) dataRow[i]).LeftNoTerm);
+                        Console.Write(" -> ");
+                        foreach (var t in ((Prule) dataRow[i]).RightChain)
+                        {
+                            Console.Write(t);
+                        }
+                    }
+                    else
+                    {
+                        Console.Write(dataRow[i]);
+                    }
+                    Console.Write(" | ");
+                }
             }
         }
 

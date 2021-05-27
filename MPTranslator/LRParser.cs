@@ -8,13 +8,16 @@ using System.Text;
 namespace MPTranslator
 {
 
-    /// \details ! Начальным нетерминалом может быть только S.
+    /**
+     *  Начальным нетерминалом может быть только S.
+     *  Нетерминалы могут состоять только из одного символа.
+     */
     class CanonicalLRParser
     {
 
-        private ArrayList Grammar = new ArrayList();  ///< правила грамматики
-        private string Terminals;                     ///< список терминалов
-        private string NonTerminals;                  ///< список нетерминалов
+        protected ArrayList Grammar = new ArrayList();  ///< правила грамматики
+        protected string Terminals;                     ///< список терминалов
+        protected string NonTerminals;                  ///< список нетерминалов
 
         public CanonicalLRParser() { }
 
@@ -24,11 +27,16 @@ namespace MPTranslator
             Grammar.Clear();
             foreach (Prule rule in grammar.Prules)
             {
-                Grammar.Add(rule.LeftNoTerm + " " + string.Join("", rule.RightChain.ToArray()));
+                string rightChain = string.Join("", rule.RightChain.ToArray());
+                if (rightChain.Length == 0)
+                {
+                    rightChain = "e";
+                }
+                Grammar.Add(rule.LeftNoTerm + " " + rightChain);
             }
         }
 
-        private struct Tablekey
+        protected struct Tablekey
         {
             public int I;
             public char J;
@@ -190,7 +198,7 @@ namespace MPTranslator
                 NonTerminals += (char)c.Key;
         }
 
-        private string DebugArrayList(ArrayList arraylist)
+        protected string DebugArrayList(ArrayList arraylist)
         {
             string arraylist_str = " { ";
             for (int i = 0; i < arraylist.Count; i++)
@@ -204,7 +212,7 @@ namespace MPTranslator
             return arraylist_str;
         }
 
-        private void Info()
+        protected void Info()
         {
             Console.WriteLine("КС - грамматика : " +
                              " \nАлфавит нетерминальных символов: " + NonTerminals +
@@ -214,8 +222,8 @@ namespace MPTranslator
         }
 
         /// список найденных комбинаций
-        private ArrayList combinations = new ArrayList();
-        private void GenerateCombinations(int depth, string s)
+        protected ArrayList combinations = new ArrayList();
+        protected void GenerateCombinations(int depth, string s)
         {
             if (depth == 0)
                 combinations.Add(s);
@@ -227,7 +235,7 @@ namespace MPTranslator
         }
 
         ///  создает список правил, в которых вычеркнут один или более символов А в правой части
-        private ArrayList GenerateRulesWithout(char A)
+        protected ArrayList GenerateRulesWithout(char A)
         {
             ArrayList result = new ArrayList();  //  итоговый список
             //цикл по правилам
@@ -264,8 +272,8 @@ namespace MPTranslator
             return result;
         }
 
-        private bool AcceptEmptyString;      ///< допускать ли пустую строку
-        private void RemoveEpsilonRules()
+        protected bool AcceptEmptyString;      ///< допускать ли пустую строку
+        protected void RemoveEpsilonRules()
         {  /// удаление е-правил
             AcceptEmptyString = false;      // флаг принадлежности пустой строки языку
             bool EpsilonRulesExist;
@@ -287,8 +295,8 @@ namespace MPTranslator
             while (EpsilonRulesExist);      //  пока существуют эпсилон-правила
         }
 
-        private Hashtable FirstSets = new Hashtable();       ///< Набор множеств First
-        private void ComputeFirstSets()
+        protected Hashtable FirstSets = new Hashtable();       ///< Набор множеств First
+        protected void ComputeFirstSets()
         {
             for (int i = 0; i < Terminals.Length; i++)
                 FirstSets[Terminals[i]] = Terminals[i].ToString();   // FIRST[c] = {c}*/
@@ -321,11 +329,11 @@ namespace MPTranslator
         }
 
         /// функции доступа ко множествам FIRST
-        private string First(char X) { return (string)FirstSets[X]; }
+        protected string First(char X) { return (string)FirstSets[X]; }
 
-        private string First(string X) { return First(X[0]); }
+        protected string First(string X) { return First(X[0]); }
 
-        private ArrayList Closure(ArrayList I)
+        protected ArrayList Closure(ArrayList I)
         {
             ArrayList result = new ArrayList();
             //Console.WriteLine("Closure_множество ситуаций: " + DebugArrayList(I));
@@ -380,7 +388,7 @@ namespace MPTranslator
         }
 
         /// Функция GoTo
-        private ArrayList GoTo(ArrayList I, char X)
+        protected ArrayList GoTo(ArrayList I, char X)
         {
             ArrayList J = new ArrayList();
             // для всех ситуаций из I
@@ -397,7 +405,7 @@ namespace MPTranslator
         }
 
         /// Процедура получения последовательности С
-        private bool SetsEqual(ArrayList lhs, ArrayList rhs)
+        protected bool SetsEqual(ArrayList lhs, ArrayList rhs)
         {
             string[] lhsArr = new string[lhs.Count];
             // преобразование списка
@@ -417,7 +425,7 @@ namespace MPTranslator
 
         /// Функция SetsEqual() используется функцией Contatains, 
         /// определяющей, является ли множество g элементом списка С
-        private bool Contains(ArrayList C, ArrayList g)
+        protected bool Contains(ArrayList C, ArrayList g)
         {
             for (IEnumerator item = C.GetEnumerator(); item.MoveNext(); )
                 if (SetsEqual((ArrayList)item.Current, g))
@@ -425,7 +433,7 @@ namespace MPTranslator
             return false;
         }
 
-        private ArrayList[] CreateCArray()
+        protected ArrayList[] CreateCArray()
         {
             string Symbols = Terminals + NonTerminals; // все символы грамматики
             ArrayList C = new ArrayList();
@@ -433,7 +441,7 @@ namespace MPTranslator
             // добавить элемент I0 = Closure ({"П .S,$"})
             C.Add(Closure(new ArrayList(new Object[] { "П .S,$" })));
             Console.WriteLine("I0 : " + DebugArrayList(Closure(new ArrayList(new Object[] { "П .S,$" }))));
-            Console.ReadLine();
+            // Console.ReadLine();
             int counter = 0;
             bool modified;
             do
@@ -467,7 +475,7 @@ namespace MPTranslator
             return CArray;
         }
 
-        private bool WriteActionTableValue(Hashtable ACTION, int I, char J, string action)
+        protected bool WriteActionTableValue(Hashtable ACTION, int I, char J, string action)
         {
             Tablekey Key = new Tablekey(I, J);
             if (ACTION.Contains(Key) && !ACTION[Key].Equals(action))
@@ -482,7 +490,7 @@ namespace MPTranslator
             }
         }
 
-        private Hashtable CreateActionTable(ArrayList[] CArray)
+        protected Hashtable CreateActionTable(ArrayList[] CArray)
         {
             Hashtable ACTION = new Hashtable();
             for (int i = 0; i < CArray.Length; i++)
@@ -529,7 +537,7 @@ namespace MPTranslator
             return ACTION;
         }
 
-        private Hashtable CreateGotoTable(ArrayList[] CArray)
+        protected Hashtable CreateGotoTable(ArrayList[] CArray)
         {
             Hashtable GOTO = new Hashtable();
             for (int c = 0; c < NonTerminals.Length; c++)

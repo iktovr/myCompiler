@@ -12,6 +12,8 @@ namespace MPTranslator
         public int Id;
         public ArrayList RightChain;
 
+        public Prule() : base() { }
+
         public Prule(string LeftNoTerm, ArrayList RightChain)
             : base(LeftNoTerm)
         {

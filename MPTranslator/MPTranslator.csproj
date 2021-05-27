@@ -53,6 +53,7 @@
     <Compile Include="Translator.cs" />
     <Compile Include="TranslGrammar.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="SDTranslation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

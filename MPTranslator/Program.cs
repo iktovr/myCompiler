@@ -29,6 +29,7 @@ namespace MPTranslator
             Console.WriteLine("MP_Automate with delta rules   ................. Enter 7");
             Console.WriteLine("MP_Translator   ................. Enter 8");
             Console.WriteLine("MP_Transl_Translator   ................. Enter 9");
+            Console.WriteLine("LL-Translator ................. Enter 10");
         }
 
         static string[,] Mtable(myGrammar G)
@@ -562,7 +563,32 @@ namespace MPTranslator
                         Console.WriteLine("\nEnter the line :");
                         Console.WriteLine(mp.Execute(Console.ReadLine()).ToString());
                         break;
-                                    
+
+                    case "10": // LLTranslation
+                        SDTScheme Lsdt = new SDTScheme(new List<Symbol>() { "i", "=", "*", "(", ")" },
+                                                       new List<Symbol>() { "S", "S'", "F" },
+                                                       "S");
+
+                        Lsdt.AddRule("S",  new List<Symbol>() { "F", "S'" });
+                        Lsdt.AddRule("S'", new List<Symbol>() { "=", "F" });
+                        Lsdt.AddRule("S'", new List<Symbol>() { Symbol.Epsilon });
+                        Lsdt.AddRule("F",  new List<Symbol>() { "(", "*", "F", ")" });
+                        Lsdt.AddRule("F",  new List<Symbol>() { "i" });
+
+                        LLTranslator lltranslator = new LLTranslator(Lsdt);
+                        // Console.WriteLine("Введите строку: ");
+                        // if (parser.Parse(Console.ReadLine()))
+                        List<Symbol> inp_str = new List<Symbol>() { "(", "*", "i", ")" };
+                        if (lltranslator.Parse(inp_str))
+                        {
+                            Console.WriteLine("Успех. Строка соответствует грамматике.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Не успех. Строка не соответствует грамматике.");
+                        }
+                        break;
+
                     default :
                         Console.WriteLine("Выход из программы");
                         return;

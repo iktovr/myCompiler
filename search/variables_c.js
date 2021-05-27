@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['t_173',['T',['../class_m_p_translator_1_1_grammar.html#ab5f7f51f45e962496e9042478a504744',1,'MPTranslator::Grammar']]],
-  ['terminals_174',['Terminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#ac897300a42f90d282f682321be489cf7',1,'MPTranslator::CanonicalLRParser']]]
+  ['s0_190',['S0',['../class_m_p_translator_1_1_grammar.html#a0ce191bf59b72042e72e1d4adde0ad75',1,'MPTranslator::Grammar']]],
+  ['sentinel_191',['Sentinel',['../class_m_p_translator_1_1_symbol.html#a4889ae4cf34a233895114690206d5949',1,'MPTranslator::Symbol']]],
+  ['sigma_192',['Sigma',['../class_m_p_translator_1_1_automate.html#a83b1e5973d61b388b8d45b14adc57d43',1,'MPTranslator::Automate']]]
 ];

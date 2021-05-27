@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['termreturn_149',['TermReturn',['../class_m_p_translator_1_1_grammar.html#a30f3d5f41e56318e7881990f71818eb3',1,'MPTranslator::Grammar']]],
-  ['translator_150',['Translator',['../class_m_p_translator_1_1_translator.html#a80a7708e05525bf3ffde9d43be8f3650',1,'MPTranslator::Translator']]]
+  ['setsequal_164',['SetsEqual',['../class_m_p_translator_1_1_canonical_l_r_parser.html#af3b55beb657425fe3b03788470dbec59',1,'MPTranslator::CanonicalLRParser']]],
+  ['shortnoterm_165',['ShortNoTerm',['../class_m_p_translator_1_1_grammar.html#ac23ba046e2609aaf660c9925d34fa2c3',1,'MPTranslator::Grammar']]],
+  ['symbinrules_166',['SymbInRules',['../class_m_p_translator_1_1_grammar.html#a8563a1fadf494e957387fb52f1cbd33e',1,'MPTranslator::Grammar']]]
 ];

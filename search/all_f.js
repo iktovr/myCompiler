@@ -1,11 +1,12 @@
 var searchData=
 [
-  ['t_75',['T',['../class_m_p_translator_1_1_grammar.html#ab5f7f51f45e962496e9042478a504744',1,'MPTranslator::Grammar']]],
-  ['tablekey_76',['Tablekey',['../struct_m_p_translator_1_1_canonical_l_r_parser_1_1_tablekey.html',1,'MPTranslator::CanonicalLRParser']]],
-  ['terminals_77',['Terminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#ac897300a42f90d282f682321be489cf7',1,'MPTranslator::CanonicalLRParser']]],
-  ['termreturn_78',['TermReturn',['../class_m_p_translator_1_1_grammar.html#a30f3d5f41e56318e7881990f71818eb3',1,'MPTranslator::Grammar']]],
-  ['translator_79',['Translator',['../class_m_p_translator_1_1_translator.html',1,'MPTranslator.Translator'],['../class_m_p_translator_1_1_translator.html#a80a7708e05525bf3ffde9d43be8f3650',1,'MPTranslator.Translator.Translator()']]],
-  ['translgrammar_80',['TranslGrammar',['../class_m_p_translator_1_1_transl_grammar.html',1,'MPTranslator']]],
-  ['translmp_81',['translMp',['../class_m_p_translator_1_1transl_mp.html',1,'MPTranslator']]],
-  ['translrule_82',['TranslRule',['../class_m_p_translator_1_1_transl_rule.html',1,'MPTranslator']]]
+  ['s0_76',['S0',['../class_m_p_translator_1_1_grammar.html#a0ce191bf59b72042e72e1d4adde0ad75',1,'MPTranslator::Grammar']]],
+  ['sdtrule_77',['SDTRule',['../class_m_p_translator_1_1_s_d_t_rule.html',1,'MPTranslator']]],
+  ['sdtscheme_78',['SDTScheme',['../class_m_p_translator_1_1_s_d_t_scheme.html',1,'MPTranslator']]],
+  ['sentinel_79',['Sentinel',['../class_m_p_translator_1_1_symbol.html#a4889ae4cf34a233895114690206d5949',1,'MPTranslator::Symbol']]],
+  ['setsequal_80',['SetsEqual',['../class_m_p_translator_1_1_canonical_l_r_parser.html#af3b55beb657425fe3b03788470dbec59',1,'MPTranslator::CanonicalLRParser']]],
+  ['shortnoterm_81',['ShortNoTerm',['../class_m_p_translator_1_1_grammar.html#ac23ba046e2609aaf660c9925d34fa2c3',1,'MPTranslator::Grammar']]],
+  ['sigma_82',['Sigma',['../class_m_p_translator_1_1_automate.html#a83b1e5973d61b388b8d45b14adc57d43',1,'MPTranslator::Automate']]],
+  ['symbinrules_83',['SymbInRules',['../class_m_p_translator_1_1_grammar.html#a8563a1fadf494e957387fb52f1cbd33e',1,'MPTranslator::Grammar']]],
+  ['symbol_84',['Symbol',['../class_m_p_translator_1_1_symbol.html',1,'MPTranslator']]]
 ];

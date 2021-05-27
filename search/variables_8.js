@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['p_166',['P',['../class_m_p_translator_1_1_transl_grammar.html#ae2294861d91878da2de190c58f5a4236',1,'MPTranslator::TranslGrammar']]],
-  ['prules_167',['Prules',['../class_m_p_translator_1_1_grammar.html#ad17e833deb46145f4d859d0375d02280',1,'MPTranslator::Grammar']]]
+  ['nonterminals_184',['NonTerminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#a4725327780644cb17c3151dfdd73b95c',1,'MPTranslator::CanonicalLRParser']]]
 ];

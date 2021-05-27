@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['v_85',['V',['../struct_m_p_translator_1_1_v__struct.html#a08b891e4d86be2cee2535f9d307da840',1,'MPTranslator.V_struct.V()'],['../class_m_p_translator_1_1_grammar.html#a74951210ad3ac21cea3c1dfb3650440e',1,'MPTranslator.Grammar.V()']]],
-  ['v_5fstruct_86',['V_struct',['../struct_m_p_translator_1_1_v__struct.html',1,'MPTranslator']]]
+  ['unify_93',['Unify',['../class_m_p_translator_1_1_grammar.html#a48d5ce620ca3b97257753c43c92ab6a6',1,'MPTranslator.Grammar.Unify()'],['../class_m_p_translator_1_1my_mp.html#a946896aafa3745c7c3a7caac9caabf6c',1,'MPTranslator.myMp.Unify()']]],
+  ['unusefuldelete_94',['unUsefulDelete',['../class_m_p_translator_1_1_grammar.html#a68fdf632b74bec30952236144e16badf',1,'MPTranslator::Grammar']]]
 ];

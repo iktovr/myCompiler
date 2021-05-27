@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['v_175',['V',['../struct_m_p_translator_1_1_v__struct.html#a08b891e4d86be2cee2535f9d307da840',1,'MPTranslator.V_struct.V()'],['../class_m_p_translator_1_1_grammar.html#a74951210ad3ac21cea3c1dfb3650440e',1,'MPTranslator.Grammar.V()']]]
+  ['t_193',['T',['../class_m_p_translator_1_1_grammar.html#ab5f7f51f45e962496e9042478a504744',1,'MPTranslator::Grammar']]],
+  ['terminals_194',['Terminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#ac897300a42f90d282f682321be489cf7',1,'MPTranslator::CanonicalLRParser']]]
 ];

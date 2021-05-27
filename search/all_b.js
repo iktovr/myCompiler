@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['p_54',['P',['../class_m_p_translator_1_1_transl_grammar.html#ae2294861d91878da2de190c58f5a4236',1,'MPTranslator::TranslGrammar']]],
-  ['parse1_55',['Parse1',['../class_m_p_translator_1_1_l_l_parser.html#af0f3c09370ab2aeab8574e17221cbd7c',1,'MPTranslator::LLParser']]],
-  ['producingsymb_56',['producingSymb',['../class_m_p_translator_1_1_grammar.html#a3ccb6b2dceff002bdaebdb10b76f9f0a',1,'MPTranslator::Grammar']]],
-  ['program_57',['Program',['../class_m_p_translator_1_1_program.html',1,'MPTranslator']]],
-  ['prule_58',['Prule',['../class_m_p_translator_1_1_prule.html',1,'MPTranslator']]],
-  ['prules_59',['Prules',['../class_m_p_translator_1_1_grammar.html#ad17e833deb46145f4d859d0375d02280',1,'MPTranslator::Grammar']]]
+  ['operator_20symbol_58',['operator Symbol',['../class_m_p_translator_1_1_symbol.html#a4e148f7b0bf9ee362265ebd16b2369e6',1,'MPTranslator::Symbol']]],
+  ['operator_3d_3d_59',['operator==',['../class_m_p_translator_1_1_symbol.html#a850374f4b3dda170fe09aaed73c72be2',1,'MPTranslator::Symbol']]]
 ];

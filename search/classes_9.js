@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['tablekey_115',['Tablekey',['../struct_m_p_translator_1_1_canonical_l_r_parser_1_1_tablekey.html',1,'MPTranslator::CanonicalLRParser']]],
-  ['translator_116',['Translator',['../class_m_p_translator_1_1_translator.html',1,'MPTranslator']]],
-  ['translgrammar_117',['TranslGrammar',['../class_m_p_translator_1_1_transl_grammar.html',1,'MPTranslator']]],
-  ['translmp_118',['translMp',['../class_m_p_translator_1_1transl_mp.html',1,'MPTranslator']]],
-  ['translrule_119',['TranslRule',['../class_m_p_translator_1_1_transl_rule.html',1,'MPTranslator']]]
+  ['sdtrule_120',['SDTRule',['../class_m_p_translator_1_1_s_d_t_rule.html',1,'MPTranslator']]],
+  ['sdtscheme_121',['SDTScheme',['../class_m_p_translator_1_1_s_d_t_scheme.html',1,'MPTranslator']]],
+  ['simplelexer_122',['SimpleLexer',['../class_m_p_translator_1_1_simple_lexer.html',1,'MPTranslator']]],
+  ['symbol_123',['Symbol',['../class_m_p_translator_1_1_symbol.html',1,'MPTranslator']]]
 ];

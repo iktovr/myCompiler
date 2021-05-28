@@ -54,6 +54,8 @@
     <Compile Include="TranslGrammar.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="SDTranslation.cs" />
+    <Compile Include="Lexer.cs" />
+    <Compile Include="ParseTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

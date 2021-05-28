@@ -18,6 +18,9 @@ namespace MPTranslator
         /// Неявное преобразование строки в Symbol
         public static implicit operator Symbol(string str) => new Symbol(str);
 
+        /// Неявное преобразование функции в OperationSymbol
+        public static implicit operator Symbol(Action func) => new OperationSymbol(func);
+
         /// Равенсто. Требуется для Dictionary и HashSet
         public override bool Equals(object other)
         {   
@@ -56,6 +59,17 @@ namespace MPTranslator
 
         public static Symbol Epsilon = new Symbol(""); ///< Пустой символ
         public static Symbol Sentinel = new Symbol("$$"); ///< Cимвол конца строки / Символ дна стека
+    }
+
+    /// Операционный символ (Семантическое действие)
+    class OperationSymbol : Symbol
+    {
+        public new Action Value;
+
+        public OperationSymbol(Action value) : base(null)
+        {
+            Value = value;
+        }
     }
 
     /// Правило синтаксически управляемой схемы трансляции
@@ -111,11 +125,12 @@ namespace MPTranslator
 
         public override string Execute() { return null; }
 
+        /// Перенесен с небольшими изменениями из LLParser
         private void ComputeFirstSets()
         {
             foreach (Symbol term in T)
                 FirstSet[term] = new HashSet<Symbol>() { term }; // FIRST[c] = {c}
-            FirstSet[Symbol.Epsilon] = new HashSet<Symbol>() { Symbol.Epsilon };
+            FirstSet[Symbol.Epsilon] = new HashSet<Symbol>() { Symbol.Epsilon }; // для единообразия
             foreach (Symbol noTerm in V)
                 FirstSet[noTerm] = new HashSet<Symbol>(); // First[X] = empty list
             bool changes = true;
@@ -128,6 +143,10 @@ namespace MPTranslator
                     Symbol X = rule.LeftNoTerm;
                     foreach (Symbol Y in rule.RightChain)
                     {
+                        if (Y is OperationSymbol)
+                        {
+                            continue;
+                        }
                         foreach (Symbol curFirstSymb in FirstSet[Y])
                         {
                             if (FirstSet[X].Add(curFirstSymb)) // Добавить а в FirstSets[X]
@@ -166,6 +185,7 @@ namespace MPTranslator
             return result;
         }
 
+        /// Перенесен с большими изменениями из LLParser
         private void ComputeFollowSets()
         {
             foreach (Symbol noTerm in V)
@@ -177,50 +197,52 @@ namespace MPTranslator
                 changes = false;
                 foreach (SDTRule rule in Prules)
                 {
-                    // Для каждого правила X-> Y0Y1…Yn
-                    for (int indexOfSymbol = 0; indexOfSymbol < rule.RightChain.Count; ++indexOfSymbol)
+                    for (int curIndex = 0; curIndex < rule.RightChain.Count; ++curIndex)
                     {
-                        Symbol curSymbol = rule.RightChain[indexOfSymbol];
-                        if (T.Contains(curSymbol) || curSymbol == Symbol.Epsilon)
+                        Symbol curSymbol = rule.RightChain[curIndex];
+                        if (T.Contains(curSymbol) || curSymbol is OperationSymbol || curSymbol == Symbol.Epsilon)
                         {
                             continue;
                         }
-                        if (indexOfSymbol == rule.RightChain.Count - 1)
+
+                        // Поиск следующего не операционного символа
+                        int nextIndex = curIndex + 1;
+                        while (nextIndex < rule.RightChain.Count && rule.RightChain[nextIndex] is OperationSymbol)
                         {
-                            foreach (Symbol curFollowSymbol in FollowSet[rule.LeftNoTerm])
+                            ++nextIndex;
+                        }
+                        Symbol nextSymbol;
+                        if (nextIndex < rule.RightChain.Count)
+                        {
+                            nextSymbol = rule.RightChain[nextIndex];
+                        }
+                        else
+                        {
+                            nextSymbol = Symbol.Epsilon;
+                        }
+
+                        bool epsFound = false;
+                        foreach (Symbol symbol in First(nextSymbol))
+                        {
+                            if (symbol != Symbol.Epsilon)
                             {
-                                if (FollowSet[curSymbol].Add(curFollowSymbol))
+                                if (FollowSet[curSymbol].Add(symbol))
                                 {
                                     changes = true;
                                 }
                             }
-                        }
-                        else
-                        {
-                            HashSet<Symbol> curFirst = First(rule.RightChain[indexOfSymbol + 1]);
-                            bool epsFound = false;
-                            foreach (Symbol curFirstSymbol in curFirst)
+                            else
                             {
-                                if (curFirstSymbol != Symbol.Epsilon)
-                                {
-                                    if (FollowSet[rule.RightChain[indexOfSymbol]].Add(curFirstSymbol))
-                                    {
-                                        changes = true;
-                                    }
-                                }
-                                else
-                                {
-                                    epsFound = true;
-                                }
+                                epsFound = true;
                             }
-                            if (epsFound)
+                        }
+                        if (epsFound)
+                        {
+                            foreach (Symbol symbol in FollowSet[rule.LeftNoTerm])
                             {
-                                foreach (Symbol curFollowSymbol in FollowSet[rule.LeftNoTerm])
+                                if (FollowSet[curSymbol].Add(symbol))
                                 {
-                                    if (FollowSet[rule.RightChain[indexOfSymbol]].Add(curFollowSymbol))
-                                    {
-                                        changes = true;
-                                    }
+                                    changes = true;
                                 }
                             }
                         }
@@ -248,8 +270,8 @@ namespace MPTranslator
             G.ComputeFirstFollow();
             Table = new Dictionary<Symbol, Dictionary<Symbol, SDTRule>>();
             Stack = new Stack<Symbol>(); // создаем стек(магазин) для символов
+            
             // Создадим таблицу синтаксического анализа для этой грамматики
-
             // Определим структуру таблицы
             foreach (Symbol noTermSymbol in G.V)
             {
@@ -292,7 +314,12 @@ namespace MPTranslator
             do
             {
                 curStackSymbol = Stack.Peek();
-                if (G.T.Contains(curStackSymbol)) // в вершине стека находится терминал
+                if (curStackSymbol is OperationSymbol op && op != null) // в вершине стека операционный символ
+                {
+                    op.Value.Invoke();
+                    Stack.Pop();
+                }
+                else if (G.T.Contains(curStackSymbol)) // в вершине стека находится терминал
                 {
                     if (curInputSymbol == curStackSymbol) // распознанный символ равен вершине стека
                     {

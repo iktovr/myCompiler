@@ -29,7 +29,7 @@ namespace MPTranslator
             Console.WriteLine("MP_Automate with delta rules   ................. Enter 7");
             Console.WriteLine("MP_Translator   ................. Enter 8");
             Console.WriteLine("MP_Transl_Translator   ................. Enter 9");
-            Console.WriteLine("LL-Translator ................. Enter 10");
+            Console.WriteLine("Chain Translation example ................. Enter 10");
         }
 
         static string[,] Mtable(myGrammar G)
@@ -564,28 +564,32 @@ namespace MPTranslator
                         Console.WriteLine(mp.Execute(Console.ReadLine()).ToString());
                         break;
 
-                    case "10": // LLTranslation
-                        SDTScheme Lsdt = new SDTScheme(new List<Symbol>() { "i", "=", "*", "(", ")" },
-                                                       new List<Symbol>() { "S", "S'", "F" },
-                                                       "S");
+                    case "10": // "Chain Translation"                    
+                        SDTScheme chainPostfix = new SDTScheme(new List<Symbol>() { "i", "+", "*", "(", ")" },
+                                                               new List<Symbol>() { "E", "E'", "T", "T'", "F" },
+                                                               "E");
+                        
+                        Func<string, Action> print = (string s) => new Action(() => Console.Write(s));
 
-                        Lsdt.AddRule("S",  new List<Symbol>() { "F", "S'" });
-                        Lsdt.AddRule("S'", new List<Symbol>() { "=", "F" });
-                        Lsdt.AddRule("S'", new List<Symbol>() { Symbol.Epsilon });
-                        Lsdt.AddRule("F",  new List<Symbol>() { "(", "*", "F", ")" });
-                        Lsdt.AddRule("F",  new List<Symbol>() { "i" });
+                        chainPostfix.AddRule("E", new List<Symbol>() { "T", "E'" });
+                        chainPostfix.AddRule("E'", new List<Symbol>() { "+", "T", print("+"), "E'" });
+                        chainPostfix.AddRule("E'", new List<Symbol>() { Symbol.Epsilon });
+                        chainPostfix.AddRule("T", new List<Symbol>() { "F", "T'" });
+                        chainPostfix.AddRule("T'", new List<Symbol>() { "*", "F", print("*"), "T'" });
+                        chainPostfix.AddRule("T'", new List<Symbol>() { Symbol.Epsilon });
+                        chainPostfix.AddRule("F", new List<Symbol>() { "i", print("i") });
+                        chainPostfix.AddRule("F", new List<Symbol>() { "(", "E", ")" });
 
-                        LLTranslator lltranslator = new LLTranslator(Lsdt);
+                        LLTranslator chainTranslator = new LLTranslator(chainPostfix);
                         // Console.WriteLine("Введите строку: ");
-                        // if (parser.Parse(Console.ReadLine()))
-                        List<Symbol> inp_str = new List<Symbol>() { "(", "*", "i", ")" };
-                        if (lltranslator.Parse(inp_str))
+                        List<Symbol> inp_str = new SimpleLexer().Parse(Console.ReadLine());
+                        if (chainTranslator.Parse(inp_str))
                         {
-                            Console.WriteLine("Успех. Строка соответствует грамматике.");
+                            Console.WriteLine("\nУспех. Строка соответствует грамматике.");
                         }
                         else
                         {
-                            Console.WriteLine("Не успех. Строка не соответствует грамматике.");
+                            Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
                         }
                         break;
 

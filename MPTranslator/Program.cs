@@ -564,20 +564,20 @@ namespace MPTranslator
                         Console.WriteLine(mp.Execute(Console.ReadLine()).ToString());
                         break;
 
-                    case "10": // "Chain Translation"                    
+                    case "10": // Пример "цепочечного" перевода
+                        // Грамматика транслирует выражения из инфиксной записи в постфиксную
+                        // Выражения состоят из i, +, * и скобок
                         SDTScheme chainPostfix = new SDTScheme(new List<Symbol>() { "i", "+", "*", "(", ")" },
                                                                new List<Symbol>() { "E", "E'", "T", "T'", "F" },
                                                                "E");
-                        
-                        Func<string, Action> print = (string s) => new Action(() => Console.Write(s));
 
                         chainPostfix.AddRule("E", new List<Symbol>() { "T", "E'" });
-                        chainPostfix.AddRule("E'", new List<Symbol>() { "+", "T", print("+"), "E'" });
+                        chainPostfix.AddRule("E'", new List<Symbol>() { "+", "T", Actions.Print("+"), "E'" });
                         chainPostfix.AddRule("E'", new List<Symbol>() { Symbol.Epsilon });
                         chainPostfix.AddRule("T", new List<Symbol>() { "F", "T'" });
-                        chainPostfix.AddRule("T'", new List<Symbol>() { "*", "F", print("*"), "T'" });
+                        chainPostfix.AddRule("T'", new List<Symbol>() { "*", "F", Actions.Print("*"), "T'" });
                         chainPostfix.AddRule("T'", new List<Symbol>() { Symbol.Epsilon });
-                        chainPostfix.AddRule("F", new List<Symbol>() { "i", print("i") });
+                        chainPostfix.AddRule("F", new List<Symbol>() { "i", Actions.Print("i") });
                         chainPostfix.AddRule("F", new List<Symbol>() { "(", "E", ")" });
 
                         LLTranslator chainTranslator = new LLTranslator(chainPostfix);

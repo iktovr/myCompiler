@@ -6,20 +6,81 @@ using System.Data;
 namespace MPTranslator
 {
     /// Обычный символ грамматики
-    class Symbol
+    class Symbol : ICloneable
     {
-        public string Value;
+        public string Value; ///< Строковое значение/имя символа
+        public Dictionary<string, object> Attributes = null; ///< Атрибуты символа. Доступны также через индексатор
 
         public Symbol(string value)
         {
             Value = value;
         }
 
+        public Symbol(string value, Dictionary<string, object> attributes) : this(value)
+        {
+            AddAttributes(attributes);
+        }
+
+        public Symbol(Symbol other)
+        {
+            Symbol symbol = (Symbol)other.Clone();
+            Value = symbol.Value;
+            Attributes = symbol.Attributes;
+        }
+
         /// Неявное преобразование строки в Symbol
         public static implicit operator Symbol(string str) => new Symbol(str);
 
+        /// Неявное преобразование словаря в Symbol
+        /**
+         *  Словарь должен иметь запись "NAME", значение которой будет использовано как имя/значение символа
+         */
+        public static implicit operator Symbol(Dictionary<string, object> dict)
+        {
+            string name = (string)dict["NAME"];
+            dict.Remove("NAME");
+            return new Symbol(name, dict);
+        }
+
         /// Неявное преобразование функции в OperationSymbol
-        public static implicit operator Symbol(Action func) => new OperationSymbol(func);
+        public static implicit operator Symbol(Action<Dictionary<string, Symbol>> func) => new OperationSymbol(func);
+
+        /// Доступ к атрибутам
+        public object this[string name]
+        {
+            get { return Attributes[name]; }
+            set { Attributes[name] = value; }
+        }
+
+        /// Клонирование словаря атрибутов
+        public void AddAttributes(Dictionary<string, object> attributes)
+        {
+            if (attributes is null)
+            {
+                return;
+            }
+            Attributes = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> pair in attributes)
+            {
+                if (pair.Value is ICloneable obj)
+                {
+                    Attributes.Add(pair.Key, obj.Clone());
+                }
+                else
+                {
+                    Attributes.Add(pair.Key, pair.Value);
+                }
+            }
+        }
+
+        /// Глубокая копия
+        public virtual object Clone()
+        {
+            Symbol clone = new Symbol((string)Value.Clone());;
+            // Symbol clone = new Symbol(Value is null ? null : (string)Value.Clone());;
+            clone.AddAttributes(Attributes);
+            return clone;
+        }
 
         /// Равенсто. Требуется для Dictionary и HashSet
         public override bool Equals(object other)
@@ -64,34 +125,61 @@ namespace MPTranslator
     /// Операционный символ (Семантическое действие)
     class OperationSymbol : Symbol
     {
-        public new Action Value;
+        public new Action<Dictionary<string, Symbol>> Value; ///< Функция семантического действия
 
-        public OperationSymbol(Action value) : base(null)
+        public OperationSymbol(Action<Dictionary<string, Symbol>> value) : base(null)
         {
             Value = value;
         }
+
+        public OperationSymbol(OperationSymbol other) : this(((OperationSymbol)other.Clone()).Value) {}
+
+        /// Глубокая копия
+        public override object Clone() => new OperationSymbol((Action<Dictionary<string, Symbol>>)Value.Clone());
     }
 
     /// Правило синтаксически управляемой схемы трансляции
     class SDTRule : Rule
     {
-        public new Symbol LeftNoTerm;
-        public List<Symbol> RightChain;
+        public new Symbol LeftNoTerm; ///< Левая часть продукции
+        public List<Symbol> RightChain; ///< Правая часть продукции
 
         public SDTRule(Symbol leftNoTerm, List<Symbol> rightChain)
         {
             LeftNoTerm = leftNoTerm;
             RightChain = rightChain;
         }
+
+        /// " -> " разделитель. e вместо эпсилон. {} вместо операционного символа
+        public override string ToString()
+        {
+            string str = LeftNoTerm.Value + " -> ";
+            foreach (Symbol symbol in RightChain)
+            {
+                if (symbol is OperationSymbol)
+                {
+                    str += "{}";
+                }
+                else if (symbol == Symbol.Epsilon)
+                {
+                    str += "e";
+                }
+                else
+                {
+                    str += symbol.Value;
+                }
+            }
+            return str;
+        }
     }
 
     /// Синтаксически управляемая схема трансляции
     class SDTScheme : Grammar
     {
-        new public Symbol S0;
-        new public List<Symbol> T;
-        new public List<Symbol> V;
-        new public List<SDTRule> Prules;
+        public new Symbol S0; ///< Начальный символ
+        public new List<Symbol> T; ///< Терминальные символы
+        public new List<Symbol> V; ///< Нетерминальные символы
+        public new List<SDTRule> Prules; ///< Продукции
 
         private Dictionary<Symbol, HashSet<Symbol>> FirstSet;
         private Dictionary<Symbol, HashSet<Symbol>> FollowSet;
@@ -104,11 +192,16 @@ namespace MPTranslator
             Prules = new List<SDTRule>();
             FirstSet = new Dictionary<Symbol, HashSet<Symbol>>();
             FollowSet = new Dictionary<Symbol, HashSet<Symbol>>();
+            
+            S0.AddAttributes(V.Find(x => x == S0).Attributes);
         }
 
         public SDTScheme(List<Symbol> t, List<Symbol> v, Symbol s0, List<SDTRule> prules) : this(t, v, s0)
         {
-            Prules = prules;
+            foreach (SDTRule rule in prules)
+            {
+                AddRule(rule.LeftNoTerm, rule.RightChain);
+            }
             ComputeFirstFollow();
         }
 
@@ -120,7 +213,30 @@ namespace MPTranslator
 
         public void AddRule(Symbol leftNoTerm, List<Symbol> rightChain)
         {
-            Prules.Add(new SDTRule(leftNoTerm, rightChain));
+            SDTRule rule = new SDTRule(leftNoTerm, rightChain);
+
+            // Клонирование атрибутов для каждого символа
+            if (rule.LeftNoTerm.Attributes is null)
+            {
+                rule.LeftNoTerm.AddAttributes(V.Find(x => x == rule.LeftNoTerm).Attributes);
+            }
+            foreach (Symbol s in rule.RightChain)
+            {
+                if (s is OperationSymbol || !(s.Attributes is null) || s == Symbol.Epsilon)
+                {
+                    continue;
+                }
+
+                if (V.Contains(s))
+                {
+                    s.AddAttributes(V.Find(x => x == s).Attributes);
+                }
+                else
+                {
+                    s.AddAttributes(T.Find(x => x == s).Attributes);
+                }
+            }
+            Prules.Add(rule);
         }
 
         public override string Execute() { return null; }
@@ -128,11 +244,12 @@ namespace MPTranslator
         /// Перенесен с небольшими изменениями из LLParser
         private void ComputeFirstSets()
         {
+            FirstSet.Clear();
             foreach (Symbol term in T)
                 FirstSet[term] = new HashSet<Symbol>() { term }; // FIRST[c] = {c}
             FirstSet[Symbol.Epsilon] = new HashSet<Symbol>() { Symbol.Epsilon }; // для единообразия
             foreach (Symbol noTerm in V)
-                FirstSet[noTerm] = new HashSet<Symbol>(); // First[X] = empty list
+                FirstSet[noTerm] = new HashSet<Symbol>(); // First[X] = empty set
             bool changes = true;
             while (changes)
             {
@@ -188,6 +305,7 @@ namespace MPTranslator
         /// Перенесен с большими изменениями из LLParser
         private void ComputeFollowSets()
         {
+            FollowSet.Clear();
             foreach (Symbol noTerm in V)
                 FollowSet[noTerm] = new HashSet<Symbol>();
             FollowSet[S0].Add(Symbol.Sentinel);
@@ -257,45 +375,50 @@ namespace MPTranslator
         }
     }
 
+    /// Реализация постфиксной СУТ в процессе LR анализа
+    // class PostfixTranslator : CanonicalLRParser
+    // {
+
+    // }
+
     /// Реализация L-атрибутного СУТ в процессе LL анализа
     class LLTranslator
     {
-        protected SDTScheme G;
-        protected Stack<Symbol> Stack;
-        protected Dictionary<Symbol, Dictionary<Symbol, SDTRule>> Table;
+        protected SDTScheme G; ///< АТ-грамматика
+        protected Stack<Symbol> Stack; ///< Стек символов
+        protected Dictionary<Symbol, Dictionary<Symbol, SDTRule>> Table; ///< Управляющая таблица. Table[нетерминал][терминал]
 
         public LLTranslator(SDTScheme grammar)
         {
             G = grammar;
             G.ComputeFirstFollow();
             Table = new Dictionary<Symbol, Dictionary<Symbol, SDTRule>>();
-            Stack = new Stack<Symbol>(); // создаем стек(магазин) для символов
+            Stack = new Stack<Symbol>();
             
-            // Создадим таблицу синтаксического анализа для этой грамматики
-            // Определим структуру таблицы
             foreach (Symbol noTermSymbol in G.V)
             {
                 Table[noTermSymbol] = new Dictionary<Symbol, SDTRule>();
             }
-            foreach (Symbol noTerm in grammar.V) // Рассмотрим последовательно все нетерминалы
-            {
 
-                foreach (SDTRule rule in G.Prules)
+            // Для каждого правила A -> alpha
+            foreach (SDTRule rule in G.Prules)
+            {
+                // Для каждого a из First(alpha)
+                foreach (Symbol firstSymbol in G.First(rule.RightChain))
                 {
-                    if (rule.LeftNoTerm != noTerm) continue;
-                    foreach (Symbol firstSymbol in G.First(rule.RightChain))
+                    if (firstSymbol != Symbol.Epsilon)
+                    {   
+                        // Добавлем правило в таблицу на пересечение A и a
+                        Table[rule.LeftNoTerm][firstSymbol] = rule;
+                    }
+                    // Если в First(alpha) входит эпсилон
+                    else
                     {
-                        if (firstSymbol != Symbol.Epsilon)
+                        // Для каждого b из Follow(A)
+                        foreach (Symbol followSymbol in G.Follow(rule.LeftNoTerm))
                         {
-                            // Добавить в таблицу
-                            Table[noTerm][firstSymbol] = rule;
-                        }
-                        else
-                        {
-                            foreach (Symbol followSymbol in G.Follow(rule.LeftNoTerm))
-                            {
-                                Table[noTerm][followSymbol] = rule;
-                            }
+                            // Добавлем правило в таблицу на пересечении A и b
+                            Table[rule.LeftNoTerm][followSymbol] = rule;
                         }
                     }
                 }
@@ -303,6 +426,7 @@ namespace MPTranslator
             // DebugMTable();
         }
 
+        /// Анализ строки
         public bool Parse(List<Symbol> input)
         {
             Stack.Push(Symbol.Sentinel); // символ окончания входной последовательности
@@ -316,14 +440,13 @@ namespace MPTranslator
                 curStackSymbol = Stack.Peek();
                 if (curStackSymbol is OperationSymbol op && op != null) // в вершине стека операционный символ
                 {
-                    op.Value.Invoke();
+                    op.Value.Invoke(null);
                     Stack.Pop();
                 }
-                else if (G.T.Contains(curStackSymbol)) // в вершине стека находится терминал
+                else if (G.T.Contains(curStackSymbol)) // в вершине стека терминал
                 {
                     if (curInputSymbol == curStackSymbol) // распознанный символ равен вершине стека
                     {
-                        // Извлечь из стека верхний элемент и распознать символ входной последовательности (ВЫБРОС)
                         Stack.Pop();
                         if (i != input.Count)
                         {
@@ -337,18 +460,19 @@ namespace MPTranslator
                         return false;
                     }
                 }
-                else // если в вершине стека нетерминал
+                else // в вершине стека нетерминал
                 {
                     SDTRule rule;    
                     if (Table[curStackSymbol].TryGetValue(curInputSymbol, out rule)) // в клетке[вершина стека, распознанный символ] таблицы разбора существует правило
                     {
-                        // извлечь из стека элемент и занести в стек все терминалы и нетерминалы найденного в таблице правила в стек в порядке обратном порядку их следования в правиле
+                        // символы правила заносятся в обратном порядке в стек
                         Stack.Pop();
-                        foreach (Symbol chainSymbol in Enumerable.Reverse(rule.RightChain))
+                        foreach (Symbol rightSymbol in Enumerable.Reverse(rule.RightChain))
                         {
-                            if (chainSymbol != Symbol.Epsilon)
+                            if (rightSymbol != Symbol.Epsilon)
                             {
-                                Stack.Push(chainSymbol);
+                                // в стек помещается копия символа
+                                Stack.Push(new Symbol(rightSymbol));
                             }
                         }
                     }
@@ -369,55 +493,67 @@ namespace MPTranslator
             return true;
         }
 
+        /// Печать управляющей таблицы
         public void DebugMTable()
         {
-            Console.Write("  | ");
+            int maxLenV = 0;
+            foreach (Symbol s in G.V)
+            {
+                maxLenV = Math.Max(maxLenV, s.Value.Length);
+            }
+            int maxLenSymb = Math.Max(maxLenV, 2);
+            foreach (Symbol s in G.T)
+            {
+                maxLenSymb = Math.Max(maxLenSymb, s.Value.Length);
+            }
+            int maxLenRule = 0;
+            foreach (SDTRule rule in G.Prules)
+            {
+                maxLenRule = Math.Max(maxLenRule, rule.RightChain.Count);
+            }
+            maxLenRule = maxLenV + 4 + maxLenRule * maxLenSymb;
+
+            Console.Write("{0,-" + maxLenV.ToString() +  "} | ", " ");
             foreach(Symbol s in G.T)
             {
-                Console.Write(s.Value);
-                Console.Write(" | ");
+                Console.Write("{0,-" + maxLenRule.ToString() + "} | ", s.Value);
             }
-            Console.Write(Symbol.Sentinel.Value);
-            Console.Write(" | ");
-            Console.WriteLine("");
+            Console.WriteLine("{0,-" + maxLenRule.ToString() + "} | ", Symbol.Sentinel.Value);
             foreach(Symbol s in G.V)
             {
-                Console.Write(s.Value);
-                Console.Write(" | ");
+                Console.Write("{0,-" + maxLenV.ToString() +  "} | ", s.Value);
                 SDTRule rule;
+                string str;
                 foreach(Symbol s2 in G.T)
                 {
                     if (Table[s].TryGetValue(s2, out rule))
                     {
-                        Console.Write(rule.LeftNoTerm.Value);
-                        Console.Write(" -> ");
-                        foreach (Symbol t in (rule.RightChain))
-                        {
-                            Console.Write(t.Value);
-                        }
+                        str = rule.ToString();
                     }
                     else
                     {
-                        Console.Write(" ");
+                        str = " ";
                     }
-                    Console.Write(" | ");
+                    Console.Write("{0,-" + maxLenRule.ToString() + "} | ", str);
                 }
                 if (Table[s].TryGetValue(Symbol.Sentinel, out rule))
                 {
-                    Console.Write(rule.LeftNoTerm.Value);
-                    Console.Write(" -> ");
-                    foreach (Symbol t in (rule.RightChain))
-                    {
-                        Console.Write(t.Value);
-                    }
+                    str = rule.ToString();
                 }
                 else
                 {
-                    Console.Write(" ");
+                    str = " ";
                 }
-                Console.Write(" | ");
-                Console.WriteLine("");
+                Console.WriteLine("{0,-" + maxLenRule.ToString() + "} | ", str);
             }
         }
+    }
+
+    /// "Таблица" со стандартными семантическими действиями
+    static class Actions
+    {
+        /// Печать чего угодно в консоль
+        static public Action<Dictionary<string, Symbol>> Print(object obj) =>
+            (_) => Console.Write(obj.ToString());
     }
 }

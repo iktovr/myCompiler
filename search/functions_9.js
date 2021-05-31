@@ -5,5 +5,6 @@ var searchData=
   ['makeparenttable_183',['MakeParentTable',['../class_m_p_translator_1_1_m_table.html#a1de2aa256cb8e55dabe6448c93b878d8',1,'MPTranslator::MTable']]],
   ['move_184',['move',['../class_m_p_translator_1_1_automate.html#a6a3d0f3a99210ab0e41b475f32f4c4ff',1,'MPTranslator::Automate']]],
   ['mtable_185',['Mtable',['../class_m_p_translator_1_1_program.html#a142d8a37c7959d727f5b69977c2980fc',1,'MPTranslator::Program']]],
-  ['mymp_186',['myMp',['../class_m_p_translator_1_1my_mp.html#a196c55c666f8603839eedebfa745831d',1,'MPTranslator::myMp']]]
+  ['mygrammar_186',['myGrammar',['../class_m_p_translator_1_1my_grammar.html#ac262d5ead41ea006b87ed1592493e7c3',1,'MPTranslator::myGrammar']]],
+  ['mymp_187',['myMp',['../class_m_p_translator_1_1my_mp.html#a196c55c666f8603839eedebfa745831d',1,'MPTranslator::myMp']]]
 ];

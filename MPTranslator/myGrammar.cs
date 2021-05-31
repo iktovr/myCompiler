@@ -34,6 +34,15 @@ namespace MPTranslator
 
         public myGrammar() : base() { Prule.Count = 0; }
 
+        /// Конструктор копирования. ArrayList копируются поверхностно
+        public myGrammar(myGrammar grammar) : this()
+        {
+            S0 = grammar.S0;
+            T = (ArrayList)grammar.T.Clone();
+            V = (ArrayList)grammar.V.Clone();
+            Prules = (ArrayList)grammar.Prules.Clone();
+        }
+
         /// порождение цепочек символов по правилам вывода
         public override string Execute()
         {

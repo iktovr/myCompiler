@@ -8,7 +8,8 @@ var searchData=
   ['mtable_65',['MTable',['../class_m_p_translator_1_1_m_table.html',1,'MPTranslator']]],
   ['mtable_66',['Mtable',['../class_m_p_translator_1_1_program.html#a142d8a37c7959d727f5b69977c2980fc',1,'MPTranslator::Program']]],
   ['myautomate_67',['myAutomate',['../class_m_p_translator_1_1my_automate.html',1,'MPTranslator']]],
-  ['mygrammar_68',['myGrammar',['../class_m_p_translator_1_1my_grammar.html',1,'MPTranslator.myGrammar'],['../class_m_p_translator_1_1my_grammar.html#ac262d5ead41ea006b87ed1592493e7c3',1,'MPTranslator.myGrammar.myGrammar()']]],
-  ['mymp_69',['myMp',['../class_m_p_translator_1_1my_mp.html',1,'MPTranslator.myMp'],['../class_m_p_translator_1_1my_mp.html#a196c55c666f8603839eedebfa745831d',1,'MPTranslator.myMp.myMp()']]],
-  ['types_70',['Types',['../namespace_m_p_translator_1_1_types.html',1,'MPTranslator']]]
+  ['mycompiler_20aka_20Фреймворк_68',['myCompiler aka Фреймворк',['../index.html',1,'']]],
+  ['mygrammar_69',['myGrammar',['../class_m_p_translator_1_1my_grammar.html',1,'MPTranslator.myGrammar'],['../class_m_p_translator_1_1my_grammar.html#ac262d5ead41ea006b87ed1592493e7c3',1,'MPTranslator.myGrammar.myGrammar()']]],
+  ['mymp_70',['myMp',['../class_m_p_translator_1_1my_mp.html',1,'MPTranslator.myMp'],['../class_m_p_translator_1_1my_mp.html#a196c55c666f8603839eedebfa745831d',1,'MPTranslator.myMp.myMp()']]],
+  ['types_71',['Types',['../namespace_m_p_translator_1_1_types.html',1,'MPTranslator']]]
 ];

@@ -86,6 +86,7 @@ Inheritance diagram for MPTranslator.Symbol:</div>
   <img src="class_m_p_translator_1_1_symbol.png" usemap="#MPTranslator.Symbol_map" alt=""/>
   <map id="MPTranslator.Symbol_map" name="MPTranslator.Symbol_map">
 <area href="class_m_p_translator_1_1_operation_symbol.html" title="Операционный символ (Семантическое действие)" alt="MPTranslator.OperationSymbol" shape="rect" coords="0,112,189,136"/>
+<area href="class_m_p_translator_1_1_synth_symbol.html" title="Запись синтеза. Используется в LL-трансляции." alt="MPTranslator.SynthSymbol" shape="rect" coords="199,112,388,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -116,6 +117,9 @@ override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#ac4d68970c281edb00d8dc6dc8c3e75c9">GetHashCode</a> ()</td></tr>
 <tr class="memdesc:ac4d68970c281edb00d8dc6dc8c3e75c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хеш-функция. Требуется для Dictionary и HashSet. <br /></td></tr>
 <tr class="separator:ac4d68970c281edb00d8dc6dc8c3e75c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a202690c45686364c5c1b75d868e4fabd"><td class="memItemLeft" align="right" valign="top"><a id="a202690c45686364c5c1b75d868e4fabd"></a>
+override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
+<tr class="separator:a202690c45686364c5c1b75d868e4fabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -126,10 +130,10 @@ static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <tr class="memitem:a26bfd99971093037dd51d3cf104d88b1"><td class="memItemLeft" align="right" valign="top">static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a26bfd99971093037dd51d3cf104d88b1">operator Symbol</a> (Dictionary&lt; string, object &gt; dict)</td></tr>
 <tr class="memdesc:a26bfd99971093037dd51d3cf104d88b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Неявное преобразование словаря в <a class="el" href="class_m_p_translator_1_1_symbol.html" title="Обычный символ грамматики">Symbol</a>.  <a href="class_m_p_translator_1_1_symbol.html#a26bfd99971093037dd51d3cf104d88b1">More...</a><br /></td></tr>
 <tr class="separator:a26bfd99971093037dd51d3cf104d88b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa873bfbdc0f11f90234114e34b67a8d5"><td class="memItemLeft" align="right" valign="top"><a id="aa873bfbdc0f11f90234114e34b67a8d5"></a>
-static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#aa873bfbdc0f11f90234114e34b67a8d5">operator Symbol</a> (Action&lt; Dictionary&lt; string, <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a> &gt;&gt; func)</td></tr>
-<tr class="memdesc:aa873bfbdc0f11f90234114e34b67a8d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Неявное преобразование функции в <a class="el" href="class_m_p_translator_1_1_operation_symbol.html" title="Операционный символ (Семантическое действие)">OperationSymbol</a>. <br /></td></tr>
-<tr class="separator:aa873bfbdc0f11f90234114e34b67a8d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ec089c77b606902a0f053f4c411bdd6"><td class="memItemLeft" align="right" valign="top"><a id="a1ec089c77b606902a0f053f4c411bdd6"></a>
+static implicit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a1ec089c77b606902a0f053f4c411bdd6">operator Symbol</a> (<a class="el" href="namespace_m_p_translator_1_1_types.html#a6b35915eefb6583b1e09eeaeda213950">Types.Actions</a> func)</td></tr>
+<tr class="memdesc:a1ec089c77b606902a0f053f4c411bdd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Неявное преобразование функции в <a class="el" href="class_m_p_translator_1_1_operation_symbol.html" title="Операционный символ (Семантическое действие)">OperationSymbol</a>. <br /></td></tr>
+<tr class="separator:a1ec089c77b606902a0f053f4c411bdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a850374f4b3dda170fe09aaed73c72be2"><td class="memItemLeft" align="right" valign="top"><a id="a850374f4b3dda170fe09aaed73c72be2"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a850374f4b3dda170fe09aaed73c72be2">operator==</a> (<a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a> a, <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a> b)</td></tr>
 <tr class="memdesc:a850374f4b3dda170fe09aaed73c72be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оператор взят из документации <br /></td></tr>
@@ -151,14 +155,14 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4a4adff36338adc8e56e1a112c3f7315"><td class="memItemLeft" align="right" valign="top"><a id="a4a4adff36338adc8e56e1a112c3f7315"></a>
-static <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a4a4adff36338adc8e56e1a112c3f7315">Epsilon</a> = new <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>(&quot;&quot;)</td></tr>
-<tr class="memdesc:a4a4adff36338adc8e56e1a112c3f7315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пустой символ <br /></td></tr>
-<tr class="separator:a4a4adff36338adc8e56e1a112c3f7315"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4889ae4cf34a233895114690206d5949"><td class="memItemLeft" align="right" valign="top"><a id="a4889ae4cf34a233895114690206d5949"></a>
-static <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a4889ae4cf34a233895114690206d5949">Sentinel</a> = new <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>(&quot;$$&quot;)</td></tr>
-<tr class="memdesc:a4889ae4cf34a233895114690206d5949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cимвол конца строки / Символ дна стека <br /></td></tr>
-<tr class="separator:a4889ae4cf34a233895114690206d5949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a897ae0d4c74c5ae3c58c26dea5f2b006"><td class="memItemLeft" align="right" valign="top"><a id="a897ae0d4c74c5ae3c58c26dea5f2b006"></a>
+static readonly <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a897ae0d4c74c5ae3c58c26dea5f2b006">Epsilon</a> = new <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>(&quot;&quot;)</td></tr>
+<tr class="memdesc:a897ae0d4c74c5ae3c58c26dea5f2b006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пустой символ <br /></td></tr>
+<tr class="separator:a897ae0d4c74c5ae3c58c26dea5f2b006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f7b716c1d15f6766f6eeca3da8463b0"><td class="memItemLeft" align="right" valign="top"><a id="a9f7b716c1d15f6766f6eeca3da8463b0"></a>
+static readonly <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_p_translator_1_1_symbol.html#a9f7b716c1d15f6766f6eeca3da8463b0">Sentinel</a> = new <a class="el" href="class_m_p_translator_1_1_symbol.html">Symbol</a>(&quot;$$&quot;)</td></tr>
+<tr class="memdesc:a9f7b716c1d15f6766f6eeca3da8463b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cимвол конца строки / Символ дна стека <br /></td></tr>
+<tr class="separator:a9f7b716c1d15f6766f6eeca3da8463b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>

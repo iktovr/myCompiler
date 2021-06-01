@@ -18,8 +18,7 @@ namespace MPTranslator
 
             public PairStrInt(char c, int num)
             {
-                First = new string("");
-                First += c;
+                First = c.ToString();
                 Second = num;
             }
 
@@ -49,7 +48,7 @@ namespace MPTranslator
 
             public int GetHashCode(PairStrInt pair)
             {
-                string s = new string(pair.First) + pair.Second.ToString();
+                string s = pair.First + pair.Second.ToString();
                 return s.GetHashCode();
             }
         }
@@ -349,7 +348,7 @@ namespace MPTranslator
                         int j = FindSetOfStates(C, Goto(I, a));
                         PairStrInt conditionFrom = new PairStrInt(a, i);
                         PairStrInt conditionTo = new PairStrInt("S", j);
-                        M.TryAdd(conditionFrom, conditionTo);
+                        M.Add(conditionFrom, conditionTo);
                     }
                     if (a == "")
                     {
@@ -357,7 +356,7 @@ namespace MPTranslator
                         {
                             PairStrInt conditionFrom = new PairStrInt("$", i);
                             PairStrInt conditionTo = new PairStrInt("A", -1);
-                            M.TryAdd(conditionFrom, conditionTo);
+                            M.Add(conditionFrom, conditionTo);
                         }
                         else
                         {
@@ -367,7 +366,7 @@ namespace MPTranslator
                             {
                                 PairStrInt conditionFrom = new PairStrInt(terminal, i);
                                 PairStrInt conditionTo = new PairStrInt("R", st.rulePos);
-                                M.TryAdd(conditionFrom, conditionTo);
+                                M.Add(conditionFrom, conditionTo);
                             }
                         }
                     }
@@ -380,7 +379,7 @@ namespace MPTranslator
                     {
                         PairStrInt conditionFrom = new PairStrInt(X, i);
                         PairStrInt conditionTo = new PairStrInt("", j);
-                        M.TryAdd(conditionFrom, conditionTo);
+                        M.Add(conditionFrom, conditionTo);
                     }
                 }
             }

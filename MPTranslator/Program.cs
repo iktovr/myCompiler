@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MPTranslator
 {
-    
+
     class Program
     {
 
@@ -31,10 +31,11 @@ namespace MPTranslator
             Console.WriteLine("MP_Transl_Translator   ................. Enter 9");
             Console.WriteLine("Chain Translation example ................. Enter 10");
             Console.WriteLine("L-attribute translation grammar ........... Enter 11");
+            Console.WriteLine("lab 14 - 16  (EngineerXL)  ................. Enter 666");
         }
 
         static string[,] Mtable(myGrammar G)
-        { /// построение заданной таблицы      
+        { /// построение заданной таблицы
             string[,] t = new string[G.T.Count + G.V.Count + 2, G.T.Count + 1];
             t[0, 3] = "(F+L),1";
             t[1, 3] = "(L*),2";
@@ -52,7 +53,7 @@ namespace MPTranslator
 
         //// алгоритм разбора
         static int parsing(string s, int c, myGrammar G)
-        { 
+        {
             Stack z = new Stack();  // магазин
             string eline = null;
             string zline = null;
@@ -225,7 +226,7 @@ namespace MPTranslator
                                                          new ArrayList() { "1", "0", "+" },
                                                          new ArrayList() { "qf" },
                                                          "S0");
-                        
+
                         ndka.AddRule("S0", "0", "A");
                         ndka.AddRule("A", "0", "A");
                         ndka.AddRule("A", "1", "A");
@@ -372,7 +373,7 @@ namespace MPTranslator
                                     Console.WriteLine("\nВведите строку :");
                                     Console.WriteLine(mpA1.Execute(Console.ReadLine()).ToString());
                                     break;
-                                
+
                                 case "2":
                                     myMp mpA2 = new myMp(new ArrayList() { "q0", "q1", "q2", "qf" },
                                                          new ArrayList() { "i", "=", "" },
@@ -416,7 +417,7 @@ namespace MPTranslator
                                     Console.WriteLine("\nВведите строку :");
                                     Console.WriteLine(translator.Execute(Console.ReadLine()).ToString());
                                     //Console.WriteLine(translator.Execute("i+i").ToString());
-            
+
                                     break;
 
                             } //end switch 1 or 2
@@ -453,7 +454,7 @@ namespace MPTranslator
                         myGrammar example1 = new myGrammar(new ArrayList() { "i", "(", ")", ":", "*", "" },
                                                            new ArrayList() { "S", "F", "L" },
                                                            "S");
-                        
+
                         example1.AddRule("S", new ArrayList() { "(", "F", ":", "L", ")" });
                         example1.AddRule("S", new ArrayList() { "L", "*" });
                         example1.AddRule("S", new ArrayList() { "i" });
@@ -496,7 +497,7 @@ namespace MPTranslator
 
                     case "7": //МП - автоматы
                         // (q0,i@i,S) |- (q1,i@i,F@L)
-                        // S->F@L 
+                        // S->F@L
                         // F->i L->i
                         myMp Mp = new myMp(new ArrayList() { "q0", "q1", "q2", "qf" },
                                            new ArrayList() { "a", "b" },
@@ -513,7 +514,7 @@ namespace MPTranslator
                         Console.Write("Debug Mp ");
                         Mp.debugDelta();
                         Console.WriteLine("\nEnter the line :");
-                        Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());                       
+                        Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());
 
                         /*
                         Mp.addDeltaRule("q0", "a", "z0", new ArrayList() { "q1" }, new ArrayList() { "a", "z0" });
@@ -526,9 +527,9 @@ namespace MPTranslator
 
                         Console.WriteLine("\nEnter the line :");
                         Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());
-                        */ 
+                        */
                         break;
-                    
+
                     case "8": //МП-преобразователь
                         TranslGrammar gramm = new TranslGrammar(new ArrayList() { "a", "b" },
                                                                 new ArrayList() { "S", "A" },
@@ -546,7 +547,7 @@ namespace MPTranslator
 
                     case "9": //МП - автоматы
                         translMp mp = new translMp(new ArrayList() { "q0", "q1", "q2","q3", "qf" },
-                                                   new ArrayList() { "a", "b" }, 
+                                                   new ArrayList() { "a", "b" },
                                                    new ArrayList() { "z0", "a" },
                                                    "q0",
                                                    "z0",
@@ -632,6 +633,22 @@ namespace MPTranslator
                             Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
                         }
                         break;
+
+                        case "666":
+                            myGrammar SLRGrammar = new myGrammar(new ArrayList() { "i", "j", "&", "^", "(", ")" },
+                            new ArrayList() { "S", "F", "L" },
+                            "S");
+
+                            SLRGrammar.AddRule("S", new ArrayList() { "F", "^", "L" });
+                            SLRGrammar.AddRule("S", new ArrayList() { "(", "S", ")" });
+                            SLRGrammar.AddRule("F", new ArrayList() { "&", "L" });
+                            SLRGrammar.AddRule("F", new ArrayList() { "i" });
+                            SLRGrammar.AddRule("L", new ArrayList() { "j" });
+
+                            SLRParser mySLRParser = new SLRParser(SLRGrammar);
+
+                            mySLRParser.Execute();
+                            break;
 
                     default :
                         Console.WriteLine("Выход из программы");

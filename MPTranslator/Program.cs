@@ -30,6 +30,7 @@ namespace MPTranslator
             Console.WriteLine("MP_Translator   ................. Enter 8");
             Console.WriteLine("MP_Transl_Translator   ................. Enter 9");
             Console.WriteLine("Chain Translation example ................. Enter 10");
+            Console.WriteLine("L-attribute translation grammar ........... Enter 11");
         }
 
         static string[,] Mtable(myGrammar G)
@@ -584,6 +585,45 @@ namespace MPTranslator
                         // Console.WriteLine("Введите строку: ");
                         List<Symbol> inp_str = new SimpleLexer().Parse(Console.ReadLine());
                         if (chainTranslator.Parse(inp_str))
+                        {
+                            Console.WriteLine("\nУспех. Строка соответствует грамматике.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
+                        }
+                        break;
+
+                    case "11": // L-атрибутивная грамматика
+                        // Грамматика вычисляет результат арифметического выражения
+                        // Выражения состоят из целых положительных чисел, +, * и скобок
+                        Types.Attrs sAttrs = new Types.Attrs() { ["value"] = 0 };
+                        Types.Attrs lAttrs = new Types.Attrs() { ["inh"] = 0, ["syn"] = 0 };
+                        SDTScheme lAttrSDT = new SDTScheme(new List<Symbol>() { new Symbol("number", sAttrs), "+", "*", "(", ")" },
+                                                           new List<Symbol>() { "S", new Symbol("E", sAttrs), new Symbol("E'", lAttrs),
+                                                                                new Symbol("T", sAttrs), new Symbol("T'", lAttrs), new Symbol("F", sAttrs) },
+                                                           "S");
+
+                        lAttrSDT.AddRule("S",  new List<Symbol>() { "E", new Types.Actions((S) => Console.Write(S["E"]["value"].ToString())) });
+
+                        lAttrSDT.AddRule("E",  new List<Symbol>() { "T", new Types.Actions((S) => S["E'"]["inh"] = S["T"]["value"]), "E'", new Types.Actions((S) => S["E"]["value"] = S["E'"]["syn"]) });
+
+                        lAttrSDT.AddRule("E'", new List<Symbol>() { "+", "T", new Types.Actions((S) => S["E'1"]["inh"] = (int)S["E'"]["inh"] + (int)S["T"]["value"]), "E'", new Types.Actions((S) => S["E'"]["syn"] = S["E'1"]["syn"]) });
+
+                        lAttrSDT.AddRule("E'", new List<Symbol>() { Symbol.Epsilon, new Types.Actions((S) => S["E'"]["syn"] = S["E'"]["inh"]) });
+
+                        lAttrSDT.AddRule("T",  new List<Symbol>() { "F", new Types.Actions((S) => S["T'"]["inh"] = S["F"]["value"]), "T'", new Types.Actions((S) => S["T"]["value"] = S["T'"]["syn"]) });
+
+                        lAttrSDT.AddRule("T'", new List<Symbol>() { "*", "F", new Types.Actions((S) => S["T'1"]["inh"] = (int)S["T'"]["inh"] * (int)S["F"]["value"]), "T'", new Types.Actions((S) => S["T'"]["syn"] = S["T'1"]["syn"]) });
+
+                        lAttrSDT.AddRule("T'", new List<Symbol>() { Symbol.Epsilon, new Types.Actions((S) => S["T'"]["syn"] = S["T'"]["inh"]) });
+
+                        lAttrSDT.AddRule("F",  new List<Symbol>() { "number", new Types.Actions((S) => S["F"]["value"] = S["number"]["value"]) });
+
+                        lAttrSDT.AddRule("F",  new List<Symbol>() { "(", "E", ")",  new Types.Actions((S) => S["F"]["value"] = S["E"]["value"]) });
+
+                        LLTranslator lAttrTranslator = new LLTranslator(lAttrSDT);
+                        if (lAttrTranslator.Parse(new ArithmLexer().Parse(Console.ReadLine())))
                         {
                             Console.WriteLine("\nУспех. Строка соответствует грамматике.");
                         }

@@ -43,7 +43,7 @@ namespace MPTranslator
         }
 
         /// Неявное преобразование функции в OperationSymbol
-        public static implicit operator Symbol(Action<Dictionary<string, Symbol>> func) => new OperationSymbol(func);
+        public static implicit operator Symbol(Types.Actions func) => new OperationSymbol(func);
 
         /// Доступ к атрибутам
         public object this[string name]
@@ -118,24 +118,68 @@ namespace MPTranslator
             return !(a == b);
         }
 
-        public static Symbol Epsilon = new Symbol(""); ///< Пустой символ
-        public static Symbol Sentinel = new Symbol("$$"); ///< Cимвол конца строки / Символ дна стека
+        public override string ToString() => this != Epsilon ? Value : "e";
+
+        public static readonly Symbol Epsilon = new Symbol(""); ///< Пустой символ
+        public static readonly Symbol Sentinel = new Symbol("$$"); ///< Cимвол конца строки / Символ дна стека
     }
 
     /// Операционный символ (Семантическое действие)
     class OperationSymbol : Symbol
     {
-        public new Action<Dictionary<string, Symbol>> Value; ///< Функция семантического действия
+        public new Types.Actions Value; ///< Функция семантического действия
 
-        public OperationSymbol(Action<Dictionary<string, Symbol>> value) : base(null)
+        public OperationSymbol(Types.Actions value) : base(null)
         {
             Value = value;
         }
 
         public OperationSymbol(OperationSymbol other) : this(((OperationSymbol)other.Clone()).Value) {}
 
+        public override string ToString() => "{}";
+
         /// Глубокая копия
-        public override object Clone() => new OperationSymbol((Action<Dictionary<string, Symbol>>)Value.Clone());
+        public override object Clone() => new OperationSymbol((Types.Actions)Value.Clone());
+    }
+
+    /// Запись синтеза. Используется в LL-трансляции.
+    class SynthSymbol : Symbol
+    {
+        public string Name; ///< Имя символа
+        public Dictionary<string, Symbol> Copies; ///< Копии других записей синтеза
+
+        public SynthSymbol() : base(null)
+        {
+            Copies = new Dictionary<string, Symbol>();
+        }
+
+        public SynthSymbol(string name, Symbol symbol) : this()
+        {
+            Copies = new Dictionary<string, Symbol>();
+            Name = name;
+            Value = symbol.Value;
+            Attributes = symbol.Attributes;
+        }
+
+        public SynthSymbol(string name, string value, Dictionary<string, object> attributes) : this()
+        {
+            Copies = new Dictionary<string, Symbol>();
+            Name = name;
+            Value = value;
+            Attributes = attributes;
+        }
+
+        /// Добавление другой записи синтеза
+        public void Add(SynthSymbol other)
+        {
+            Copies.Add(other.Name, other);
+            foreach (KeyValuePair<string, Symbol> pair in other.Copies)
+            {
+                Copies.Add(pair.Key, pair.Value);
+            }
+        }
+
+        public override string ToString() => "s" + Name;
     }
 
     /// Правило синтаксически управляемой схемы трансляции
@@ -290,6 +334,11 @@ namespace MPTranslator
             HashSet<Symbol> result = new HashSet<Symbol>();
             foreach (Symbol Y in X)
             {
+                if (Y is OperationSymbol)
+                {
+                    continue;
+                }
+
                 foreach (Symbol curFirstSymb in FirstSet[Y])
                 {
                     result.Add(curFirstSymb);
@@ -375,12 +424,6 @@ namespace MPTranslator
         }
     }
 
-    /// Реализация постфиксной СУТ в процессе LR анализа
-    // class PostfixTranslator : CanonicalLRParser
-    // {
-
-    // }
-
     /// Реализация L-атрибутного СУТ в процессе LL анализа
     class LLTranslator
     {
@@ -395,6 +438,7 @@ namespace MPTranslator
             Table = new Dictionary<Symbol, Dictionary<Symbol, SDTRule>>();
             Stack = new Stack<Symbol>();
             
+            // Построение управляющей таблицы
             foreach (Symbol noTermSymbol in G.V)
             {
                 Table[noTermSymbol] = new Dictionary<Symbol, SDTRule>();
@@ -426,12 +470,18 @@ namespace MPTranslator
             // DebugMTable();
         }
 
+        private static readonly Symbol EndOfRule = "~EOR~"; ///< Символ конца правила
+
         /// Анализ строки
         public bool Parse(List<Symbol> input)
         {
-            Stack.Push(Symbol.Sentinel); // символ окончания входной последовательности
+            input.Add(Symbol.Sentinel); // Символ окончания входной последовательности
+
+            Stack.Clear();
+            Stack.Push(Symbol.Sentinel); // Символ дна стека
+            Stack.Push(new SynthSymbol(G.S0.Value, new Symbol(G.S0)));
             Stack.Push(G.S0);
-            input.Add(Symbol.Sentinel);
+
             int i = 0;
             Symbol curInputSymbol = input[i];
             Symbol curStackSymbol;
@@ -440,7 +490,52 @@ namespace MPTranslator
                 curStackSymbol = Stack.Peek();
                 if (curStackSymbol is OperationSymbol op && op != null) // в вершине стека операционный символ
                 {
-                    op.Value.Invoke(null);
+                    Stack.Pop();
+                    // Функции операционного символа передаются записи синтеза до конца правила
+                    SynthSymbol symbols = new SynthSymbol();
+                    Stack<Symbol> tmp = new Stack<Symbol>();
+                    while (Stack.Peek() != EndOfRule)
+                    {
+                        if (Stack.Peek() is SynthSymbol)
+                        {
+                            symbols.Add((SynthSymbol)Stack.Peek());
+                        }
+                        tmp.Push(Stack.Pop());
+                    }
+
+                    while (tmp.Count > 0)
+                    {
+                        Stack.Push(tmp.Pop());
+                    }
+
+                    op.Value.Invoke(symbols.Copies);
+                }
+                else if (curStackSymbol is SynthSymbol synth && synth != null) // в вершине стека запись синтеза
+                {
+                    Stack.Pop();
+                    // Запись синтеза копируется в запись синтеза ниже, в пределах данного правила
+                    Stack<Symbol> tmp = new Stack<Symbol>();
+                    while (Stack.Count > 0 && !(Stack.Peek() is SynthSymbol))
+                    {
+                        if (Stack.Peek() == EndOfRule)
+                        {
+                            break;
+                        }
+                        tmp.Push(Stack.Pop());
+                    }
+
+                    if (Stack.Count > 0 && Stack.Peek() is SynthSymbol newSynth && newSynth != null)
+                    {
+                        newSynth.Add(synth);
+                    }
+
+                    while (tmp.Count > 0)
+                    {
+                        Stack.Push(tmp.Pop());
+                    }
+                }
+                else if (curStackSymbol == EndOfRule) // в вершине стека символ конца правила
+                {
                     Stack.Pop();
                 }
                 else if (G.T.Contains(curStackSymbol)) // в вершине стека терминал
@@ -448,10 +543,9 @@ namespace MPTranslator
                     if (curInputSymbol == curStackSymbol) // распознанный символ равен вершине стека
                     {
                         Stack.Pop();
-                        if (i != input.Count)
-                        {
-                            i++;
-                        }
+                        // В записи синтеза нетерминала обновляются атрибуты
+                        Stack.Peek().Attributes = curInputSymbol.Attributes;
+                        ++i;
                         curInputSymbol = input[i];
                     }
                     else
@@ -465,15 +559,50 @@ namespace MPTranslator
                     SDTRule rule;    
                     if (Table[curStackSymbol].TryGetValue(curInputSymbol, out rule)) // в клетке[вершина стека, распознанный символ] таблицы разбора существует правило
                     {
-                        // символы правила заносятся в обратном порядке в стек
                         Stack.Pop();
+
+                        // Подсчет индексов символов
+                        Dictionary<string, int> count = new Dictionary<string, int>();
+                        List<int> indexes = new List<int>();
+                        foreach (Symbol s in rule.RightChain)
+                        {
+                            if (s is OperationSymbol || s == Symbol.Epsilon)
+                            {
+                                indexes.Add(0);
+                                continue;
+                            }
+
+                            int index;
+                            count.TryGetValue(s.Value, out index);
+                            count[s.Value] = index + 1;
+                            indexes.Add(index + 1);
+                        }
+
+                        // Символы правила заносятся в обратном порядке в стек
+                        SynthSymbol headSynth = new SynthSymbol(rule.LeftNoTerm.Value, rule.LeftNoTerm.Value, Stack.Peek().Attributes);
+                        Stack.Push(EndOfRule); // Конец правила
+                        Stack.Push(headSynth); // Локальная запись синтеза для заголовка
+                        int j = rule.RightChain.Count-1;
                         foreach (Symbol rightSymbol in Enumerable.Reverse(rule.RightChain))
                         {
-                            if (rightSymbol != Symbol.Epsilon)
+                            if (rightSymbol == Symbol.Epsilon)
                             {
-                                // в стек помещается копия символа
-                                Stack.Push(new Symbol(rightSymbol));
+                                continue;
                             }
+                            
+                            if (rightSymbol is OperationSymbol)
+                            {
+                                Stack.Push(rightSymbol);
+                            }
+                            else
+                            {
+                                Symbol copy = new Symbol(rightSymbol);
+                                // Запись синтеза копии
+                                Stack.Push(new SynthSymbol(copy.Value + (count[rightSymbol.Value] > 1 || copy == rule.LeftNoTerm ? indexes[j].ToString() : ""), copy));
+                                // Копия символа
+                                Stack.Push(copy);
+                            }
+                            --j;
                         }
                     }
                     else
@@ -482,7 +611,7 @@ namespace MPTranslator
                         return false;
                     }
                 }
-            } while (Stack.Peek() != Symbol.Sentinel); // вершина стека не равна концу входной последовательности
+            } while (Stack.Peek() != Symbol.Sentinel); // вершина стека не равна дну стека
 
             if (curInputSymbol != Symbol.Sentinel) // распознанный символ не равен концу входной последовательности
             {
@@ -549,11 +678,21 @@ namespace MPTranslator
         }
     }
 
+    /// Сокращения для некоторых типов
+    namespace Types
+    {
+        /// Функция семантического действия
+        delegate void Actions(Dictionary<string, Symbol> _);
+
+        /// Словарь атрибутов
+        class Attrs : Dictionary<string, object> {}
+    }
+
     /// "Таблица" со стандартными семантическими действиями
     static class Actions
     {
         /// Печать чего угодно в консоль
-        static public Action<Dictionary<string, Symbol>> Print(object obj) =>
+        static public Types.Actions Print(object obj) =>
             (_) => Console.Write(obj.ToString());
     }
 }

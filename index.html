@@ -65,15 +65,16 @@ $(function() {
 <div class="title">myCompiler aka Фреймворк </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> Агрегация курсовых проектов нескольких человек. За основу взята версия от начала 2021 года.</p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a> Агрегация курсовых проектов нескольких человек. За основу взята версия от начала 2021 года + внезапная новая версия от июня 2021 года.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Основные изменения</h1>
 <ul>
 <li>Унифицированы отступы, комментарии приведены к стилю Doxygen.</li>
-<li>Канонический LR анализатор вынесен в отдельный файл (<a href="https://github.com/iktovr/myCompiler/blob/main/MPTranslator/LRParser.cs">LRParses.cs</a>) и собран в класс.</li>
-<li>В класс myGrammar добавлены методы: конструктор копирования, <strike>функции для вычисления и доступа к множествам FIRST, FOLLOW</strike>.</li>
-<li>Добавлена синтаксически управляемая трансляция: вспомогателные классы, 1 вид транслятора (<a href="https://github.com/iktovr/myCompiler/blob/main/MPTranslator/SDTranslation.cs">SDTranslation.cs</a>).</li>
-<li>Добавлены наброски для лексических анализаторов: абстрактный класс, две простейшие реализации (<a href="https://github.com/iktovr/myCompiler/blob/main/MPTranslator/Lexer.cs">Lexer.cs</a>).</li>
+<li>Канонический LR(1) анализатор вынесен в отдельный файл (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/LRParser.cs">LRParser.cs</a>) и собран в класс.</li>
+<li><strike>В класс myGrammar добавлены методы: конструктор копирования, функции для вычисления и доступа к множествам FIRST, FOLLOW</strike>.</li>
+<li>Добавлена синтаксически управляемая трансляция: вспомогателные классы, 1 вид транслятора (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/SDTranslation.cs">SDTranslation.cs</a>).</li>
+<li>Добавлены наброски для лексических анализаторов: абстрактный класс, две простейшие реализации (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/Lexer.cs">Lexer.cs</a>).</li>
+<li>Добавлен простой LR(1) анализатор (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/SLRParser.cs">SLRParser.cs</a>).</li>
 <li>...</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md2"></a>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['name_234',['Name',['../class_m_p_translator_1_1_synth_symbol.html#a3ced0f79998f5c66aa597dfb0102f119',1,'MPTranslator::SynthSymbol']]],
-  ['nonterminals_235',['NonTerminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#a4725327780644cb17c3151dfdd73b95c',1,'MPTranslator::CanonicalLRParser']]]
+  ['m_241',['M',['../class_translator_1_1_s_l_r_parser.html#a21584e18a691018065dc6220830be3b4',1,'Translator::SLRParser']]]
 ];

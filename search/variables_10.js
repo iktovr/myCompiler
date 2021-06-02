@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['v_251',['V',['../struct_processor_1_1_abstract_grammar_1_1_v__struct.html#a86b6825cb1be0c7c40b8a167ccc4dcf3',1,'Processor.AbstractGrammar.V_struct.V()'],['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#ae3c81e8030f2024b19aa1eee6c26960f',1,'Processor.AbstractGrammar.AGrammar.V()'],['../class_m_p_translator_1_1_s_d_t_scheme.html#a54a2ec646acc9943c1ef645208f286fb',1,'MPTranslator.SDTScheme.V()']]],
-  ['value_252',['Value',['../class_m_p_translator_1_1_symbol.html#afd745ecf470c8f4aba7445d398301cc0',1,'MPTranslator.Symbol.Value()'],['../class_m_p_translator_1_1_operation_symbol.html#a484476800954341949c81b00a7c538e0',1,'MPTranslator.OperationSymbol.Value()']]]
+  ['t_256',['T',['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a1fb139d9c8f4789adc899b2b89176d1a',1,'Processor.AbstractGrammar.AGrammar.T()'],['../class_m_p_translator_1_1_s_d_t_scheme.html#acb63aaaa53050d37026b0bedcb461fde',1,'MPTranslator.SDTScheme.T()']]],
+  ['table_257',['Table',['../class_m_p_translator_1_1_l_l_translator.html#a39b595e0104ba7797191b933e5868ec6',1,'MPTranslator::LLTranslator']]],
+  ['terminals_258',['Terminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#ac897300a42f90d282f682321be489cf7',1,'MPTranslator::CanonicalLRParser']]]
 ];

@@ -10,23 +10,26 @@ using Translator;
 namespace Processor.AttrGrammar {
     public class ATGrammar: Grammar   {
 
-        public List<OPSymbol> OP = null; //список операционных символов
-        public List<AttrProduction> Rules = new List<AttrProduction>(); //список правил порождения
+        public List<OPSymbol> OP = null; ///< Список операционных символов
+        public List<AttrProduction> Rules = new List<AttrProduction>(); ///< Список правил порождения
         public ATGrammar() { }
+        /// Конструктор
         public ATGrammar(List<Symbol> Ns,List<Symbol> Ts,List<OPSymbol> OPs /* типо правила  ,*/,Symbol SO) {
             this.OP=OPs;
             this.V=Ns;
             this.T=Ts;
             this.S0=SO;
-        } //конструктор
+        }
 
+        /// Добавление правила
         public void Addrule(Symbol LeftNoTerm, /*левый нетерминал и его атрибуты*/
                                                 List<Symbol> Right, /*правая часть правил  в виде символов*/
                                                 List<AttrFunction> F /*правила атрибутов*/ ) {
             this.Rules.Add(new AttrProduction(LeftNoTerm,Right,F));
-        } //добавление правила
+        }
 
-        public void Print() {//печать грамматики
+        /// Печать грамматики
+        public void Print() {
             Console.Write("\nAT-Grammar G = (V, T, OP, P, S)");
             Console.Write("\nV = { ");//нетерминальные символы
             for (int i = 0; i<V.Count; ++i) {

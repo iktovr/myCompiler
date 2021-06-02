@@ -5,10 +5,11 @@ using System.Collections;
 using Processor.AbstractGrammar;
 
 namespace Translator {
-    public class DeltaQSigma {//: AbstractProduction { //Delta: Q x Sigma -> Q 
-        public string LHSQ { set; get; } = null; // Q
-        public string LHSS { set; get; } = null;  // Sigma
-        public List<Symbol> RHSQ { set; get;} = null; // Q     
+    /// Delta: Q x Sigma -> Q 
+    public class DeltaQSigma {//: AbstractProduction {
+        public string LHSQ { set; get; } = null; ///< Q
+        public string LHSS { set; get; } = null;  ///< Sigma
+        public List<Symbol> RHSQ { set; get;} = null; ///< Q     
         public DeltaQSigma(string LHSQ,string LHSS,List<Symbol> RHSQ) {
             this.LHSQ=LHSQ;
             this.LHSS=LHSS;
@@ -16,7 +17,8 @@ namespace Translator {
         }
     } //end DeltaQSigma
 
-    public class FSAutomate : Automate {  // Finite State automata  КА
+    /// Finite State automata (КА)
+    public class FSAutomate : Automate {
         public FSAutomate(List<Symbol> Q,List<Symbol> Sigma,List<Symbol> F,string q0) :
                 base(Q,Sigma,F,q0) { }
 

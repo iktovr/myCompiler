@@ -4,16 +4,17 @@ using System.Collections;
 using Translator;
 
 namespace Processor.AbstractGrammar {
+    /// Используется в удалении левой рекурсии для правила (см стр 25)
     struct V_struct {
-        public string V; // Нетерминал левой рекурсим
-        public List<Symbol> alpha; // Цепочка альфа, вида V -> V alpha рекурси
-        public List<Symbol> betta; // Цепочка бетта, вида V -> betta, где бетта не начинается с V
+        public string V; ///< Нетерминал левой рекурсим
+        public List<Symbol> alpha; ///< Цепочка альфа, вида V -> V alpha рекурси
+        public List<Symbol> betta; ///< Цепочка бетта, вида V -> betta, где бетта не начинается с V
     }
     public abstract class AGrammar { 
-        public Symbol S0 = null; //начальный символ
-        public List<Symbol> T = null; // множество терминалов
-        public List<Symbol> V = null; // множество нетерминалов
-        public List<Production> P = null; // множество правил продукций (порождений)
+        public Symbol S0 = null; ///< Начальный символ
+        public List<Symbol> T = null; ///< Множество терминалов
+        public List<Symbol> V = null; ///< Множество нетерминалов
+        public List<Production> P = null; ///< Множество правил продукций (порождений)
 
         public AGrammar() { }
 
@@ -76,7 +77,7 @@ namespace Processor.AbstractGrammar {
             return KA;
         }
 
-        //определение множествa производящих нетерминальных символов
+        /// Определение множествa производящих нетерминальных символов
         private List<Symbol> producingSymb() {
             var Vp = new List<Symbol>();
             foreach (var p in this.P) {
@@ -89,7 +90,7 @@ namespace Processor.AbstractGrammar {
             return Vp;
         }
 
-        //определение множества достижимых символов за 1 шаг
+        /// Определение множества достижимых символов за 1 шаг
         private List<Symbol> ReachableByOneStep(string state) {
             var Reachable = new List<Symbol>() { new Symbol(state) };
             var tmp = new List<Symbol>();
@@ -113,7 +114,7 @@ namespace Processor.AbstractGrammar {
             return Reachable;
         }
 
-        //определение множества достижимых символов
+        /// Определение множества достижимых символов
         private List<Symbol> Reachable(string StartState) {
             var Vr = new List<Symbol>() { this.S0};
             var nextStates = ReachableByOneStep(StartState);
@@ -127,7 +128,7 @@ namespace Processor.AbstractGrammar {
             return Vr;
         }
 
-        //удаление бесполезных символов
+        /// Удаление бесполезных символов
         public Grammar unUsefulDelete() {
             Console.WriteLine("\t\tDeleting unuseful symbols");
             Console.WriteLine("Executing: ");
@@ -212,6 +213,7 @@ namespace Processor.AbstractGrammar {
             Console.WriteLine("\tUnuseful symbols have been deleted");
             return new Grammar(T1,Vp,P1,this.S0.symbol);
         }
+
         private List<Symbol> ShortNoTerm() {
             var Ve = new List<Symbol>();
             foreach (var p in this.P) {
@@ -230,7 +232,7 @@ namespace Processor.AbstractGrammar {
             return Ve;
         }
 
-        //удаление эпсилон правил
+        /// Удаление эпсилон правил
         public Grammar EpsDelete() {
             Console.WriteLine("\tDelete e-rules:");
             Console.WriteLine("Executing:");
@@ -306,7 +308,7 @@ namespace Processor.AbstractGrammar {
             }
         }
 
-        //удаление цепных правил
+        /// Удаление цепных правил
         public Grammar ChainRuleDelete() {
             Console.WriteLine("\tChainRule Deleting:");
             Console.WriteLine("Executing: ");
@@ -357,7 +359,7 @@ namespace Processor.AbstractGrammar {
             return new Grammar(this.T,this.V,P,this.S0.symbol);
         }
 
-        //удаление левой рекурсии
+        /// Удаление левой рекурсии
         public Grammar LeftRecursDelete() {
             Console.WriteLine("\tLeft Recursion delete:");
             Console.WriteLine("Executing: ");
@@ -401,7 +403,7 @@ namespace Processor.AbstractGrammar {
                         }
                     }
                 }
-//?        v_struct_ar.Add(v_struct);
+                // v_struct_ar.Add(v_struct);
             }
 /*
             foreach (var v in v_struct_ar) {
@@ -465,7 +467,7 @@ namespace Processor.AbstractGrammar {
             Console.WriteLine(line);
         }
 
-        //откуда можем прийти в состояние
+        /// Откуда можем прийти в состояние
         private List<Symbol> FromWhat(string state) {
             var from = new List<Symbol>();
             bool flag = true;
@@ -479,7 +481,7 @@ namespace Processor.AbstractGrammar {
             else return from;
         }
 
-        //объединение множеств A or B
+        // Объединение множеств A or B
         private List<Symbol> Unify(List<Symbol> A,List<Symbol> B) {
             var unify = A;
             foreach (var s in B)
@@ -488,7 +490,7 @@ namespace Processor.AbstractGrammar {
             return unify;
         }
 
-        //пересечение множеств A & B
+        // Пересечение множеств A & B
         private List<Symbol> intersection(List<Symbol> A,List<Symbol> B) {
             var intersection = new List<Symbol>();
             foreach (var s in A)
@@ -497,7 +499,7 @@ namespace Processor.AbstractGrammar {
             return intersection;
         }
 
-        //Нетерминальные символы из массива
+        // Нетерминальные символы из массива
         private List<Symbol> NoTermReturn(List<Symbol> array) {
             var NoTerm = new List<Symbol>();
             bool flag = true;//added
@@ -508,7 +510,8 @@ namespace Processor.AbstractGrammar {
                 }
             if (flag) return null;//added
             else return NoTerm;
-        }    
+        }
+
         private string NoTerminal(List<Symbol> array) {
             var NoTermin = "";
             foreach (var s in array) {
@@ -517,7 +520,8 @@ namespace Processor.AbstractGrammar {
             }
             return NoTermin;
         }
-        //терминальные символы из массива
+
+        // Терминальные символы из массива
         private List<Symbol> TermReturn(List<Symbol> A) {
             var Term = new List<Symbol>();
             bool flag = true;
@@ -530,7 +534,7 @@ namespace Processor.AbstractGrammar {
             else return Term;
         }
 
-        //все символы в правиле
+        // Все символы в правиле
         private List<Symbol> SymbInRules(Production p) {
             var SymbInRules = new List<Symbol>() { p.LHS };
             for (int i = 0; i < p.RHS.Count; i++)
@@ -538,7 +542,7 @@ namespace Processor.AbstractGrammar {
             return SymbInRules;
         }
 
-        //проверка епсилон правой цепочки
+        // Проверка пустоты правой цепочки
         private bool ContainEps(Production p) {
             if (p.RHS.ToString().Contains("")) return true;
             return false;

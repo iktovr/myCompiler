@@ -6,13 +6,13 @@ using System.Text;
 using Processor.AbstractGrammar;
 
 namespace Translator {
-    // Используется в удалении левой рекурсии для правила (см стр 25)
+
     public abstract class Automate {
-        public List<Symbol> Q = null; // множество состояний
-        public List<Symbol> Sigma = null; // множество алфавит
-        public dynamic D = new List<DeltaQSigma>(); //множество правил перехода
-        public string Q0 = null; //начальное состояние
-        public List<Symbol> F = null; //множество конечных состояний
+        public List<Symbol> Q = null; ///< множество состояний
+        public List<Symbol> Sigma = null; ///< множество алфавит
+        public dynamic D = new List<DeltaQSigma>(); ///< множество правил перехода
+        public string Q0 = null; ///< начальное состояние
+        public List<Symbol> F = null; ///< множество конечных состояний
 
         public Automate() { }
 
@@ -35,8 +35,8 @@ namespace Translator {
             return EpsClosure(currStates,null);
         }
 
-        // Все достижимые состояния из множества состояний states 
-        // по правилам в которых ,LeftTerm = term
+        /// Все достижимые состояния из множества состояний states 
+        /// по правилам в которых ,LeftTerm = term
         private List<Symbol> EpsClosure(List<Symbol> currStates,List<Symbol> ReachableStates) {
             if (ReachableStates==null) 
                 ReachableStates=new List<Symbol>();
@@ -72,8 +72,8 @@ namespace Translator {
             if (nextStates==null) return ReachableStates;
             else return EpsClosure(next,ReachableStates);
         }
-        //возвращает множество достижимых состояний по символу term 
-        //из currStates за один шаг
+        /// Возвращает множество достижимых состояний по символу term 
+        /// из currStates за один шаг
         private List<Symbol> move(List<Symbol> currStates,string term) {
             var ReachableStates = new List<Symbol>();
             var nextStates = new List<Symbol>();
@@ -87,8 +87,8 @@ namespace Translator {
             return ReachableStates;
         }
 
-        // Все состояния в которые есть переход из текущего состояния currState 
-        // по символу term за один шаг
+        /// Все состояния в которые есть переход из текущего состояния currState 
+        /// по символу term за один шаг
         private List<Symbol> FromStateToStates(string currState,string term) {
             var NextStates = new List<Symbol>();//{currState};
             bool flag = false;
@@ -105,8 +105,7 @@ namespace Translator {
         }
 
         private List<Symbol> config = new List<Symbol>();
-        private List<DeltaQSigma> DeltaD = new List<DeltaQSigma>();
-        //правила детерминированного автомата
+        private List<DeltaQSigma> DeltaD = new List<DeltaQSigma>(); ///< правила детерминированного автомата
 
         private List<Symbol> Dtran(List<Symbol> currState) {
             List<Symbol> statesSigma = null;
@@ -135,7 +134,7 @@ namespace Translator {
             return null;
         }
 
-        //построить Delta-правила ДКА
+        /// Построить Delta-правила ДКА
         public void BuildDeltaDKAutomate(FSAutomate ndka) {
             this.Sigma=ndka.Sigma;
             this.D=ndka.D;
@@ -150,7 +149,7 @@ namespace Translator {
             this.Q0=this.Q[0].ToString();
             this.D=DeltaD;
             this.F=getF(config,ndka.F);
-     }
+        }
 
         private List<Symbol> getF(List<Symbol> config,List<Symbol> F) {
             var F_ = new List<Symbol>();
@@ -166,7 +165,7 @@ namespace Translator {
             return F_;
         }
 
-        //состояние StateTo достижимо по дельта-правилам из состояния currState
+        /// Состояние StateTo достижимо по дельта-правилам из состояния currState
         private bool ReachableStates(string currState,string StateTo) {
             string nextstate = currState;
             bool b = true;
@@ -232,7 +231,7 @@ namespace Translator {
                 }*/
         }
 
-        ///***  Debug ***///        
+        //***  Debug ***//        
         public void Debug(string step,string line) {
             Console.Write(step+": ");
             Console.WriteLine(line);

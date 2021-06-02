@@ -15,7 +15,7 @@ namespace Translator {
 
         public Grammar() : base() { Production.Count=0; }
 
-        //порождение цепочек символов по правилам вывода
+        /// порождение цепочек символов по правилам вывода
         public override string Execute() { //
             string bornedLine = null;
             string currState = "S0";
@@ -27,7 +27,7 @@ namespace Translator {
             return bornedLine;
         }
 
-        //проверка на принадлежность к терминалам/нетерминалам
+        /// проверка на принадлежность к терминалам/нетерминалам
         public bool isNoTerm(string v) {
             foreach (var vi in this.V) 
                 if (v.Equals(vi.symbol)) return true;      

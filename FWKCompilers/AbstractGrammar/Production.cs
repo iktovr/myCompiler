@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Processor.AbstractGrammar {
     public class Production {
-        public Symbol LHS { set; get; } = null; // on the Left Hand Side
-        public List<Symbol> RHS { set; get; }  //on the Right Hand Side
+        public Symbol LHS { set; get; } = null; ///< On the Left Hand Side
+        public List<Symbol> RHS { set; get; }  ///< On the Right Hand Side
         public static int Count = 0;
-        public int Id;                         // Production number
+        public int Id;                         ///< Production number
         
         public Production(Symbol LHS,List<Symbol> RHS) {
             Count++;

@@ -7,11 +7,11 @@ using Processor.AbstractGrammar;
 
 namespace Translator {
     public class DeltaQSigmaGamma : DeltaQSigma {
-        public string LHSZ { get; set; }  // верхний символ магазин
-        public List<Symbol> RHSZ { get; set; }  // множество символов магазина
-        // отображение
-        // Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...} } 
-        //         LHSQ     LHSS      LHSZ       RHSQ       RHSZ 
+        public string LHSZ { get; set; }  ///< Верхний символ магазин
+        public List<Symbol> RHSZ { get; set; }  ///< Множество символов магазина
+        /// Отображение
+        /// Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...} } 
+        ///         LHSQ     LHSS      LHSZ       RHSQ       RHSZ 
         public DeltaQSigmaGamma(string LHSQ,string LHSS,string LeftZ,
                                                         List<Symbol> RHSQ,List<Symbol> RHSZ) :
                                                         base(LHSQ,LHSS,RHSQ) {
@@ -41,11 +41,10 @@ namespace Translator {
 
     class DeltaQSigmaGammaSix : DeltaQSigmaGamma {
 
-        // Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...} }
-        // Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...}, {b1b2.....} } 
-        // RightO b1,b2 выходные операционные символы
-
-        //         LHSQ    LHSS     LHSZ         RHSQ       RHSZ        RHSNew
+        /// Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...} }
+        /// Delta (  q1   ,   a    ,   z   ) = {  {q}   ,   {z1z2...}, {b1b2.....} } 
+        /// RightO b1,b2 выходные операционные символы
+        ///         LHSQ    LHSS     LHSZ         RHSQ       RHSZ        RHSNew
         public DeltaQSigmaGammaSix(string LeftQ,string LeftT,string LeftZ,List<Symbol> RightQ,
                                                              List<Symbol> RightZ,List<Symbol> RightSix) :
                 base(LeftQ,LeftT,LeftZ,RightQ,RightZ) {
@@ -55,17 +54,19 @@ namespace Translator {
         public List<Symbol> rightSix { get; set; }
     } // end class DeltaQSigmaGammaSix
 
-    class PDA : Automate //Push Down Automate МП = {}
+    /// Push Down Automate МП = {}
+    class PDA : Automate 
     {
         // Q - множество состояний МП - автоматa
         // Sigma - алфавит входных символов
         // D - правила перехода 
         // Q0 - начальное состояние
         // F - множество конечных состояний
-        public List<Symbol> Gamma = null; //алфавит магазинных символов
+        public List<Symbol> Gamma = null; ///< Алфавит магазинных символов
         public Stack Z = null;
         public string currState;
 
+        /// МП для дельта-правил
         public PDA(List<Symbol> Q,List<Symbol> Sigma,List<Symbol> Gamma,string Q0,string z0,List<Symbol> F)
                 : base(Q,Sigma,F,Q0) {
             this.Gamma=Gamma;
@@ -76,7 +77,7 @@ namespace Translator {
             Z.Push(z0); // начальный символ в магазине
             this.F=F; // пустое множество заключительных состояний
         }
-        // МП для КС-грамматик
+        /// МП для КС-грамматик
         public PDA(Grammar KCgrammar) {
             //        : base(new ArrayList() { "q" },KCgrammar.T,new ArrayList() { },"q") {
             this.Q=new List<Symbol>() { new Symbol("q") };
@@ -228,14 +229,15 @@ namespace Translator {
                 //изменение правила по верхушке стека    
         } // end Execute
 
-        // поиск правила по состоянию. 
+        /// Поиск правила по состоянию. 
         public DeltaQSigmaGamma findDelta(string Q,string a) {
             foreach (var delta in this.D) {
                 if (delta.LHSQ==Q&&delta.LHSZ==a) return delta;
             }
             return null; // not find 
         }
-        // поиск правила по символу в вершине  магазина
+
+        /// Поиск правила по символу в вершине  магазина
         public DeltaQSigmaGamma findDelta(string Z) {
             foreach (var delta in this.D) {
                 if (delta.LeftZ==Z) return delta;
@@ -244,7 +246,8 @@ namespace Translator {
         }
 
         //*** вспомогательные процедуры ***
-        //объединение множеств A or B
+
+        /// Объединение множеств A or B
         public List<Symbol> Unify(List<Symbol> A,List<Symbol> B) {
             List<Symbol> unify = A;
             foreach (var s in B)
@@ -253,7 +256,7 @@ namespace Translator {
             return unify;
         }
 
-        //преобразование элементов массива в строку
+        // Преобразование элементов массива в строку
         public string arrToStr(List<Symbol> array) {
             if (array.Equals(null)) return null;
             else {
@@ -263,7 +266,8 @@ namespace Translator {
                 return newLine;
             }
         }
-        //принадлежность множествам автомату
+
+        /// Проверка на принадлежность множествам автомата
         public bool isGamma(string v) {
             foreach (var vi in this.Gamma) {
                 if (v.Equals(vi))
@@ -271,6 +275,8 @@ namespace Translator {
             }
             return false;
         }
+
+        /// Проверка на принадлежность множествам автомата
         public bool isSigma(string t) {
             foreach (var ti in this.Sigma) {
                 if (t.Equals(ti))
@@ -278,6 +284,7 @@ namespace Translator {
             }
             return false;
         }
+
         public string StackToString(Stack Z) {
             if (Z.Count==0) return null;
             else {
@@ -294,7 +301,8 @@ namespace Translator {
         }
 
         // **   Debug   **
-        public string DebugStack(Stack s) { // печать текущего состояния магазина
+        /// печать текущего состояния магазина
+        public string DebugStack(Stack s) {
             string p = "|";
             Stack s1 = new Stack();
             while (s.Count!=0) {
@@ -304,6 +312,7 @@ namespace Translator {
             while (s1.Count!=0) s.Push(s1.Pop());
             return p;
         }
+
         public virtual void debugDelta() {
             Console.WriteLine("Deltarules :");
             if (this.D==null) { Console.WriteLine("null"); return; }
@@ -316,6 +325,7 @@ namespace Translator {
             }
         }
     } // end class
+    
     class translMp : PDA    //МП = {}
     {
         // Q - множество состояний МП - автоматa

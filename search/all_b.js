@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['op_75',['OP',['../class_processor_1_1_attr_grammar_1_1_a_t_grammar.html#af52caf8110f4c826f64511055248d86a',1,'Processor::AttrGrammar::ATGrammar']]],
-  ['operationsymbol_76',['OperationSymbol',['../class_m_p_translator_1_1_operation_symbol.html',1,'MPTranslator']]],
-  ['operator_20symbol_77',['operator Symbol',['../class_m_p_translator_1_1_symbol.html#a4e148f7b0bf9ee362265ebd16b2369e6',1,'MPTranslator.Symbol.operator Symbol(string str)'],['../class_m_p_translator_1_1_symbol.html#a26bfd99971093037dd51d3cf104d88b1',1,'MPTranslator.Symbol.operator Symbol(Dictionary&lt; string, object &gt; dict)'],['../class_m_p_translator_1_1_symbol.html#a1ec089c77b606902a0f053f4c411bdd6',1,'MPTranslator.Symbol.operator Symbol(Types.Actions func)']]],
-  ['operator_3d_3d_78',['operator==',['../class_m_p_translator_1_1_symbol.html#a850374f4b3dda170fe09aaed73c72be2',1,'MPTranslator::Symbol']]],
-  ['opsymbol_79',['OPSymbol',['../class_processor_1_1_attr_grammar_1_1_o_p_symbol.html',1,'Processor::AttrGrammar']]]
+  ['name_84',['Name',['../class_m_p_translator_1_1_synth_symbol.html#a3ced0f79998f5c66aa597dfb0102f119',1,'MPTranslator::SynthSymbol']]],
+  ['nonterminals_85',['NonTerminals',['../class_m_p_translator_1_1_canonical_l_r_parser.html#a4725327780644cb17c3151dfdd73b95c',1,'MPTranslator::CanonicalLRParser']]]
 ];

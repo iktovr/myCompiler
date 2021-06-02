@@ -28,7 +28,7 @@ namespace Translator {
             Console.WriteLine("example ....................... Enter 6.1");
             Console.WriteLine("              ................. Enter 7");
             Console.WriteLine("               ................ Enter 8");
-            Console.WriteLine("              ................. Enter 9");
+            Console.WriteLine("lab 14 - 16 EngineerXL ........ Enter 9");
             Console.WriteLine("AT-Grammar....... Enter 10");
         }
 
@@ -377,7 +377,7 @@ namespace Translator {
 
                     case "7": //МП - автоматы
                                         // (q0,i@i,S) |- (q1,i@i,F@L)
-                                        // S->F@L 
+                                        // S->F@L
                                         // F->i L->i
                         var pda2 = new PDA(new List<Symbol>() { new Symbol("q0"),new Symbol("q1"),new Symbol("q2"),new Symbol("qf") },
                                                              new List<Symbol>() { new Symbol("a"),new Symbol("b") },
@@ -410,11 +410,25 @@ namespace Translator {
                         */
                         break;
 
-                    case "8": 
-                    case "9": 
+                    case "8":
+                        break;
+                    case "9":
+                        Grammar SLRGrammar = new Grammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("&"), new Symbol("^"), new Symbol("("), new Symbol(")") },
+                                                   new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                                                   "S");
+
+                        SLRGrammar.AddRule("S", new List<Symbol>() { new Symbol("F"), new Symbol("^"), new Symbol("L") });
+                        SLRGrammar.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("S"), new Symbol(")") });
+                        SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("&"), new Symbol("L") });
+                        SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("i") });
+                        SLRGrammar.AddRule("L", new List<Symbol>() { new Symbol("j") });
+
+                        SLRParser LR0Parser = new SLRParser(SLRGrammar);
+
+                        LR0Parser.Execute();
                         break;
                     case "10":
-                        // S, Er    *, +, cr     {ANS}r                             
+                        // S, Er    *, +, cr     {ANS}r
                         List<Symbol> V = new List<Symbol>() { new Symbol("S"),new Symbol("E", new List<Symbol>() { new Symbol("r") }) };
                         List<Symbol> T = new List<Symbol>() { new Symbol("*"),new Symbol("+"),new Symbol("c",new List<Symbol>() { new Symbol("r") }) };
                         List<OPSymbol> OP = new List<OPSymbol>() { new OPSymbol("{ANS}",new List<Symbol>() { new Symbol("r") }) };
@@ -424,21 +438,21 @@ namespace Translator {
                                                  new List<Symbol>() { // RHS
                                                                 new Symbol("E", // S -> Ep {ANS}r r -> p
                                                                 new List<Symbol>() { new Symbol("p") }),new Symbol("{ANS}",new List<Symbol>() { new Symbol("r") }) },
-                                                                new List<AttrFunction>() { new AttrFunction(new List<Symbol>() {new Symbol("r") },new List<Symbol> { new Symbol("p") }) 
+                                                                new List<AttrFunction>() { new AttrFunction(new List<Symbol>() {new Symbol("r") },new List<Symbol> { new Symbol("p") })
                                                          }
                                                 );
 
                         atgr.Addrule(new Symbol("E", new List<Symbol>() {new Symbol("p") }), // Ep -> +EpEr p -> q + r
                                 new List<Symbol>() { new Symbol("+"),new Symbol("E",new List<Symbol>() { new Symbol("p") }),
                                                                          new Symbol("E",new List<Symbol>() { new Symbol("r") }) },
-                                new List<AttrFunction>() { new AttrFunction(new List<Symbol>() { 
-                                     new Symbol("p") },new List<Symbol> { new Symbol("q"),new Symbol("+"),new Symbol("r") }) 
+                                new List<AttrFunction>() { new AttrFunction(new List<Symbol>() {
+                                     new Symbol("p") },new List<Symbol> { new Symbol("q"),new Symbol("+"),new Symbol("r") })
                                 });
 
                         atgr.Addrule(new Symbol("E", new List<Symbol>() { new Symbol("p") }),  // Ep -> *EpEr   p -> q * r
                                 new List<Symbol>() { new Symbol("*"),new Symbol("E",new List<Symbol>() { new Symbol("p") }),new Symbol("E",new List<Symbol>() { new Symbol("r") }) },
-                                new List<AttrFunction>() { new AttrFunction(new List<Symbol>() { 
-                                     new Symbol("p") },new List<Symbol> { new Symbol("q"),new Symbol("*"),new Symbol("r") }) 
+                                new List<AttrFunction>() { new AttrFunction(new List<Symbol>() {
+                                     new Symbol("p") },new List<Symbol> { new Symbol("q"),new Symbol("*"),new Symbol("r") })
                                 });
 
                         atgr.Addrule(new Symbol("E", new List<Symbol>() { new Symbol("p") }), // Ep -> Cr   p -> r
@@ -446,7 +460,7 @@ namespace Translator {
                              new List<AttrFunction>() { new AttrFunction(new List<Symbol>() {
                                  new Symbol("p") },new List<Symbol> { new Symbol("r") })
                              });
-                        
+
                         atgr.Print();
 
                         atgr.transform();

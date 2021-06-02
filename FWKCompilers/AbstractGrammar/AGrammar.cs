@@ -10,7 +10,7 @@ namespace Processor.AbstractGrammar {
         public List<Symbol> alpha; ///< Цепочка альфа, вида V -> V alpha рекурси
         public List<Symbol> betta; ///< Цепочка бетта, вида V -> betta, где бетта не начинается с V
     }
-    public abstract class AGrammar { 
+    public abstract class AGrammar {
         public Symbol S0 = null; ///< Начальный символ
         public List<Symbol> T = null; ///< Множество терминалов
         public List<Symbol> V = null; ///< Множество нетерминалов
@@ -22,6 +22,7 @@ namespace Processor.AbstractGrammar {
             this.T = T;
             this.V = V;
             this.S0 = new Symbol(S0);
+            this.P = new List<Production>();
         }
         abstract public string Execute(); // abstract
 
@@ -222,7 +223,7 @@ namespace Processor.AbstractGrammar {
             }
             int i = 0;///!!!
             if (Ve.Count!=0)
-                //Console.WriteLine("  {0}",Ve.Count);                
+                //Console.WriteLine("  {0}",Ve.Count);
                 while ((FromWhat(Ve[i].ToString())!=null)&&(Ve.Count<i)) {
                     Ve=Unify(Ve,FromWhat(Ve[0].symbol));
                     i++;
@@ -279,13 +280,13 @@ namespace Processor.AbstractGrammar {
                 }
             } while (flag);
             Debug("NoShortNoTerms",NoTerms);
-            Ps.Clear();      
+            Ps.Clear();
             //Удаляем е-правила и создаем новые в соответствии с алгоритмом
             foreach (var p in this.P) {
-                if (Erule.Contains(p)) continue;        
+                if (Erule.Contains(p)) continue;
                 Ps.Add(p);
                 foreach(var s in p.RHS) {
-                    if (NoTerms.Contains(s)) {          
+                    if (NoTerms.Contains(s)) {
                         var NR = new List<Symbol>(p.RHS);
                         NR.Remove(s);
                         Ps.Add(new Production(p.LHS,NR));
@@ -329,7 +330,7 @@ namespace Processor.AbstractGrammar {
                                                 NoTermReturn(p.RHS).Count==1) {
                     chain_rules.Add(p);
                     DebugPrule(p);
-                    foreach (var s in chain_pair_list) {            
+                    foreach (var s in chain_pair_list) {
                         if (s.Equals(new Symbol(p.LHS))) {
                             var chain_pair1 = new List<Symbol>();
                             chain_pair1.Add(chain_pair_list[0]);
@@ -377,7 +378,7 @@ namespace Processor.AbstractGrammar {
                 }
             }
             foreach (var p in this.P) {
-                if (!Vr.Contains(p.LHS)) 
+                if (!Vr.Contains(p.LHS))
                     P.Add(p);
             }
             //преобразуем их в новые без левой рекурсии
@@ -548,6 +549,6 @@ namespace Processor.AbstractGrammar {
             return false;
         }
 
-    } // end abstract Grammar class 
+    } // end abstract Grammar class
 
 }

@@ -4,11 +4,16 @@ using System.Collections;
 using System.Linq;
 using System.Data;
 using System.Text;
+using Processor.AbstractGrammar;
 
-namespace MPTranslator
+namespace Translator
 {
+    // todo CLOSURE и GOTO в грамматику
+    // написать подробнее про LR(0) и LR(1)
+    // картинку автомата в Word в виде объекта
     class SLRParser
     {
+        /// Пара строка-число
         protected class PairStrInt : IEquatable<PairStrInt>
         {
             public string First { get; set; }
@@ -28,6 +33,7 @@ namespace MPTranslator
                 Second = num;
             }
 
+            /// Проверка двух пар на равенство
             public bool Equals(PairStrInt pair)
             {
                 return (pair.Second == Second) && Equals(pair.First, First);
@@ -39,13 +45,16 @@ namespace MPTranslator
             }
         }
 
+        /// Компаратор пар. Требуется для корректной работы Dictionary
         protected class PairComparer : IEqualityComparer<PairStrInt>
         {
+            /// Метод проверки равенства
             public bool Equals(PairStrInt lhs, PairStrInt rhs)
             {
                 return lhs.Equals(rhs);
             }
 
+            /// Метод вычисления хеш-функции
             public int GetHashCode(PairStrInt pair)
             {
                 string s = pair.First + pair.Second.ToString();
@@ -53,10 +62,11 @@ namespace MPTranslator
             }
         }
 
+        /// LR(0)-ситуация
         protected class State : IEquatable<State>
         {
-            public int rulePos { get; }
-            public int dotPos { get; }
+            public int rulePos { get; } ///< Номер правила грамматика
+            public int dotPos { get; } ///< Позиция точки в правой части правила
 
             public State() {}
 
@@ -71,55 +81,58 @@ namespace MPTranslator
                 return (st.rulePos == rulePos) && (st.dotPos == dotPos);
             }
 
-            public string GetRightChainSymbol(myGrammar grammar)
+            /// Получение символа, стоящего после точки
+            public Symbol GetRHSymbol(Grammar grammar)
             {
-                Prule curRule = (Prule)grammar.Prules[rulePos];
-                if (dotPos == curRule.RightChain.Count)
+                Production rule = grammar.P[rulePos];
+                if (dotPos == rule.RHS.Count)
                 {
-                    return "";
+                    return new Symbol("");
                 }
                 else
                 {
-                    return (string)curRule.RightChain[dotPos];
+                    return rule.RHS[dotPos];
                 }
             }
 
-            public string GetLeftSymbol(myGrammar grammar)
+            /// Получение символа, стоящего в левой части ситуации
+            public Symbol GetLHSymbol(Grammar grammar)
             {
-                Prule curRule = (Prule)grammar.Prules[rulePos];
-                return (string)curRule.LeftNoTerm;
+                Production rule = grammar.P[rulePos];
+                return rule.LHS;
             }
 
-            public void Debug(myGrammar grammar)
+            public void Debug(Grammar grammar)
             {
-                Prule curRule = (Prule)grammar.Prules[rulePos];
-                string curStateRightChain = "";
-                for (int i = 0; i < curRule.RightChain.Count; ++i)
+                Production rule = grammar.P[rulePos];
+                string curStateRHS = "";
+                for (int i = 0; i < rule.RHS.Count; ++i)
                 {
                     if (i == dotPos)
                     {
-                        curStateRightChain += ".";
+                        curStateRHS += ".";
                     }
-                    string s = (string)curRule.RightChain[i];
-                    curStateRightChain += s;
+                    curStateRHS += rule.RHS[i].ToString();
                 }
-                if (curRule.rightChain.Count == dotPos)
+                if (rule.RHS.Count == dotPos)
                 {
-                    curStateRightChain += ".";
+                    curStateRHS += ".";
                 }
-                Console.WriteLine(curRule.LeftNoTerm + " -> " + curStateRightChain);
+                Console.WriteLine(rule.LHS.ToString() + " -> " + curStateRHS);
             }
         }
 
-        protected myGrammar SLRGrammar;
+        protected Grammar SLRGrammar;
+        /// Управляющая таблица представлена в виде словаря
         protected Dictionary<PairStrInt, PairStrInt> M;
 
-        public SLRParser(myGrammar grammar)
+        public SLRParser(Grammar grammar)
         {
             SLRGrammar = grammar;
-            SLRGrammar.AddRule("S'", new ArrayList() { SLRGrammar.S0 });
-            SLRGrammar.V.Add("S'");
-            SLRGrammar.T.Add("$");
+            // Пополнение грамматики
+            SLRGrammar.AddRule("S'", new List<Symbol>() { SLRGrammar.S0 });
+            SLRGrammar.V.Add(new Symbol("S'"));
+            SLRGrammar.T.Add(new Symbol("$"));
 
             SLRGrammar.DebugPrules();
 
@@ -166,12 +179,12 @@ namespace MPTranslator
                         // Reduction - Свёртка
                         case "R":
                             int rulePos = tableCondition.Second;
-                            Prule curRule = (Prule)SLRGrammar.Prules[rulePos];
-                            for (int j = 0; j < curRule.RightChain.Count; ++j)
+                            Production rule = SLRGrammar.P[rulePos];
+                            for (int j = 0; j < rule.RHS.Count; ++j)
                             {
                                 st.Pop();
                             }
-                            curCondition = new PairStrInt(curRule.LeftNoTerm, st.Peek());
+                            curCondition = new PairStrInt(rule.LHS.ToString(), st.Peek());
                             tableCondition = M[curCondition];
                             st.Push(tableCondition.Second);
                             Console.WriteLine("Вывод: " + (rulePos + 1).ToString());
@@ -209,10 +222,10 @@ namespace MPTranslator
                 J = new List<State>(J0);
                 foreach (State curState in J)
                 {
-                    string B = curState.GetRightChainSymbol(SLRGrammar);
-                    for (int i = 0; i < SLRGrammar.Prules.Count; ++i) {
-                        Prule curRule = (Prule)SLRGrammar.Prules[i];
-                        if (B == curRule.leftNoTerm)
+                    Symbol B = curState.GetRHSymbol(SLRGrammar);
+                    for (int i = 0; i < SLRGrammar.P.Count; ++i) {
+                        Production rule = SLRGrammar.P[i];
+                        if (B.Equals(rule.LHS))
                         {
                             State gammaState = new State(i, 0);
                             if (!J0.Contains(gammaState))
@@ -228,12 +241,12 @@ namespace MPTranslator
             return J;
         }
 
-        protected List<State> Goto(List<State> I, string X)
+        protected List<State> Goto(List<State> I, Symbol X)
         {
             List<State> J = null;
             foreach (State st in I)
             {
-                if (st.GetRightChainSymbol(SLRGrammar) == X)
+                if (X.Equals(st.GetRHSymbol(SLRGrammar)))
                 {
                     List<State> movedDotState = new List<State>();
                     movedDotState.Add(new State(st.rulePos, st.dotPos + 1));
@@ -283,20 +296,20 @@ namespace MPTranslator
             return -1;
         }
 
-        protected List< List< State > > SetOfStates(myGrammar grammar)
+        protected List< List< State > > SetOfStates(Grammar grammar)
         {
-            List< List< State > > C0 = new List< List<State> >();
+            List< List< State > > C0 = new List< List< State > >();
             List<State> I = new List<State>();
-            I.Add(new State(grammar.Prules.Count - 1, 0));
+            I.Add(new State(grammar.P.Count - 1, 0));
             C0.Add(Closure(I));
-            List< List< State > > C = new List< List<State> >();
+            List< List< State > > C = new List< List< State > >();
             bool changed = false;
-            List<string> alphabet = new List<string>();
-            foreach (string t in grammar.T)
+            List<Symbol> alphabet = new List<Symbol>();
+            foreach (Symbol t in grammar.T)
             {
                 alphabet.Add(t);
             }
-            foreach (string v in grammar.V)
+            foreach (Symbol v in grammar.V)
             {
                 alphabet.Add(v);
             }
@@ -305,7 +318,7 @@ namespace MPTranslator
                 C = new List< List< State > > (C0);
                 foreach (List<State> c in C)
                 {
-                    foreach (string X in alphabet)
+                    foreach (Symbol X in alphabet)
                     {
                         List<State> nextState = Goto(c, X);
                         if (nextState != null && FindSetOfStates(C0, nextState) == -1)
@@ -330,6 +343,10 @@ namespace MPTranslator
             return C;
         }
 
+        // ToDo
+        // Возвращать таблицу для конечного автомата
+        // Сохранить результат вычислений GOTO
+        // Автомат на вход
         protected void BuildTable()
         {
             List< List< State > > C = SetOfStates(SLRGrammar);
@@ -341,18 +358,18 @@ namespace MPTranslator
 
                 foreach (State st in I)
                 {
-                    string a = st.GetRightChainSymbol(SLRGrammar);
-                    string A = st.GetLeftSymbol(SLRGrammar);
+                    Symbol a = st.GetRHSymbol(SLRGrammar);
+                    Symbol A = st.GetLHSymbol(SLRGrammar);
                     if (SLRGrammar.T.Contains(a))
                     {
                         int j = FindSetOfStates(C, Goto(I, a));
-                        PairStrInt conditionFrom = new PairStrInt(a, i);
+                        PairStrInt conditionFrom = new PairStrInt(a.ToString(), i);
                         PairStrInt conditionTo = new PairStrInt("S", j);
                         M.Add(conditionFrom, conditionTo);
                     }
-                    if (a == "")
+                    if (a.symbol == "")
                     {
-                        if (A == "S'")
+                        if (A.symbol == "S'")
                         {
                             PairStrInt conditionFrom = new PairStrInt("$", i);
                             PairStrInt conditionTo = new PairStrInt("A", -1);
@@ -362,9 +379,9 @@ namespace MPTranslator
                         {
                             // для SLR(1) надо FOLLOW
                             // foreach (string terminal in FOLLOW(A))
-                            foreach (string terminal in SLRGrammar.T)
+                            foreach (Symbol terminal in SLRGrammar.T)
                             {
-                                PairStrInt conditionFrom = new PairStrInt(terminal, i);
+                                PairStrInt conditionFrom = new PairStrInt(terminal.ToString(), i);
                                 PairStrInt conditionTo = new PairStrInt("R", st.rulePos);
                                 M.Add(conditionFrom, conditionTo);
                             }
@@ -372,12 +389,12 @@ namespace MPTranslator
                     }
                 }
 
-                foreach (string X in SLRGrammar.V)
+                foreach (Symbol X in SLRGrammar.V)
                 {
                     int j = FindSetOfStates(C, Goto(I, X));
                     if (j != -1)
                     {
-                        PairStrInt conditionFrom = new PairStrInt(X, i);
+                        PairStrInt conditionFrom = new PairStrInt(X.ToString(), i);
                         PairStrInt conditionTo = new PairStrInt("", j);
                         M.Add(conditionFrom, conditionTo);
                     }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Translator
 {
-    
     public static class Utility
     {
         public static string convert(ArrayList arrayList)

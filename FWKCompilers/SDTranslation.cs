@@ -183,9 +183,9 @@ namespace MPTranslator
     }
 
     /// Правило синтаксически управляемой схемы трансляции
-    class SDTRule : Rule
+    class SDTRule
     {
-        public new Symbol LeftNoTerm; ///< Левая часть продукции
+        public Symbol LeftNoTerm; ///< Левая часть продукции
         public List<Symbol> RightChain; ///< Правая часть продукции
 
         public SDTRule(Symbol leftNoTerm, List<Symbol> rightChain)
@@ -218,12 +218,12 @@ namespace MPTranslator
     }
 
     /// Синтаксически управляемая схема трансляции
-    class SDTScheme : Grammar
+    class SDTScheme
     {
-        public new Symbol S0; ///< Начальный символ
-        public new List<Symbol> T; ///< Терминальные символы
-        public new List<Symbol> V; ///< Нетерминальные символы
-        public new List<SDTRule> Prules; ///< Продукции
+        public Symbol S0; ///< Начальный символ
+        public List<Symbol> T; ///< Терминальные символы
+        public List<Symbol> V; ///< Нетерминальные символы
+        public List<SDTRule> Prules; ///< Продукции
 
         private Dictionary<Symbol, HashSet<Symbol>> FirstSet;
         private Dictionary<Symbol, HashSet<Symbol>> FollowSet;
@@ -283,7 +283,7 @@ namespace MPTranslator
             Prules.Add(rule);
         }
 
-        public override string Execute() { return null; }
+        public string Execute() { return null; }
 
         /// Перенесен с небольшими изменениями из LLParser
         private void ComputeFirstSets()

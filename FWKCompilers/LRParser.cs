@@ -24,21 +24,21 @@ namespace MPTranslator
 
         public CanonicalLRParser() {}
 
-        public CanonicalLRParser(myGrammar grammar)
-        {
-            Terminals = string.Join("", grammar.T.ToArray());
-            NonTerminals = string.Join("", grammar.V.ToArray());
-            Grammar.Clear();
-            foreach (Prule rule in grammar.Prules)
-            {
-                string rightChain = string.Join("", rule.RightChain.ToArray());
-                if (rightChain.Length == 0)
-                {
-                    rightChain = "e";
-                }
-                Grammar.Add(rule.LeftNoTerm + " " + rightChain);
-            }
-        }
+        // public CanonicalLRParser(myGrammar grammar)
+        // {
+        //     Terminals = string.Join("", grammar.T.ToArray());
+        //     NonTerminals = string.Join("", grammar.V.ToArray());
+        //     Grammar.Clear();
+        //     foreach (Prule rule in grammar.Prules)
+        //     {
+        //         string rightChain = string.Join("", rule.RightChain.ToArray());
+        //         if (rightChain.Length == 0)
+        //         {
+        //             rightChain = "e";
+        //         }
+        //         Grammar.Add(rule.LeftNoTerm + " " + rightChain);
+        //     }
+        // }
 
         protected struct Tablekey
         {

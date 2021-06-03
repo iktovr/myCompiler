@@ -43,16 +43,21 @@ namespace Processor.AbstractGrammar
                 return Equals(objAsSymbol);
         }
 
-/*
-        public static bool operator == (Symbol symbol1,Symbol symbol2) {
-            return symbol1.Equals(symbol2);
+        public override int GetHashCode()
+        {
+            return symbol.GetHashCode();
         }
-        public override int GetHashCode() { return this.symbol.GetHashCode(); }
 
-        public static bool operator !=(Symbol symbol1,Symbol symbol2) {
-            return !symbol1.Equals(symbol2);
-        }   
-*/
+        /*
+                public static bool operator == (Symbol symbol1,Symbol symbol2) {
+                    return symbol1.Equals(symbol2);
+                }
+                public override int GetHashCode() { return this.symbol.GetHashCode(); }
+
+                public static bool operator !=(Symbol symbol1,Symbol symbol2) {
+                    return !symbol1.Equals(symbol2);
+                }   
+        */
         public override string ToString() {
             return this.symbol;
         }

@@ -5,11 +5,6 @@
 
 # Other files
 *.DS_Store
-FWKCompilers/Properties/
-FWKCompilers/App.config
-FWKCompilers/[Mm]akefile
-FWKCompilers/*.sln
-FWKCompilers/*.csproj
 
 # User-specific files
 *.rsuser

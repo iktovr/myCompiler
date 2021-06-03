@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 
-namespace MPTranslator
+namespace SDT
 {
     /// Обычный символ грамматики
     class Symbol : ICloneable
@@ -183,12 +183,12 @@ namespace MPTranslator
     }
 
     /// Правило синтаксически управляемой схемы трансляции
-    class SDTRule
+    class Rule
     {
         public Symbol LeftNoTerm; ///< Левая часть продукции
         public List<Symbol> RightChain; ///< Правая часть продукции
 
-        public SDTRule(Symbol leftNoTerm, List<Symbol> rightChain)
+        public Rule(Symbol leftNoTerm, List<Symbol> rightChain)
         {
             LeftNoTerm = leftNoTerm;
             RightChain = rightChain;
@@ -218,31 +218,31 @@ namespace MPTranslator
     }
 
     /// Синтаксически управляемая схема трансляции
-    class SDTScheme
+    class Scheme
     {
         public Symbol S0; ///< Начальный символ
         public List<Symbol> T; ///< Терминальные символы
         public List<Symbol> V; ///< Нетерминальные символы
-        public List<SDTRule> Prules; ///< Продукции
+        public List<Rule> Prules; ///< Продукции
 
         private Dictionary<Symbol, HashSet<Symbol>> FirstSet;
         private Dictionary<Symbol, HashSet<Symbol>> FollowSet;
 
-        public SDTScheme(List<Symbol> t, List<Symbol> v, Symbol s0)
+        public Scheme(List<Symbol> t, List<Symbol> v, Symbol s0)
         {
             T = t;
             V = v;
             S0 = s0;
-            Prules = new List<SDTRule>();
+            Prules = new List<Rule>();
             FirstSet = new Dictionary<Symbol, HashSet<Symbol>>();
             FollowSet = new Dictionary<Symbol, HashSet<Symbol>>();
 
             S0.AddAttributes(V.Find(x => x == S0).Attributes);
         }
 
-        public SDTScheme(List<Symbol> t, List<Symbol> v, Symbol s0, List<SDTRule> prules) : this(t, v, s0)
+        public Scheme(List<Symbol> t, List<Symbol> v, Symbol s0, List<Rule> prules) : this(t, v, s0)
         {
-            foreach (SDTRule rule in prules)
+            foreach (Rule rule in prules)
             {
                 AddRule(rule.LeftNoTerm, rule.RightChain);
             }
@@ -257,7 +257,7 @@ namespace MPTranslator
 
         public void AddRule(Symbol leftNoTerm, List<Symbol> rightChain)
         {
-            SDTRule rule = new SDTRule(leftNoTerm, rightChain);
+            Rule rule = new Rule(leftNoTerm, rightChain);
 
             // Клонирование атрибутов для каждого символа
             if (rule.LeftNoTerm.Attributes is null)
@@ -298,7 +298,7 @@ namespace MPTranslator
             while (changes)
             {
                 changes = false;
-                foreach (SDTRule rule in Prules)
+                foreach (Rule rule in Prules)
                 {
                     // Для каждого правила X-> Y0Y1…Yn
                     Symbol X = rule.LeftNoTerm;
@@ -362,7 +362,7 @@ namespace MPTranslator
             while (changes)
             {
                 changes = false;
-                foreach (SDTRule rule in Prules)
+                foreach (Rule rule in Prules)
                 {
                     for (int curIndex = 0; curIndex < rule.RightChain.Count; ++curIndex)
                     {
@@ -427,25 +427,25 @@ namespace MPTranslator
     /// Реализация L-атрибутного СУТ в процессе LL анализа
     class LLTranslator
     {
-        protected SDTScheme G; ///< АТ-грамматика
+        protected Scheme G; ///< АТ-грамматика
         protected Stack<Symbol> Stack; ///< Стек символов
-        protected Dictionary<Symbol, Dictionary<Symbol, SDTRule>> Table; ///< Управляющая таблица. Table[нетерминал][терминал]
+        protected Dictionary<Symbol, Dictionary<Symbol, Rule>> Table; ///< Управляющая таблица. Table[нетерминал][терминал]
 
-        public LLTranslator(SDTScheme grammar)
+        public LLTranslator(Scheme grammar)
         {
             G = grammar;
             G.ComputeFirstFollow();
-            Table = new Dictionary<Symbol, Dictionary<Symbol, SDTRule>>();
+            Table = new Dictionary<Symbol, Dictionary<Symbol, Rule>>();
             Stack = new Stack<Symbol>();
 
             // Построение управляющей таблицы
             foreach (Symbol noTermSymbol in G.V)
             {
-                Table[noTermSymbol] = new Dictionary<Symbol, SDTRule>();
+                Table[noTermSymbol] = new Dictionary<Symbol, Rule>();
             }
 
             // Для каждого правила A -> alpha
-            foreach (SDTRule rule in G.Prules)
+            foreach (Rule rule in G.Prules)
             {
                 // Для каждого a из First(alpha)
                 foreach (Symbol firstSymbol in G.First(rule.RightChain))
@@ -556,7 +556,7 @@ namespace MPTranslator
                 }
                 else // в вершине стека нетерминал
                 {
-                    SDTRule rule;
+                    Rule rule;
                     if (Table[curStackSymbol].TryGetValue(curInputSymbol, out rule)) // в клетке[вершина стека, распознанный символ] таблицы разбора существует правило
                     {
                         Stack.Pop();
@@ -636,7 +636,7 @@ namespace MPTranslator
                 maxLenSymb = Math.Max(maxLenSymb, s.Value.Length);
             }
             int maxLenRule = 0;
-            foreach (SDTRule rule in G.Prules)
+            foreach (Rule rule in G.Prules)
             {
                 maxLenRule = Math.Max(maxLenRule, rule.RightChain.Count);
             }
@@ -651,7 +651,7 @@ namespace MPTranslator
             foreach (Symbol s in G.V)
             {
                 Console.Write("{0,-" + maxLenV.ToString() + "} | ", s.Value);
-                SDTRule rule;
+                Rule rule;
                 string str;
                 foreach (Symbol s2 in G.T)
                 {

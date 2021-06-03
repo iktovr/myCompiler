@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace MPTranslator
+namespace SDT
 {
     /// Абстрактный класс лексического анализатора
     abstract class Lexer

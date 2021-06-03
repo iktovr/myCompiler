@@ -413,6 +413,26 @@ namespace Translator {
                     case "8":
                         break;
                     case "9":
+                        // Kirill Voronov
+                        // Grammar SLRGrammar = new Grammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("+"), new Symbol("-"), new Symbol("("), new Symbol(")") },
+                        //                            new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                        //                            "S");
+                        //
+                        // SLRGrammar.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("F"), new Symbol(")"), new Symbol("+"), new Symbol("("), new Symbol("L"), new Symbol(")") });
+                        // SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("-"), new Symbol("L") });
+                        // SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("i") });
+                        // SLRGrammar.AddRule("L", new List<Symbol>() { new Symbol("j") });
+
+                        // Matvey Volkov
+                        // Grammar SLRGrammar = new Grammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("*"), new Symbol("-"), new Symbol("("), new Symbol(")") },
+                        //                            new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                        //                            "S");
+                        //
+                        // SLRGrammar.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("F"), new Symbol(")"), new Symbol("*"), new Symbol("L") });
+                        // SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("-"), new Symbol("L") });
+                        // SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("i") });
+                        // SLRGrammar.AddRule("L", new List<Symbol>() { new Symbol("j") });
+
                         Grammar SLRGrammar = new Grammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("&"), new Symbol("^"), new Symbol("("), new Symbol(")") },
                                                    new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
                                                    "S");

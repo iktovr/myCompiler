@@ -126,17 +126,17 @@ namespace Translator
         }
 
         /// Пополненная контекстно-свободная грамматика
-        protected Grammar SLRGrammar;
+        protected Grammar SLRGrammar = null;
         /// Канонический набор множеств LR(0)-ситуаций
         protected List< List< State > > C = new List< List< State > >();
         /// LR(0)-автомат переходов грамматики
         protected FSAutomate KA = new FSAutomate();
         /// Управляющая SLR-таблица, представленная в виде словаря
-        Dictionary<PairStrInt, PairStrInt> M = null;
+        protected Dictionary<PairStrInt, PairStrInt> M = null;
         /// Новый начальный нетерминал S'
-        Symbol startSymbol = new Symbol("S'");
+        protected Symbol startSymbol = new Symbol("S'");
         /// Пустая цепочка
-        Symbol EPS = new Symbol("");
+        protected Symbol EPS = new Symbol("");
 
         public SLRParser(Grammar grammar)
         {
@@ -243,8 +243,10 @@ namespace Translator
             return false;
         }
 
-        /// Возвращает индекс замыкания множества LR(0)-ситуаций в указанном
-        /// каноническом наборе. Если множество не было найдено, возращает -1
+        /**
+         *  Возвращает индекс замыкания множества LR(0)-ситуаций в указанном
+         *  каноническом наборе. Если множество не было найдено, возращает -1
+         */
         protected int FindSetOfStates(List< List< State > > C, List<State> I)
         {
             if (I == null)
@@ -313,7 +315,7 @@ namespace Translator
                 }
             } while (changed);
 
-            Console.WriteLine("Debug С");
+            Console.WriteLine("Debug canonical set of states C");
             for (int i = 0; i < C.Count; ++i)
             {
                 List<State> c = C[i];
@@ -323,11 +325,6 @@ namespace Translator
                 }
             }
         }
-
-        // ToDo
-        // Возвращать таблицу для конечного автомата
-        // Сохранить результат вычислений GOTO
-        // Автомат на вход
 
         /// Построение управляющей таблицы КС-грамматики
         protected void BuildTable()
@@ -339,14 +336,10 @@ namespace Translator
                 List<State> I = C[i];
                 foreach (State st in I)
                 {
-                    // Console.WriteLine("i = " + i.ToString() + ", Cur state is");
-                    st.Debug(SLRGrammar);
                     Symbol a = st.GetRHSymbol(SLRGrammar);
                     Symbol A = st.GetLHSymbol(SLRGrammar);
-                    // Console.WriteLine("a = " + a.ToString() + ", A = " + A.ToString());
                     if (a.Equals(EPS))
                     {
-                        // Console.WriteLine("Empty!");
                         if (A.Equals(startSymbol))
                         {
                             PairStrInt conditionFrom = new PairStrInt("$", i);
@@ -355,7 +348,7 @@ namespace Translator
                         }
                         else
                         {
-                            // для SLR(1) надо FOLLOW
+                            // Для просмотра следующего символа требуется FOLLOW(A)
                             // foreach (string terminal in FOLLOW(A))
                             foreach (Symbol X in SLRGrammar.T)
                             {
@@ -389,55 +382,6 @@ namespace Translator
                 }
             }
 
-            // for (int i = 0; i < C.Count; ++i)
-            // {
-            //     List<State> I = C[i];
-            //
-            //     foreach (State st in I)
-            //     {
-            //         Symbol a = st.GetRHSymbol(SLRGrammar);
-            //         Symbol A = st.GetLHSymbol(SLRGrammar);
-            //         if (SLRGrammar.T.Contains(a))
-            //         {
-            //             int j = FindSetOfStates(C, Goto(I, a));
-            //             PairStrInt conditionFrom = new PairStrInt(a.ToString(), i);
-            //             PairStrInt conditionTo = new PairStrInt("S", j);
-            //             M.Add(conditionFrom, conditionTo);
-            //         }
-            //         if (a.symbol == "")
-            //         {
-            //             if (A.symbol == "S'")
-            //             {
-            //                 PairStrInt conditionFrom = new PairStrInt("$", i);
-            //                 PairStrInt conditionTo = new PairStrInt("A", -1);
-            //                 M.Add(conditionFrom, conditionTo);
-            //             }
-            //             else
-            //             {
-            //                 // для SLR(1) надо FOLLOW
-            //                 // foreach (string terminal in FOLLOW(A))
-            //                 foreach (Symbol terminal in SLRGrammar.T)
-            //                 {
-            //                     PairStrInt conditionFrom = new PairStrInt(terminal.ToString(), i);
-            //                     PairStrInt conditionTo = new PairStrInt("R", st.rulePos);
-            //                     M.Add(conditionFrom, conditionTo);
-            //                 }
-            //             }
-            //         }
-            //     }
-            //
-            //     foreach (Symbol X in SLRGrammar.V)
-            //     {
-            //         int j = FindSetOfStates(C, Goto(I, X));
-            //         if (j != -1)
-            //         {
-            //             PairStrInt conditionFrom = new PairStrInt(X.ToString(), i);
-            //             PairStrInt conditionTo = new PairStrInt("", j);
-            //             M.Add(conditionFrom, conditionTo);
-            //         }
-            //     }
-            // }
-
             Console.WriteLine("Debug M...");
             foreach (PairStrInt from in M.Keys)
             {
@@ -448,6 +392,16 @@ namespace Translator
             }
         }
 
+        /// Выполнение LR-анализа
+        /**
+         *  LR-анализатор состоит из выходного буфера, выхода, стека,
+         *  программы-драйвера и таблицы синтаксического анализа,
+         *  состоящей из двух частей (ACTION и GOTO). Программа-драйвера
+         *  одинакова для всех LR-анализаторов; от одного к другому
+         *  меняются таблицы синтаксического анализа. Программа
+         *  синтаксического анализа по одному считывает символы из
+         *  входного буфера.
+         */
         public void Execute()
         {
             string answer = "y";
@@ -456,12 +410,12 @@ namespace Translator
                 Console.WriteLine("\n Введите строку: \n");
                 string input = Console.In.ReadLine();
                 Console.WriteLine("\n Введена строка: " + input + "\n");
-                Console.WriteLine("\n Процесс вывода: \n ");
 
                 string w = input + "$";
                 Stack<int> st = new Stack<int>();
                 st.Push(0);
                 int i = 0;
+                Stack<int> res = new Stack<int>();
                 bool accepted = false;
                 bool error = false;
                 do
@@ -496,7 +450,7 @@ namespace Translator
                             curCondition = new PairStrInt(rule.LHS.ToString(), st.Peek());
                             tableCondition = M[curCondition];
                             st.Push(tableCondition.Second);
-                            Console.WriteLine("Вывод: " + (rulePos + 1).ToString());
+                            res.Push(rulePos + 1);
                             break;
                         default:
                             error = true;
@@ -508,6 +462,12 @@ namespace Translator
                 if (accepted)
                 {
                     Console.WriteLine("Строка допущена");
+                    Console.Write("Вывод:");
+                    while (res.Count > 0)
+                    {
+                        Console.Write(" " + res.Pop().ToString());
+                    }
+                    Console.WriteLine();
                 }
                 else
                 {

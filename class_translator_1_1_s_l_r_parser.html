@@ -70,7 +70,6 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_translator_1_1_s_l_r_parser-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Translator.SLRParser Class Reference</div>  </div>
@@ -94,8 +93,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada383ede51d0509edc808f8e80fb6577"><td class="memItemLeft" align="right" valign="top"><a id="ada383ede51d0509edc808f8e80fb6577"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SLRParser</b> (<a class="el" href="class_translator_1_1_grammar.html">Grammar</a> grammar)</td></tr>
 <tr class="separator:ada383ede51d0509edc808f8e80fb6577"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="memItemLeft" align="right" valign="top"><a id="a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Execute</b> ()</td></tr>
+<tr class="memitem:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">Execute</a> ()</td></tr>
+<tr class="memdesc:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнение LR-анализа  <a href="class_translator_1_1_s_l_r_parser.html#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">More...</a><br /></td></tr>
 <tr class="separator:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -130,7 +129,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a36ec83780b1a9cc11d5523ac75b1dd46"><td class="memItemLeft" align="right" valign="top"><a id="a36ec83780b1a9cc11d5523ac75b1dd46"></a>
-<a class="el" href="class_translator_1_1_grammar.html">Grammar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a36ec83780b1a9cc11d5523ac75b1dd46">SLRGrammar</a></td></tr>
+<a class="el" href="class_translator_1_1_grammar.html">Grammar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a36ec83780b1a9cc11d5523ac75b1dd46">SLRGrammar</a> = null</td></tr>
 <tr class="memdesc:a36ec83780b1a9cc11d5523ac75b1dd46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пополненная контекстно-свободная грамматика <br /></td></tr>
 <tr class="separator:a36ec83780b1a9cc11d5523ac75b1dd46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12dd5970880afc5cc94e2540b3e8e6ae"><td class="memItemLeft" align="right" valign="top"><a id="a12dd5970880afc5cc94e2540b3e8e6ae"></a>
@@ -141,9 +140,6 @@ List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_stat
 <a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a9d9ae744f317435ebe2bbe078df85a0b">KA</a> = new <a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>()</td></tr>
 <tr class="memdesc:a9d9ae744f317435ebe2bbe078df85a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">LR(0)-автомат переходов грамматики <br /></td></tr>
 <tr class="separator:a9d9ae744f317435ebe2bbe078df85a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
 <tr class="memitem:a21584e18a691018065dc6220830be3b4"><td class="memItemLeft" align="right" valign="top"><a id="a21584e18a691018065dc6220830be3b4"></a>
 Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html">PairStrInt</a>, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html">PairStrInt</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a21584e18a691018065dc6220830be3b4">M</a> = null</td></tr>
 <tr class="memdesc:a21584e18a691018065dc6220830be3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Управляющая SLR-таблица, представленная в виде словаря <br /></td></tr>
@@ -158,6 +154,34 @@ Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_st
 <tr class="separator:a8b738c5af4eec68327e51fb732ef8afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">&#9670;&nbsp;</a></span>Execute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Translator.SLRParser.Execute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выполнение LR-анализа </p>
+<p>LR-анализатор состоит из выходного буфера, выхода, стека, программы-драйвера и таблицы синтаксического анализа, состоящей из двух частей (ACTION и GOTO). Программа-драйвера одинакова для всех LR-анализаторов; от одного к другому меняются таблицы синтаксического анализа. Программа синтаксического анализа по одному считывает символы из входного буфера. </p>
+
+</div>
+</div>
 <a id="a5ebfc41bc52637ea2a3950af85eea412"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ebfc41bc52637ea2a3950af85eea412">&#9670;&nbsp;</a></span>FindSetOfStates()</h2>
 

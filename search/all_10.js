@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['s0_117',['S0',['../class_m_p_translator_1_1_s_d_t_scheme.html#a7ce6a7fa368c5f2e18a26cc2969f6cc2',1,'MPTranslator.SDTScheme.S0()'],['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a76660323e3aac5b15eaf7d37889cea10',1,'Processor.AbstractGrammar.AGrammar.S0()']]],
+  ['s0_117',['S0',['../class_m_p_translator_1_1_s_d_t_scheme.html#ac68c7f03bea9fc9ec2b86ac1ab201723',1,'MPTranslator.SDTScheme.S0()'],['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a76660323e3aac5b15eaf7d37889cea10',1,'Processor.AbstractGrammar.AGrammar.S0()']]],
   ['sdtrule_118',['SDTRule',['../class_m_p_translator_1_1_s_d_t_rule.html',1,'MPTranslator']]],
   ['sdtscheme_119',['SDTScheme',['../class_m_p_translator_1_1_s_d_t_scheme.html',1,'MPTranslator']]],
   ['sentinel_120',['Sentinel',['../class_m_p_translator_1_1_symbol.html#a9f7b716c1d15f6766f6eeca3da8463b0',1,'MPTranslator::Symbol']]],

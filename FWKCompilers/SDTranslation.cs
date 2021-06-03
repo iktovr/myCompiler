@@ -76,8 +76,8 @@ namespace MPTranslator
         /// Глубокая копия
         public virtual object Clone()
         {
-            Symbol clone = new Symbol((string)Value.Clone());;
-            // Symbol clone = new Symbol(Value is null ? null : (string)Value.Clone());;
+            Symbol clone = new Symbol((string)Value.Clone());
+            // Symbol clone = new Symbol(Value is null ? null : (string)Value.Clone());
             clone.AddAttributes(Attributes);
             return clone;
         }
@@ -236,7 +236,7 @@ namespace MPTranslator
             Prules = new List<SDTRule>();
             FirstSet = new Dictionary<Symbol, HashSet<Symbol>>();
             FollowSet = new Dictionary<Symbol, HashSet<Symbol>>();
-            
+
             S0.AddAttributes(V.Find(x => x == S0).Attributes);
         }
 
@@ -437,7 +437,7 @@ namespace MPTranslator
             G.ComputeFirstFollow();
             Table = new Dictionary<Symbol, Dictionary<Symbol, SDTRule>>();
             Stack = new Stack<Symbol>();
-            
+
             // Построение управляющей таблицы
             foreach (Symbol noTermSymbol in G.V)
             {
@@ -451,7 +451,7 @@ namespace MPTranslator
                 foreach (Symbol firstSymbol in G.First(rule.RightChain))
                 {
                     if (firstSymbol != Symbol.Epsilon)
-                    {   
+                    {
                         // Добавлем правило в таблицу на пересечение A и a
                         Table[rule.LeftNoTerm][firstSymbol] = rule;
                     }
@@ -556,7 +556,7 @@ namespace MPTranslator
                 }
                 else // в вершине стека нетерминал
                 {
-                    SDTRule rule;    
+                    SDTRule rule;
                     if (Table[curStackSymbol].TryGetValue(curInputSymbol, out rule)) // в клетке[вершина стека, распознанный символ] таблицы разбора существует правило
                     {
                         Stack.Pop();
@@ -582,14 +582,14 @@ namespace MPTranslator
                         SynthSymbol headSynth = new SynthSymbol(rule.LeftNoTerm.Value, rule.LeftNoTerm.Value, Stack.Peek().Attributes);
                         Stack.Push(EndOfRule); // Конец правила
                         Stack.Push(headSynth); // Локальная запись синтеза для заголовка
-                        int j = rule.RightChain.Count-1;
+                        int j = rule.RightChain.Count - 1;
                         foreach (Symbol rightSymbol in Enumerable.Reverse(rule.RightChain))
                         {
                             if (rightSymbol == Symbol.Epsilon)
                             {
                                 continue;
                             }
-                            
+
                             if (rightSymbol is OperationSymbol)
                             {
                                 Stack.Push(rightSymbol);
@@ -618,7 +618,7 @@ namespace MPTranslator
                 // ERROR
                 return false;
             }
-            
+
             return true;
         }
 
@@ -642,18 +642,18 @@ namespace MPTranslator
             }
             maxLenRule = maxLenV + 4 + maxLenRule * maxLenSymb;
 
-            Console.Write("{0,-" + maxLenV.ToString() +  "} | ", " ");
-            foreach(Symbol s in G.T)
+            Console.Write("{0,-" + maxLenV.ToString() + "} | ", " ");
+            foreach (Symbol s in G.T)
             {
                 Console.Write("{0,-" + maxLenRule.ToString() + "} | ", s.Value);
             }
             Console.WriteLine("{0,-" + maxLenRule.ToString() + "} | ", Symbol.Sentinel.Value);
-            foreach(Symbol s in G.V)
+            foreach (Symbol s in G.V)
             {
-                Console.Write("{0,-" + maxLenV.ToString() +  "} | ", s.Value);
+                Console.Write("{0,-" + maxLenV.ToString() + "} | ", s.Value);
                 SDTRule rule;
                 string str;
-                foreach(Symbol s2 in G.T)
+                foreach (Symbol s2 in G.T)
                 {
                     if (Table[s].TryGetValue(s2, out rule))
                     {

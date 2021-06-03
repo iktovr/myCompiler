@@ -5,13 +5,14 @@ using System.Collections;
 using System.Text;
 using System.Data;
 
-namespace Translator {
+namespace Translator
+{
     /*
     class MTable { // Put the next line into the Declarations section.
 
         private System.Data.DataSet dataSet;
 
-        private void MakeDataTables() { // Run all of the functions. 
+        private void MakeDataTables() { // Run all of the functions.
             MakeParentTable();
             MakeChildTable();
             MakeDataRelation();
@@ -24,8 +25,8 @@ namespace Translator {
             DataColumn column;
             DataRow row;
 
-            // Create new DataColumn, set DataType, 
-            // ColumnName and add to DataTable.    
+            // Create new DataColumn, set DataType,
+            // ColumnName and add to DataTable.
             column=new DataColumn();
             column.DataType=System.Type.GetType("System.Int32");
             column.ColumnName="id";
@@ -56,7 +57,7 @@ namespace Translator {
             // Add the new DataTable to the DataSet.
             dataSet.Tables.Add(table);
 
-            // Create three new DataRow objects and add 
+            // Create three new DataRow objects and add
             // them to the DataTable
             for (int i = 0; i<=2; i++) {
                 row=table.NewRow();
@@ -106,7 +107,7 @@ namespace Translator {
 
             dataSet.Tables.Add(table);
 
-            // Create three sets of DataRow objects, 
+            // Create three sets of DataRow objects,
             // five rows each, and add to DataTable.
             for (int i = 0; i<=4; i++) {
                 row=table.NewRow();
@@ -132,7 +133,7 @@ namespace Translator {
         }
 
         private void MakeDataRelation() {
-            // DataRelation requires two DataColumn 
+            // DataRelation requires two DataColumn
             // (parent and child) and a name.
             DataColumn parentColumn = dataSet.Tables["ParentTable"].Columns["id"];
             DataColumn childColumn = dataSet.Tables["ChildTable"].Columns["ParentID"];
@@ -141,7 +142,7 @@ namespace Translator {
         }
 
         private void BindToDataGrid() {
-            // Instruct the DataGrid to bind to the DataSet, with the 
+            // Instruct the DataGrid to bind to the DataSet, with the
             // ParentTable as the topmost DataTable.
             // dataGrid.SetDataBinding(dataSet, "ParentTable");
         }

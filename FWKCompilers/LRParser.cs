@@ -18,13 +18,14 @@ namespace MPTranslator
     class CanonicalLRParser
     {
 
-        protected ArrayList Grammar = new ArrayList();  ///< правила грамматики
-        protected string Terminals;                     ///< список терминалов
-        protected string NonTerminals;                  ///< список нетерминалов
+        protected ArrayList Grammar = new ArrayList(); ///< правила грамматики
+        protected string Terminals; ///< список терминалов
+        protected string NonTerminals; ///< список нетерминалов
 
-        public CanonicalLRParser() { }
+        public CanonicalLRParser() {}
 
-        public CanonicalLRParser(myGrammar grammar) {
+        public CanonicalLRParser(myGrammar grammar)
+        {
             Terminals = string.Join("", grammar.T.ToArray());
             NonTerminals = string.Join("", grammar.V.ToArray());
             Grammar.Clear();
@@ -53,18 +54,18 @@ namespace MPTranslator
             RemoveEpsilonRules();
             Console.WriteLine("\nПосле удаления е-продукций");
 
-            Grammar.Add("П S");     //дополнить грамматику правилом П -> S       
+            Grammar.Add("П S"); //дополнить грамматику правилом П -> S
             NonTerminals += "П";
             Terminals += "$";
 
             Console.WriteLine("\nПравила: \n ");
-            for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
+            for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext();)
                 Console.WriteLine(rule.Current);
 
             Console.WriteLine("Терминалы : " + Terminals);
             Console.WriteLine("Нетерминалы: " + NonTerminals);
             Console.WriteLine("-----");
-            //Console.ReadLine();
+            // Console.ReadLine();
 
             // генерация LR(1) таблицы
 
@@ -79,31 +80,39 @@ namespace MPTranslator
                 Console.WriteLine("First( " + X + " ): " + First(X));
             }
             Console.WriteLine();
-            for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
+            for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext();)
             {
                 string str = ((string)rule.Current).Substring(2);
                 Console.WriteLine("First( " + str + " ): " + First(str));
             }
 
-            //Console.ReadLine();
+            // Console.ReadLine();
             ArrayList[] CArray = CreateCArray(); // создать последовательность С
             Console.WriteLine("Cоздана последовательность С: \n ");
-            for (int i = 0; i < CArray.Length; i++) { Console.WriteLine("I" + i + DebugArrayList(CArray[i])); }
+            for (int i = 0; i < CArray.Length; i++)
+            {
+                Console.WriteLine("I" + i + DebugArrayList(CArray[i]));
+            }
 
             Hashtable ACTION = CreateActionTable(CArray); // создать ACTION таблицу
-            if (ACTION == null) { Console.WriteLine("Грамматика не является LR(1)"); Console.ReadLine(); return; }
+            if (ACTION == null)
+            {
+                Console.WriteLine("Грамматика не является LR(1)");
+                Console.ReadLine();
+                return;
+            }
             Hashtable GOTO = CreateGotoTable(CArray); // создать GOTO таблицу
             // распечатать содержимое ACTION и GOTO таблиц:
             Console.WriteLine("\nСоздана ACTION таблица \n ");
 
-            for (IDictionaryEnumerator c = ACTION.GetEnumerator(); c.MoveNext(); )
+            for (IDictionaryEnumerator c = ACTION.GetEnumerator(); c.MoveNext();)
                 Console.WriteLine("ACTION[" + ((Tablekey)c.Key).I + ", " + ((Tablekey)c.Key).J + "] = " + c.Value);
             Console.WriteLine("\nСоздана GOTO таблица \n ");
 
-            for (IDictionaryEnumerator c = GOTO.GetEnumerator(); c.MoveNext(); )
+            for (IDictionaryEnumerator c = GOTO.GetEnumerator(); c.MoveNext();)
                 Console.WriteLine("GOTO[" + ((Tablekey)c.Key).I + ", " + ((Tablekey)c.Key).J + "] = " + c.Value);
 
-            //Console.ReadLine();
+            // Console.ReadLine();
 
             //синтакический анализ
             string answer = "y";
@@ -116,27 +125,25 @@ namespace MPTranslator
                 Console.WriteLine("\nПроцесс вывода: \n ");
                 if (input.Equals("$"))
                 { //случай пустой строки
-                    Console.WriteLine(AcceptEmptyString ?
-                         "Строка допущена" :
-                         "Строка отвергнута");
+                    Console.WriteLine(AcceptEmptyString ? "Строка допущена" : "Строка отвергнута");
                     Console.ReadLine();
-                    continue; //return;
+                    continue; // return;
                 }
                 Stack stack = new Stack(); //Стек автомата
                 stack.Push("0"); //поместить стартовое
                 //нулевое состояние
                 try
                 {
-                    for (; ; )
+                    for (;;)
                     {
                         int s = Convert.ToInt32((string)stack.Peek());
                         //вершина стека
                         char a = input[0]; //входной симол
                         string action = (string)ACTION[new Tablekey(s, a)];
                         //элемент
-                        //ACTION -таблицы
+                        // ACTION -таблицы
                         if (action[0] == 's')
-                        { //shift
+                        { // shift
                             stack.Push(a.ToString()); //поместить в стек а
                             stack.Push(action.Substring(2));
                             //поместить в стек s'
@@ -144,8 +151,8 @@ namespace MPTranslator
                             //перейти к следующему символу строки
                         }
                         else if (action[0] == 'r')
-                        { //reduce
-                            //rule[1] = A, rule[2] = alpha
+                        { // reduce
+                            // rule[1] = A, rule[2] = alpha
                             string[] rule = action.Split(' ');
                             //удалить 2 * Length(alpha) элементов стека
                             for (int i = 0; i < 2 * rule[2].Length; i++)
@@ -157,15 +164,18 @@ namespace MPTranslator
                             stack.Push((GOTO[new Tablekey(state, rule[1][0])]).ToString());
 
                             //вывести правило
-                            Console.WriteLine(rule[1] + "->" + rule[2]); //Console.ReadLine();
+                            Console.WriteLine(rule[1] + "->" + rule[2]); // Console.ReadLine();
                         }
-                        else if (action[0] == 'a') //accept
+                        else if (action[0] == 'a') // accept
                             break;
                     }
-                    Console.WriteLine("Строка допущена"); //Console.ReadLine();
+                    Console.WriteLine("Строка допущена"); // Console.ReadLine();
                 }
-                catch (Exception) { Console.WriteLine("Строка отвергнута"); } //Console.ReadLine(); 
-                //Console.ReadLine();
+                catch (Exception)
+                {
+                    Console.WriteLine("Строка отвергнута");
+                } // Console.ReadLine();
+                // Console.ReadLine();
                 Console.WriteLine("\n Продолжить? (y or n) \n");
                 answer = Console.ReadLine();
             }
@@ -177,8 +187,8 @@ namespace MPTranslator
             NonTerminals = "";
             Grammar.Clear();
             string s;
-            Hashtable term = new Hashtable();       //  временная таблица терминалов 
-            Hashtable nonterm = new Hashtable();    //  и нетерминалов
+            Hashtable term = new Hashtable(); //  временная таблица терминалов
+            Hashtable nonterm = new Hashtable(); //  и нетерминалов
             Console.WriteLine("\nВведите продукции: \n ");
             while ((s = Console.In.ReadLine()) != "")
             { //считывание правил
@@ -195,9 +205,9 @@ namespace MPTranslator
                     }
             }
             //  переписываем терминалы и нетерминалы в строки Terminals и NonTerminals
-            for (IDictionaryEnumerator c = term.GetEnumerator(); c.MoveNext(); )
+            for (IDictionaryEnumerator c = term.GetEnumerator(); c.MoveNext();)
                 Terminals += (char)c.Key;
-            for (IDictionaryEnumerator c = nonterm.GetEnumerator(); c.MoveNext(); )
+            for (IDictionaryEnumerator c = nonterm.GetEnumerator(); c.MoveNext();)
                 NonTerminals += (char)c.Key;
         }
 
@@ -217,10 +227,7 @@ namespace MPTranslator
 
         protected void Info()
         {
-            Console.WriteLine("КС - грамматика : " +
-                             " \nАлфавит нетерминальных символов: " + NonTerminals +
-                             " \nАлфавит терминальных символов: : " + Terminals +
-                             " \nПравила : \n" + DebugArrayList(Grammar));
+            Console.WriteLine("КС - грамматика : " + " \nАлфавит нетерминальных символов: " + NonTerminals + " \nАлфавит терминальных символов: : " + Terminals + " \nПравила : \n" + DebugArrayList(Grammar));
             Console.ReadLine();
         }
 
@@ -240,31 +247,31 @@ namespace MPTranslator
         ///  создает список правил, в которых вычеркнут один или более символов А в правой части
         protected ArrayList GenerateRulesWithout(char A)
         {
-            ArrayList result = new ArrayList();  //  итоговый список
+            ArrayList result = new ArrayList(); //  итоговый список
             //цикл по правилам
-            for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
+            for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext();)
             {
-                string current = (string)rule.Current;  //  текущее правило,
-                string rhs = current.Substring(2);  //  его правая часть,                       
-                string[] rhs_split = rhs.Split(A);  //  отдельные сегменты rhs, разделенные А
+                string current = (string)rule.Current; //  текущее правило,
+                string rhs = current.Substring(2); //  его правая часть,
+                string[] rhs_split = rhs.Split(A); //  отдельные сегменты rhs, разделенные А
                 int counter;
                 if (rhs.IndexOf(A) != -1)
                 { //если правая часть содержит А
-                    counter = 0;  //подсчитывает количество вхождений А
+                    counter = 0; //подсчитывает количество вхождений А
                     for (int i = 0; i < rhs.Length; i++)
                         if (rhs[i] == A)
                             counter++;
                     combinations.Clear();
-                    GenerateCombinations(counter, "");  //генерация комбинаций
-                    for (IEnumerator element = combinations.GetEnumerator(); element.MoveNext(); )
+                    GenerateCombinations(counter, ""); //генерация комбинаций
+                    for (IEnumerator element = combinations.GetEnumerator(); element.MoveNext();)
                         if (((string)element.Current).IndexOf('1') != -1)
                         {
                             //  если текущая комбинация содержит хоть один вычеркиваемый символ (т.е. единицу)
                             string combination = (string)element.Current;
                             string this_rhs = rhs_split[0];
-                            //  если текущий символ комвинации - единица, 
+                            //  если текущий символ комвинации - единица,
                             //  то вычеркиваем А(просто соединяем сегменты правой части правила),
-                            //  иначе вставляем дополнительный символ А) 
+                            //  иначе вставляем дополнительный символ А)
                             //
                             for (int i = 0; i < combination.Length; i++)
                                 this_rhs += (combination[i] == '0' ? A.ToString() : "") + rhs_split[i + 1];
@@ -275,41 +282,43 @@ namespace MPTranslator
             return result;
         }
 
-        protected bool AcceptEmptyString;      ///< допускать ли пустую строку
+        protected bool AcceptEmptyString; ///< допускать ли пустую строку
         protected void RemoveEpsilonRules()
-        {  /// удаление е-правил
-            AcceptEmptyString = false;      // флаг принадлежности пустой строки языку
+        { /// удаление е-правил
+            AcceptEmptyString = false; // флаг принадлежности пустой строки языку
             bool EpsilonRulesExist;
             do
             {
                 EpsilonRulesExist = false;
-                for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
+                for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext();)
                     if (((string)rule.Current)[2] == 'e')
-                    {    // нашли эпсилон-правило     
+                    { // нашли эпсилон-правило
                         // принимаем пустую строку, если левая часть правила содержит стартовый символ
                         char A = ((string)rule.Current)[0];
-                        if (A == 'S') { AcceptEmptyString = true; }
+                        if (A == 'S')
+                        {
+                            AcceptEmptyString = true;
+                        }
                         Grammar.AddRange(GenerateRulesWithout(A));
-                        Grammar.Remove(rule.Current);       // удаляем e-правило                        
+                        Grammar.Remove(rule.Current); // удаляем e-правило
                         EpsilonRulesExist = true;
                         break;
                     }
-            }
-            while (EpsilonRulesExist);      //  пока существуют эпсилон-правила
+            } while (EpsilonRulesExist); //  пока существуют эпсилон-правила
         }
 
-        protected Hashtable FirstSets = new Hashtable();       ///< Набор множеств First
+        protected Hashtable FirstSets = new Hashtable(); ///< Набор множеств First
         protected void ComputeFirstSets()
         {
             for (int i = 0; i < Terminals.Length; i++)
-                FirstSets[Terminals[i]] = Terminals[i].ToString();   // FIRST[c] = {c}*/
+                FirstSets[Terminals[i]] = Terminals[i].ToString(); // FIRST[c] = {c}*/
             for (int i = 0; i < NonTerminals.Length; i++)
-                FirstSets[NonTerminals[i]] = "";                     //First[x] = ""
+                FirstSets[NonTerminals[i]] = ""; // First[x] = ""
             bool changes;
             do
             {
                 changes = false;
-                for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
+                for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext();)
                 {
                     // Для каждого правила X-> Y0Y1…Yn
                     char X = ((string)rule.Current)[0];
@@ -327,8 +336,7 @@ namespace MPTranslator
                             }
                     }
                 }
-            }
-            while (changes); //  пока вносятся изменения
+            } while (changes); //  пока вносятся изменения
         }
 
         /// функции доступа ко множествам FIRST
@@ -339,37 +347,37 @@ namespace MPTranslator
         protected ArrayList Closure(ArrayList I)
         {
             ArrayList result = new ArrayList();
-            //Console.WriteLine("Closure_множество ситуаций: " + DebugArrayList(I));
+            // Console.WriteLine("Closure_множество ситуаций: " + DebugArrayList(I));
             //добавляем все элементы I в замыкание
-            for (IEnumerator item = I.GetEnumerator(); item.MoveNext(); )
+            for (IEnumerator item = I.GetEnumerator(); item.MoveNext();)
                 result.Add(item.Current);
             bool changes;
             do
             {
                 changes = false;
                 //для каждого элемента R
-                for (IEnumerator item = result.GetEnumerator(); item.MoveNext(); )
+                for (IEnumerator item = result.GetEnumerator(); item.MoveNext();)
                 {
-                    //A -> alpha.Bbeta,a
+                    // A -> alpha.Bbeta,a
                     string itvalue = (string)item.Current;
                     int Bidx = itvalue.IndexOf('.') + 1;
-                    char B = itvalue[Bidx];                     //  B
-                    if (NonTerminals.IndexOf(B) == -1)           //  если после точки терминал, то ситуацию не обрабатываем
+                    char B = itvalue[Bidx]; //  B
+                    if (NonTerminals.IndexOf(B) == -1) //  если после точки терминал, то ситуацию не обрабатываем
                         continue;
                     string beta = itvalue.Substring(Bidx + 1);
-                    beta = beta.Substring(0, beta.Length - 2);   //  beta
-                    char a = itvalue[itvalue.Length - 1];      //  a
+                    beta = beta.Substring(0, beta.Length - 2); //  beta
+                    char a = itvalue[itvalue.Length - 1]; //  a
                     //для каждого правила B -> gamma
-                    for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
+                    for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext();)
                         if (((string)rule.Current)[0] == B)
                         { //  B - >gramma
-                            string gamma = ((string)rule.Current).Substring(2);     //  gamma     
+                            string gamma = ((string)rule.Current).Substring(2); //  gamma
                             string first_betaa = First(beta + a);
                             // для каждого b из FIRST(betaa)
                             for (int i = 0; i < first_betaa.Length; i++)
                             {
                                 //             Console.WriteLine("i= " + i + "first_betaa[i]= " + first_betaa[i]);
-                                char b = first_betaa[i];           //  b
+                                char b = first_betaa[i]; //  b
                                 string newitem = B + " ." + gamma + "," + b;
                                 //             Console.WriteLine("сгенерирована ситуация: " + newitem);
                                 // добавить элемент B -> .gamma,b
@@ -381,11 +389,10 @@ namespace MPTranslator
                                     goto breakloop;
                                 }
                             }
-                        }  // for по правилам B -> gamma
+                        } // for по правилам B -> gamma
                 } // for по  ситуациям R
-            breakloop: ;
-            }
-            while (changes);
+            breakloop:;
+            } while (changes);
             //      Console.WriteLine("Closure_замыкание_ result " + DebugArrayList(result));
             return result;
         }
@@ -395,7 +402,7 @@ namespace MPTranslator
         {
             ArrayList J = new ArrayList();
             // для всех ситуаций из I
-            for (IEnumerator item = I.GetEnumerator(); item.MoveNext(); )
+            for (IEnumerator item = I.GetEnumerator(); item.MoveNext();)
             {
                 string itvalue = (string)item.Current;
                 string[] parts = itvalue.Split('.');
@@ -412,8 +419,8 @@ namespace MPTranslator
         {
             string[] lhsArr = new string[lhs.Count];
             // преобразование списка
-            lhs.CopyTo(lhsArr);             // в массив
-            Array.Sort(lhsArr);             // и его сортировка
+            lhs.CopyTo(lhsArr); // в массив
+            Array.Sort(lhsArr); // и его сортировка
             string[] rhsArr = new string[rhs.Count];
             // то же для второго множества
             rhs.CopyTo(rhsArr);
@@ -426,11 +433,11 @@ namespace MPTranslator
             return true;
         }
 
-        /// Функция SetsEqual() используется функцией Contatains, 
+        /// Функция SetsEqual() используется функцией Contatains,
         /// определяющей, является ли множество g элементом списка С
         protected bool Contains(ArrayList C, ArrayList g)
         {
-            for (IEnumerator item = C.GetEnumerator(); item.MoveNext(); )
+            for (IEnumerator item = C.GetEnumerator(); item.MoveNext();)
                 if (SetsEqual((ArrayList)item.Current, g))
                     return true;
             return false;
@@ -455,23 +462,23 @@ namespace MPTranslator
                     char X = Symbols[i];
                     Console.WriteLine("Для символа " + X);
                     // для каждого элемента последовательности С
-                    for (IEnumerator item = C.GetEnumerator(); item.MoveNext(); )
+                    for (IEnumerator item = C.GetEnumerator(); item.MoveNext();)
                     {
-                        ArrayList g = GoTo((ArrayList)item.Current, X);  // GoTo(Ii, X)
-                        Console.WriteLine("GoTo( " + DebugArrayList((ArrayList)item.Current) + "," + X + "): \n"
-                                            + DebugArrayList(g));
-                        //Console.ReadLine();
+                        ArrayList g = GoTo((ArrayList)item.Current, X); // GoTo(Ii, X)
+                        Console.WriteLine("GoTo( " + DebugArrayList((ArrayList)item.Current) + "," + X + "): \n" + DebugArrayList(g));
+                        // Console.ReadLine();
                         // если множество g непусто и еще не включено в С
                         if (g.Count != 0 && !Contains(C, g))
                         {
-                            C.Add(g); counter++;
-                            Console.WriteLine("добавлено I" + counter + " : " + DebugArrayList(g)); //Console.ReadLine();
-                            modified = true; break;
+                            C.Add(g);
+                            counter++;
+                            Console.WriteLine("добавлено I" + counter + " : " + DebugArrayList(g)); // Console.ReadLine();
+                            modified = true;
+                            break;
                         }
                     }
                 }
-            }
-            while (modified);       // пока вносятся изменения
+            } while (modified); // пока вносятся изменения
             ArrayList[] CArray = new ArrayList[C.Count];
             // преобразование списка  в массив
             C.CopyTo(CArray);
@@ -483,9 +490,10 @@ namespace MPTranslator
             Tablekey Key = new Tablekey(I, J);
             if (ACTION.Contains(Key) && !ACTION[Key].Equals(action))
             {
-                Console.WriteLine("не LR(1) грамматика"); Console.ReadLine();
+                Console.WriteLine("не LR(1) грамматика");
+                Console.ReadLine();
                 return false;
-            }                                    // не LR(1) вид
+            } // не LR(1) вид
             else
             {
                 ACTION[Key] = action;
@@ -499,12 +507,12 @@ namespace MPTranslator
             for (int i = 0; i < CArray.Length; i++)
             { // цикл по элементам C
                 // Для каждой ситуации из множества CArray[i]
-                for (IEnumerator item = CArray[i].GetEnumerator(); item.MoveNext(); )
+                for (IEnumerator item = CArray[i].GetEnumerator(); item.MoveNext();)
                 {
-                    string itvalue = (string)item.Current;          // ситуация
-                    char a = itvalue[itvalue.IndexOf('.') + 1];     // символ за точкой
+                    string itvalue = (string)item.Current; // ситуация
+                    char a = itvalue[itvalue.IndexOf('.') + 1]; // символ за точкой
                     // Если ситуация имеет вид "A alpha.abeta,b"
-                    if (Terminals.IndexOf(a) != -1)                 // если a - терминал
+                    if (Terminals.IndexOf(a) != -1) // если a - терминал
                         for (int j = 0; j < CArray.Length; j++)
                             if (SetsEqual(GoTo(CArray[i], a), CArray[j]))
                             {
@@ -519,13 +527,13 @@ namespace MPTranslator
                     // Если ситуация имеет вид "A alpha., a"
                     if (itvalue[itvalue.IndexOf('.') + 1] == ',')
                     { // за точкой запятая
-                        a = itvalue[itvalue.Length - 1];  // определить значение a
-                        string alpha = itvalue.Split('.')[0].Substring(2);  // и alpha                      5!
+                        a = itvalue[itvalue.Length - 1]; // определить значение a
+                        string alpha = itvalue.Split('.') [0].Substring(2); // и alpha                      5!
                         if (itvalue[0] != 'П')
-                        {                    // если левая часть не равна П                        
+                        { // если левая часть не равна П
                             // ACTION[i, a] = reduce A -> alpha
                             if (WriteActionTableValue(ACTION, i, a, "r " + itvalue[0] + " " + alpha) == false)
-                                return null;                    // грамматика не LR(1)
+                                return null; // грамматика не LR(1)
                         }
                     }
                     // Если ситуация имеет вид "П S.,$"
@@ -546,7 +554,7 @@ namespace MPTranslator
             for (int c = 0; c < NonTerminals.Length; c++)
                 // для каждого нетерминала А
                 for (int i = 0; i < CArray.Length; i++)
-                {                // для каждого элемента Ii из С
+                { // для каждого элемента Ii из С
                     ArrayList g = GoTo(CArray[i], NonTerminals[c]);
                     // g=GoTo[Ii, A]
                     for (int j = 0; j < CArray.Length; j++)

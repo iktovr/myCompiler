@@ -8,11 +8,14 @@ using System.Linq.Expressions;
 using Processor.AttrGrammar;
 using Processor.AbstractGrammar;
 
-namespace Translator {
+namespace Translator
+{
 
-    class Program {
+    class Program
+    {
 
-        static void Dialog() {
+        static void Dialog()
+        {
             Console.WriteLine("\n----------------------------------------------");
             Console.WriteLine("DFS ( lab 2 ) ................. Enter 1");
             Console.WriteLine("Convert NDFS to DFS ");
@@ -32,10 +35,13 @@ namespace Translator {
             Console.WriteLine("AT-Grammar....... Enter 10");
         }
 
-        static void Main() {
-            while (true) {
+        static void Main()
+        {
+            while (true)
+            {
                 Dialog();
-                switch (Console.ReadLine()) {
+                switch (Console.ReadLine())
+                {
                     case "0": // NPDA  automata
                         var npda = new PDA(
                                 new List<Symbol>() { new Symbol("q"),new Symbol("qf") },
@@ -63,12 +69,17 @@ namespace Translator {
                         Console.Write("Debug PDA ");
                         npda.debugDelta();
                         Console.WriteLine("\nEnter the line :");
-                        string str = "v + v"; //Console.ReadLine();
-                        str+='e';
+                        string str = "v + v"; // Console.ReadLine();
+                        str += 'e';
 
-                        bool b = npda.Execute_(str,0,str.Length);
-                        if (b) { Console.WriteLine("Yes"); } else Console.WriteLine("NO");
-                        //mp.Execute(str, 0, str.Length);
+                        bool b = npda.Execute_(str, 0, str.Length);
+                        if (b)
+                        {
+                            Console.WriteLine("Yes");
+                        }
+                        else
+                            Console.WriteLine("NO");
+                        // mp.Execute(str, 0, str.Length);
                         /*if (mp.ans != "")
                             Console.WriteLine(mp.ans);
                         else
@@ -100,14 +111,13 @@ namespace Translator {
                         var Gram = new Grammar(new List<Symbol>() { new Symbol("0"),new Symbol("1") },
                         new List<Symbol>() { new Symbol("S0"),new Symbol("A"),new Symbol("B") },
                         "S0");
-                        //P
-                        Gram.AddRule("S0",new List<Symbol>() { new Symbol("0") });
-                        Gram.AddRule("S0",new List<Symbol>() { new Symbol("0"), new Symbol("A") });
-                        Gram.AddRule("A",new List<Symbol>() { new Symbol("1"),  new Symbol("B") });
-                        Gram.AddRule("B",new List<Symbol>() { new Symbol("0") });
-                        Gram.AddRule("B",new List<Symbol>() { new Symbol("0"),new Symbol("A") });
+                        Gram.AddRule("S0", new List<Symbol>() { new Symbol("0") });
+                        Gram.AddRule("S0", new List<Symbol>() { new Symbol("0"), new Symbol("A") });
+                        Gram.AddRule("A", new List<Symbol>() { new Symbol("1"), new Symbol("B") });
+                        Gram.AddRule("B", new List<Symbol>() { new Symbol("0") });
+                        Gram.AddRule("B", new List<Symbol>() { new Symbol("0"), new Symbol("A") });
 
-                        //From Automaton Grammar to State Machine(KA)
+                        // From Automaton Grammar to State Machine(KA)
                         FSAutomate KA = Gram.Transform();
                         KA.DebugAuto();
                         break;
@@ -118,19 +128,19 @@ namespace Translator {
                                                                                                 new List<Symbol>() { new Symbol("a"),new Symbol("b") },
                                                                                                 new List<Symbol>() { new Symbol("qf") },
                                                                                                 "S0");
-                        example.AddRule("S0","","1");
-                        example.AddRule("S0","","7");
-                        example.AddRule("1","","2");
-                        example.AddRule("1","","4");
-                        example.AddRule("2","a","3");
-                        example.AddRule("4","b","5");
-                        example.AddRule("3","","6");
-                        example.AddRule("5","","6");
-                        example.AddRule("6","","1");
-                        example.AddRule("6","","7");
-                        example.AddRule("7","a","8");
-                        example.AddRule("8","b","9");
-                        example.AddRule("9","b","qf");
+                        example.AddRule("S0", "", "1");
+                        example.AddRule("S0", "", "7");
+                        example.AddRule("1", "", "2");
+                        example.AddRule("1", "", "4");
+                        example.AddRule("2", "a", "3");
+                        example.AddRule("4", "b", "5");
+                        example.AddRule("3", "", "6");
+                        example.AddRule("5", "", "6");
+                        example.AddRule("6", "", "1");
+                        example.AddRule("6", "", "7");
+                        example.AddRule("7", "a", "8");
+                        example.AddRule("8", "b", "9");
+                        example.AddRule("9", "b", "qf");
 
                         FSAutomate dkaEX = new FSAutomate();
                         dkaEX.BuildDeltaDKAutomate(example);
@@ -187,19 +197,19 @@ namespace Translator {
 
                     case "3":
                         var regGr = new Grammar(new List<Symbol>() { new Symbol("b"),new Symbol("c") },
-                                                                    new List<Symbol>() { new Symbol("S"),new Symbol("A"),new Symbol("B"),new Symbol("C") },
-                                                                                "S");
+                                                                     new List<Symbol>() { new Symbol("S"),new Symbol("A"),new Symbol("B"),new Symbol("C") },
+                                                                     "S");
 
-                        regGr.AddRule("S",new List<Symbol>() { new Symbol("c"),new Symbol("A"),new Symbol("B") });
-                        regGr.AddRule("S",new List<Symbol>() { new Symbol("b") });
-                        regGr.AddRule("B",new List<Symbol>() { new Symbol("c"),new Symbol("B") });
-                        regGr.AddRule("B",new List<Symbol>() { new Symbol("b") });
-                        regGr.AddRule("A",new List<Symbol>() { new Symbol("Ab") });
-                        regGr.AddRule("A",new List<Symbol>() { new Symbol("B") });
-                        regGr.AddRule("A",new List<Symbol>() { new Symbol("") });
+                        regGr.AddRule("S", new List<Symbol>() { new Symbol("c"), new Symbol("A"), new Symbol("B") });
+                        regGr.AddRule("S", new List<Symbol>() { new Symbol("b") });
+                        regGr.AddRule("B", new List<Symbol>() { new Symbol("c"), new Symbol("B") });
+                        regGr.AddRule("B", new List<Symbol>() { new Symbol("b") });
+                        regGr.AddRule("A", new List<Symbol>() { new Symbol("Ab") });
+                        regGr.AddRule("A", new List<Symbol>() { new Symbol("B") });
+                        regGr.AddRule("A", new List<Symbol>() { new Symbol("") });
                         Console.WriteLine("Grammar:");
-                        regGr.Debug("T",regGr.T);
-                        regGr.Debug("T",regGr.V);
+                        regGr.Debug("T", regGr.T);
+                        regGr.Debug("T", regGr.V);
                         regGr.DebugPrules();
 
                         Grammar G1 = regGr.EpsDelete();
@@ -217,32 +227,32 @@ namespace Translator {
 
                         Console.WriteLine("--------------------------------------------");
                         Console.WriteLine("Normal Grammatic:");
-                        G4.Debug("T",G4.T);
-                        G4.Debug("V",G4.V);
+                        G4.Debug("T", G4.T);
+                        G4.Debug("V", G4.V);
                         G4.DebugPrules();
                         Console.Write("Start symbol: ");
-                        Console.WriteLine(G4.S0+"\n");
+                        Console.WriteLine(G4.S0 + "\n");
                         break;
 
                     case "4": //МП - автоматы
                         var CFGrammar = new Grammar(new List<Symbol>() { new Symbol("b"),new Symbol("c") },
-                                                                                    new List<Symbol>() { new Symbol("S"),new Symbol("A"),new Symbol("B"),new Symbol("D") },
-                                                                                "S");
+                                                                         new List<Symbol>() { new Symbol("S"),new Symbol("A"),new Symbol("B"),new Symbol("D") },
+                                                                         "S");
 
-                        CFGrammar.AddRule("S",new List<Symbol>() { new Symbol("b") });
-                        CFGrammar.AddRule("S",new List<Symbol>() { new Symbol("c"),new Symbol("A"),new Symbol("B") });
-                        CFGrammar.AddRule("S",new List<Symbol>() { new Symbol("c"),new Symbol("B")});
+                        CFGrammar.AddRule("S", new List<Symbol>() { new Symbol("b") });
+                        CFGrammar.AddRule("S", new List<Symbol>() { new Symbol("c"), new Symbol("A"), new Symbol("B") });
+                        CFGrammar.AddRule("S", new List<Symbol>() { new Symbol("c"), new Symbol("B") });
 
-                        CFGrammar.AddRule("A",new List<Symbol>() { new Symbol("b"),new Symbol("D") });
-                        CFGrammar.AddRule("A",new List<Symbol>() { new Symbol("b") });
-                        CFGrammar.AddRule("A",new List<Symbol>() { new Symbol("c"),new Symbol("B"),new Symbol("D") });
-                        CFGrammar.AddRule("A",new List<Symbol>() { new Symbol("c"),new Symbol("B") });
+                        CFGrammar.AddRule("A", new List<Symbol>() { new Symbol("b"), new Symbol("D") });
+                        CFGrammar.AddRule("A", new List<Symbol>() { new Symbol("b") });
+                        CFGrammar.AddRule("A", new List<Symbol>() { new Symbol("c"), new Symbol("B"), new Symbol("D") });
+                        CFGrammar.AddRule("A", new List<Symbol>() { new Symbol("c"), new Symbol("B") });
 
-                        CFGrammar.AddRule("D",new List<Symbol>() { new Symbol("b") });
-                        CFGrammar.AddRule("D",new List<Symbol>() { new Symbol("b"),new Symbol("D") });
+                        CFGrammar.AddRule("D", new List<Symbol>() { new Symbol("b") });
+                        CFGrammar.AddRule("D", new List<Symbol>() { new Symbol("b"), new Symbol("D") });
 
-                        CFGrammar.AddRule("B",new List<Symbol>() { new Symbol("b") });
-                        CFGrammar.AddRule("B",new List<Symbol>() { new Symbol("cB") });
+                        CFGrammar.AddRule("B", new List<Symbol>() { new Symbol("b") });
+                        CFGrammar.AddRule("B", new List<Symbol>() { new Symbol("cB") });
 
                         Console.Write("Debug KC-Grammar ");
                         CFGrammar.DebugPrules();
@@ -259,12 +269,12 @@ namespace Translator {
                         Console.WriteLine("Выберите КС-грамматику: ");
 
                         var CFGr = new Grammar(new List<Symbol>() { new Symbol("a"),new Symbol("b") },
-                                                                                        new List<Symbol>() { new Symbol("S"),new Symbol("A"),new Symbol("B") },
-                                                                                        "S");
+                                                                    new List<Symbol>() { new Symbol("S"),new Symbol("A"),new Symbol("B") },
+                                                                    "S");
 
-                        CFGr.AddRule("S",new List<Symbol>() { new Symbol("a"),new Symbol("A"),new Symbol("b") });
-                        CFGr.AddRule("A",new List<Symbol>() { new Symbol("a"),new Symbol("B"),new Symbol("b") });
-                        CFGr.AddRule("B",new List<Symbol>() { new Symbol("a"),new Symbol("b") });
+                        CFGr.AddRule("S", new List<Symbol>() { new Symbol("a"), new Symbol("A"), new Symbol("b") });
+                        CFGr.AddRule("A", new List<Symbol>() { new Symbol("a"), new Symbol("B"), new Symbol("b") });
+                        CFGr.AddRule("B", new List<Symbol>() { new Symbol("a"), new Symbol("b") });
                         Console.Write("Debug KC-Grammar ");
                         CFGr.DebugPrules();
 
@@ -272,29 +282,31 @@ namespace Translator {
                                                                                         new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L")},
                                                                                         "S");
 
-                        kcGr2.AddRule("S",new List<Symbol>() { new Symbol("F"),new Symbol("="),new Symbol("L") });
-                        kcGr2.AddRule("F",new List<Symbol>() { new Symbol("i") });
-                        kcGr2.AddRule("L",new List<Symbol>() { new Symbol("F") });
+                        kcGr2.AddRule("S", new List<Symbol>() { new Symbol("F"), new Symbol("="), new Symbol("L") });
+                        kcGr2.AddRule("F", new List<Symbol>() { new Symbol("i") });
+                        kcGr2.AddRule("L", new List<Symbol>() { new Symbol("F") });
                         Console.Write("Debug KC-Grammar ");
                         kcGr2.DebugPrules();
 
                         string ans = "y";
-                        while (ans=="y") {
+                        while (ans == "y")
+                        {
                             Console.WriteLine("Введите 1, 2 или 3");
-                            switch (Console.ReadLine()) {
+                            switch (Console.ReadLine())
+                            {
                                 case "1":
                                     var pda = new PDA(new List<Symbol>() { new Symbol("q0"),new Symbol("q1"),new Symbol("q2"),new Symbol("qf") },
-                                                                             new List<Symbol>() { new Symbol("a"),new Symbol("b") },
-                                                                             new List<Symbol>() { new Symbol("z0"),new Symbol("a"),new Symbol("b"),new Symbol("S"),new Symbol("A"),new Symbol("B") },
-                                                                             "q0",
-                                                                             "S",
-                                                                             new List<Symbol>() { new Symbol("qf") });
+                                                                           new List<Symbol>() { new Symbol("a"),new Symbol("b") },
+                                                                           new List<Symbol>() { new Symbol("z0"),new Symbol("a"),new Symbol("b"),new Symbol("S"),new Symbol("A"),new Symbol("B") },
+                                                                           "q0",
+                                                                           "S",
+                                                                           new List<Symbol>() { new Symbol("qf") });
 
-                                    pda.addDeltaRule("q0","","S",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("a"),new Symbol("A"),new Symbol("b") });
-                                    pda.addDeltaRule("q1","","A",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("a"),new Symbol("B"),new Symbol("b") });
-                                    pda.addDeltaRule("q1","","B",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("a"),new Symbol("b") });
-                                    pda.addDeltaRule("q1","a","a",new List<Symbol>(){ new Symbol("q1") },new List<Symbol>() { new Symbol("") });
-                                    pda.addDeltaRule("q1","b","b",new List<Symbol>(){ new Symbol("q1") },new List<Symbol>() { new Symbol("") });
+                                    pda.addDeltaRule("q0", "", "S", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("a"), new Symbol("A"), new Symbol("b") });
+                                    pda.addDeltaRule("q1", "", "A", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("a"), new Symbol("B"), new Symbol("b") });
+                                    pda.addDeltaRule("q1", "", "B", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("a"), new Symbol("b") });
+                                    pda.addDeltaRule("q1", "a", "a", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("") });
+                                    pda.addDeltaRule("q1", "b", "b", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("") });
                                     Console.Write("Debug Mp ");
                                     pda.debugDelta();
                                     Console.WriteLine("\nВведите строку :");
@@ -303,16 +315,16 @@ namespace Translator {
 
                                 case "2":
                                  var pda1 = new PDA(new List<Symbol>() { new Symbol("q0"),new Symbol("q1"),new Symbol("q2"),new Symbol("qf") },
-                                                                             new List<Symbol>() { new Symbol("i"),new Symbol("="),new Symbol("") },
-                                                                             new List<Symbol>() { new Symbol("i"),new Symbol("="),new Symbol(""),new Symbol("S"),new Symbol("F"),new Symbol("L") },
-                                                                             "q0",
-                                                                             "S",
-                                                                             new List<Symbol>() { new Symbol("qf") });
-                                    pda1.addDeltaRule("q0","","S",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("F"),new Symbol("="),new Symbol("L") });
-                                    pda1.addDeltaRule("q1","","F",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("i") });
-                                    pda1.addDeltaRule("q1","","L",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("i") });
-                                    pda1.addDeltaRule("q1","i","i",new List<Symbol>(){ new Symbol("q1") },new List<Symbol>() { new Symbol("")  });
-                                    pda1.addDeltaRule("q1","=","=",new List<Symbol>(){ new Symbol("q1") },new List<Symbol>() { new Symbol("")  });
+                                                                         new List<Symbol>() { new Symbol("i"),new Symbol("="),new Symbol("") },
+                                                                         new List<Symbol>() { new Symbol("i"),new Symbol("="),new Symbol(""),new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                                                                         "q0",
+                                                                         "S",
+                                                                         new List<Symbol>() { new Symbol("qf") });
+                                    pda1.addDeltaRule("q0", "", "S", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("F"), new Symbol("="), new Symbol("L") });
+                                    pda1.addDeltaRule("q1", "", "F", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("i") });
+                                    pda1.addDeltaRule("q1", "", "L", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("i") });
+                                    pda1.addDeltaRule("q1", "i", "i", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("") });
+                                    pda1.addDeltaRule("q1", "=", "=", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("") });
                                     Console.Write("Debug Mp ");
                                     pda1.debugDelta();
                                     Console.WriteLine("\nВведите строку :");
@@ -321,76 +333,82 @@ namespace Translator {
 
                                 case "3":
                                     break;
-                            } //end switch 1 or 2
+                            } // end switch 1 or 2
                             Console.WriteLine("Продолжить (y - yes, n - no)");
-                            ans=Console.ReadLine();
-                        } //end while
+                            ans = Console.ReadLine();
+                        } // end while
                         break;
 
                     case "5": // LL Разбор
                         var LL = new Grammar(new List<Symbol>() { new Symbol("i"),new Symbol("("),new Symbol(")"),new Symbol("+"),new Symbol("*") },
-                                                                                             new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
-                                                                                             "S");
+                                                                  new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                                                                  "S");
 
-                        LL.AddRule("S",new List<Symbol>() { new Symbol("("),new Symbol("F"),new Symbol("+"),new Symbol("L"),new Symbol(")") });
-                        LL.AddRule("F",new List<Symbol>() { new Symbol("*"),new Symbol("L") });
-                        LL.AddRule("F",new List<Symbol>() { new Symbol("i") });
-                        LL.AddRule("L",new List<Symbol>() { new Symbol("F") });
+                        LL.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("F"), new Symbol("+"), new Symbol("L"), new Symbol(")") });
+                        LL.AddRule("F", new List<Symbol>() { new Symbol("*"), new Symbol("L") });
+                        LL.AddRule("F", new List<Symbol>() { new Symbol("i") });
+                        LL.AddRule("L", new List<Symbol>() { new Symbol("F") });
 
                         var parser = new LLParser(LL);
                         Console.WriteLine("Введите строку: ");
-                        if (parser.Parse(Console.ReadLine())) {
+                        if (parser.Parse(Console.ReadLine()))
+                        {
                             Console.WriteLine("Успех. Строка соответствует грамматике.");
                             Console.WriteLine(parser.OutputConfigure);
-                        } else {
+                        }
+                        else
+                        {
                             Console.WriteLine("Не успех. Строка не соответствует грамматике.");
                         }
                         break;
 
                     case "5.1": // LL Разбор
                         var LL1 = new Grammar(new List<Symbol>() { new Symbol("i"),new Symbol("("),new Symbol(")"),new Symbol(":"),new Symbol("*"),new Symbol("") },
-                                                                             new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
-                                                                             "S");
+                                                                   new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                                                                   "S");
 
-                        LL1.AddRule("S",new List<Symbol>() { new Symbol("("),new Symbol("F"),new Symbol(":"),new Symbol("L"),new Symbol(")") });
-                        LL1.AddRule("S",new List<Symbol>() { new Symbol("L"),new Symbol("*") });
-                        LL1.AddRule("S",new List<Symbol>() { new Symbol("i") });
-                        LL1.AddRule("L",new List<Symbol>() { new Symbol("L"),new Symbol("*") });
-                        LL1.AddRule("L",new List<Symbol>() { new Symbol("i") });
-                        LL1.AddRule("F",new List<Symbol>() { new Symbol("L"),new Symbol("*") });
-                        LL1.AddRule("F",new List<Symbol>() { new Symbol("i") });
+                        LL1.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("F"), new Symbol(":"), new Symbol("L"), new Symbol(")") });
+                        LL1.AddRule("S", new List<Symbol>() { new Symbol("L"), new Symbol("*") });
+                        LL1.AddRule("S", new List<Symbol>() { new Symbol("i") });
+                        LL1.AddRule("L", new List<Symbol>() { new Symbol("L"), new Symbol("*") });
+                        LL1.AddRule("L", new List<Symbol>() { new Symbol("i") });
+                        LL1.AddRule("F", new List<Symbol>() { new Symbol("L"), new Symbol("*") });
+                        LL1.AddRule("F", new List<Symbol>() { new Symbol("i") });
 
                         var parser1 = new LLParser(LL1);
                         Console.WriteLine("Введите строку: ");
-                        if (parser1.Parse1(Console.ReadLine())) {
+                        if (parser1.Parse1(Console.ReadLine()))
+                        {
                             Console.WriteLine("Успех. Строка соответствует грамматике.");
                             Console.WriteLine(parser1.OutputConfigure);
-                        } else {
+                        }
+                        else
+                        {
                             Console.WriteLine("Не успех. Строка не соответствует грамматике.");
                         }
                         break;
 
-                    case "6":  // LR(k)
+                    case "6": // LR(k)
                         break;
                     case "6.1": // LR(k)
                         break;
 
                     case "7": //МП - автоматы
-                                        // (q0,i@i,S) |- (q1,i@i,F@L)
-                                        // S->F@L
-                                        // F->i L->i
                         var pda2 = new PDA(new List<Symbol>() { new Symbol("q0"),new Symbol("q1"),new Symbol("q2"),new Symbol("qf") },
-                                                             new List<Symbol>() { new Symbol("a"),new Symbol("b") },
-                                                             new List<Symbol>() { new Symbol("z0"),new Symbol("a") },
-                                                             "q0",
-                                                             "S",
+                                                                new List<Symbol>() { new Symbol("a"),new Symbol("b") },
+                                                                new List<Symbol>() { new Symbol("z0"),new Symbol("a") },
+                                                                "q0",
+                                                                "S",
                                                              new List<Symbol>() { new Symbol("qf") });
+                              // (q0,i@i,S) |- (q1,i@i,F@L)
+                              // S->F@L
+                              // F->i L->i
 
-                        pda2.addDeltaRule("q0","e","S",new List<Symbol>() { new Symbol("q1") },new List<Symbol>() { new Symbol("F"),new Symbol("@"),new Symbol("L") });
-                        pda2.addDeltaRule("q1","e","F",new List<Symbol>() { new Symbol("q2") },new List<Symbol>() { new Symbol("i") });
-                        pda2.addDeltaRule("q2","e","L",new List<Symbol>() { new Symbol("q3") },new List<Symbol>() { new Symbol("i") });
-                        pda2.addDeltaRule("q3","i","i",new List<Symbol>() { new Symbol("q4") },new List<Symbol>() { new Symbol("e") });
-                        pda2.addDeltaRule("q4","@","@",new List<Symbol>() { new Symbol("q5") },new List<Symbol>() { new Symbol("e") });
+                        pda2.addDeltaRule("q0", "e", "S", new List<Symbol>() { new Symbol("q1") }, new List<Symbol>() { new Symbol("F"), new Symbol("@"), new Symbol("L") });
+                        pda2.addDeltaRule("q1", "e", "F", new List<Symbol>() { new Symbol("q2") }, new List<Symbol>() { new Symbol("i") });
+                        pda2.addDeltaRule("q2", "e", "L", new List<Symbol>() { new Symbol("q3") }, new List<Symbol>() { new Symbol("i") });
+                        pda2.addDeltaRule("q3", "i", "i", new List<Symbol>() { new Symbol("q4") }, new List<Symbol>() { new Symbol("e") });
+                        pda2.addDeltaRule("q4", "@", "@", new List<Symbol>() { new Symbol("q5") }, new List<Symbol>() { new Symbol("e") });
                         Console.Write("Debug Mp ");
                         pda2.debugDelta();
                         Console.WriteLine("\nEnter the line :");
@@ -449,11 +467,11 @@ namespace Translator {
                         break;
                     case "10":
                         // S, Er    *, +, cr     {ANS}r
-                        List<Symbol> V = new List<Symbol>() { new Symbol("S"),new Symbol("E", new List<Symbol>() { new Symbol("r") }) };
-                        List<Symbol> T = new List<Symbol>() { new Symbol("*"),new Symbol("+"),new Symbol("c",new List<Symbol>() { new Symbol("r") }) };
-                        List<OPSymbol> OP = new List<OPSymbol>() { new OPSymbol("{ANS}",new List<Symbol>() { new Symbol("r") }) };
+                        List<Symbol> V = new List<Symbol>() { new Symbol("S"), new Symbol("E", new List<Symbol>() { new Symbol("r") }) };
+                        List<Symbol> T = new List<Symbol>() { new Symbol("*"), new Symbol("+"), new Symbol("c", new List<Symbol>() { new Symbol("r") }) };
+                        List<OPSymbol> OP = new List<OPSymbol>() { new OPSymbol("{ANS}", new List<Symbol>() { new Symbol("r") }) };
 
-                        var atgr = new ATGrammar(V,T,OP,new Symbol("S"));
+                        var atgr = new ATGrammar(V, T, OP, new Symbol("S"));
                         atgr.Addrule(new Symbol("S"), // LHS
                                                  new List<Symbol>() { // RHS
                                                                 new Symbol("E", // S -> Ep {ANS}r r -> p
@@ -497,8 +515,8 @@ namespace Translator {
                         Console.WriteLine("Выход из программы");
                         return;
 
-                } //end switch
-            } //end while
-        } //end void Main()
-    } //end class Program
+                } // end switch
+            } // end while
+        } // end void Main()
+    } // end class Program
 }

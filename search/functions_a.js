@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['operator_20symbol_228',['operator Symbol',['../class_m_p_translator_1_1_symbol.html#a4e148f7b0bf9ee362265ebd16b2369e6',1,'MPTranslator.Symbol.operator Symbol(string str)'],['../class_m_p_translator_1_1_symbol.html#a26bfd99971093037dd51d3cf104d88b1',1,'MPTranslator.Symbol.operator Symbol(Dictionary&lt; string, object &gt; dict)'],['../class_m_p_translator_1_1_symbol.html#a1ec089c77b606902a0f053f4c411bdd6',1,'MPTranslator.Symbol.operator Symbol(Types.Actions func)']]],
-  ['operator_3d_3d_229',['operator==',['../class_m_p_translator_1_1_symbol.html#a850374f4b3dda170fe09aaed73c72be2',1,'MPTranslator::Symbol']]]
+  ['operator_20symbol_230',['operator Symbol',['../class_s_d_t_1_1_symbol.html#a9c126aa947d0dface7b519ff37f8c24e',1,'SDT.Symbol.operator Symbol(string str)'],['../class_s_d_t_1_1_symbol.html#a43458357f60bb2f992144f1b6af87da0',1,'SDT.Symbol.operator Symbol(Dictionary&lt; string, object &gt; dict)'],['../class_s_d_t_1_1_symbol.html#a803a0b54b6b93871273eafb17de4b68e',1,'SDT.Symbol.operator Symbol(Types.Actions func)']]],
+  ['operator_3d_3d_231',['operator==',['../class_s_d_t_1_1_symbol.html#af6b74296ae1100ceb16af2dabe5ffa46',1,'SDT::Symbol']]]
 ];

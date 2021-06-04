@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mycompiler_20aka_20Фреймворк_293',['myCompiler aka Фреймворк',['../index.html',1,'']]]
+  ['mycompiler_20aka_20Фреймворк_299',['myCompiler aka Фреймворк',['../index.html',1,'']]]
 ];

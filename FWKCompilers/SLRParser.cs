@@ -8,12 +8,10 @@ using Processor.AbstractGrammar;
 
 namespace Translator
 {
-    // todo наследование LR Grammar
-    // todo переименовать C на phi
 
-    // todo написать подробнее про LR(0) и LR(1)
     // todo картинку автомата в Word в виде объекта
 
+    // todo наследование LR Grammar
     // class LRGrammar : Grammar
 
     class SLRParser
@@ -139,15 +137,13 @@ namespace Translator
         /// Пополненная контекстно-свободная грамматика
         protected Grammar SLRGrammar = null;
         /// Канонический набор множеств LR(0)-ситуаций
-        protected List< List< State > > C = new List< List< State > >();
+        protected List< List< State > > phi = new List< List< State > >();
         /// LR(0)-автомат переходов грамматики
         protected FSAutomate LRA = new FSAutomate();
         /// Управляющая SLR-таблица, представленная в виде словаря
         protected Dictionary<PairSymbInt, PairSymbInt> M = null;
         /// Новый начальный нетерминал S'
         protected Symbol startSymbol = new Symbol("S'");
-        /// Пустая цепочка
-        protected Symbol EPS = new Symbol("");
 
         public SLRParser(Grammar grammar)
         {
@@ -155,7 +151,7 @@ namespace Translator
             // Пополнение грамматики
             SLRGrammar.AddRule(startSymbol.ToString(), new List<Symbol>() { SLRGrammar.S0 });
             SLRGrammar.V.Add(startSymbol);
-            SLRGrammar.T.Add(new Symbol("$"));
+            SLRGrammar.T.Add(Symbol.Sentinel);
             SLRGrammar.DebugPrules();
 
             InitAutomate();
@@ -177,6 +173,7 @@ namespace Translator
                 LRA.Sigma.Add(v);
             }
             LRA.D = new List<DeltaQSigma>();
+            LRA.F = new List<Symbol>();
         }
 
         /// Построение замыкания множества LR(0)-ситуаций
@@ -290,32 +287,38 @@ namespace Translator
         /// Построение канонического набора множеств LR(0)-ситуаций и автомата перехода между ситуациями
         protected void BuildLRAutomate()
         {
-            List< List< State > > C0 = new List< List< State > >();
-            List<State> I = new List<State>();
-            I.Add(new State(SLRGrammar.P.Count - 1, 0));
-            C0.Add(Closure(I));
+            List< List< State > > phi0 = new List< List< State > >();
+            List<State> I0 = new List<State>();
+            I0.Add(new State(SLRGrammar.P.Count - 1, 0));
+            phi0.Add(Closure(I0));
             bool changed = false;
+            List<Symbol> nonTerminalStates = new List<Symbol>();
             do {
                 changed = false;
-                C = new List< List< State > > (C0);
-                for (int i = 0; i < C.Count; ++i)
+                phi = new List< List< State > > (phi0);
+                for (int i = 0; i < phi.Count; ++i)
                 {
-                    List<State> c = C[i];
+                    List<State> I = phi[i];
                     foreach (Symbol X in LRA.Sigma)
                     {
-                        List<State> nextState = Goto(c, X);
+                        List<State> nextState = Goto(I, X);
                         if (nextState != null)
                         {
-                            int nextStateId = FindSetOfStates(C0, nextState);
+                            Symbol curStateSymbol = new Symbol(i.ToString());
+                            if (!nonTerminalStates.Contains(curStateSymbol))
+                            {
+                                nonTerminalStates.Add(curStateSymbol);
+                            }
+                            int nextStateId = FindSetOfStates(phi0, nextState);
                             // Если замыкание не найдено
                             if (nextStateId == -1)
                             {
-                                nextStateId = C0.Count;
+                                nextStateId = phi0.Count;
                                 LRA.Q.Add(new Symbol(nextStateId.ToString()));
-                                C0.Add(nextState);
+                                phi0.Add(nextState);
                                 changed = true;
                             }
-                            DeltaQSigma nextStateEdge = new DeltaQSigma(new Symbol(i.ToString()), X, new List<Symbol> { new Symbol(nextStateId.ToString()) });
+                            DeltaQSigma nextStateEdge = new DeltaQSigma(curStateSymbol, X, new List<Symbol> { new Symbol(nextStateId.ToString()) });
                             if (!FindDeltaRuleInLRA(nextStateEdge))
                             {
                                 LRA.D.Add(nextStateEdge);
@@ -326,12 +329,21 @@ namespace Translator
                 }
             } while (changed);
 
-            Console.WriteLine("Debug canonical set of states C");
-            for (int i = 0; i < C.Count; ++i)
+            for (int i = 0; i < phi.Count; ++i)
             {
-                List<State> c = C[i];
+                Symbol curStateSymbol = new Symbol(i.ToString());
+                if (!nonTerminalStates.Contains(curStateSymbol))
+                {
+                    LRA.F.Add(curStateSymbol);
+                }
+            }
+
+            Console.WriteLine("Debug canonical set of states C");
+            for (int i = 0; i < phi.Count; ++i)
+            {
+                List<State> I = phi[i];
                 Console.WriteLine("Debug I_" + i.ToString());
-                foreach (State st in c) {
+                foreach (State st in I) {
                     st.Debug(SLRGrammar);
                 }
             }
@@ -342,51 +354,54 @@ namespace Translator
         {
             PairComparer comp = new PairComparer();
             M = new Dictionary<PairSymbInt, PairSymbInt>(comp);
-            for (int i = 0; i < C.Count; ++i)
+            for (int i = 0; i < phi.Count; ++i)
             {
-                List<State> I = C[i];
-                foreach (State st in I)
+                List<State> I = phi[i];
+                foreach (DeltaQSigma edge in LRA.D)
                 {
-                    Symbol a = st.GetRHSymbol(SLRGrammar);
-                    Symbol A = st.GetLHSymbol(SLRGrammar);
-                    if (a.Equals(EPS))
+                    if (i.ToString() == edge.LHSQ.Value)
                     {
-                        if (A.Equals(startSymbol))
+                        Symbol X = edge.LHSS;
+                        Symbol I_j = edge.RHSQ[0];
+                        int j = int.Parse(I_j.Value);
+                        if (SLRGrammar.T.Contains(X))
                         {
-                            PairSymbInt conditionFrom = new PairSymbInt("$", i);
-                            PairSymbInt conditionTo = new PairSymbInt("A", -1);
+                            PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
+                            PairSymbInt conditionTo = new PairSymbInt("S", j);
                             M[conditionFrom] = conditionTo;
                         }
-                        else
+                        if (SLRGrammar.V.Contains(X))
                         {
-                            // Для просмотра следующего символа требуется FOLLOW(A)
-                            // foreach (string terminal in FOLLOW(A))
-                            foreach (Symbol X in SLRGrammar.T)
-                            {
-                                PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
-                                PairSymbInt conditionTo = new PairSymbInt("R", st.rulePos);
-                                M[conditionFrom] = conditionTo;
-                            }
+                            PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
+                            PairSymbInt conditionTo = new PairSymbInt("", j);
+                            M[conditionFrom] = conditionTo;
                         }
-                    }
-
-                    foreach (DeltaQSigma edge in LRA.D)
-                    {
-                        if (i.ToString() == edge.LHSQ.Value)
+                        if (LRA.F.Contains(I_j))
                         {
-                            Symbol X = edge.LHSS;
-                            int j = int.Parse(edge.RHSQ[0].Value);
-                            if (SLRGrammar.T.Contains(X))
+                            foreach (State st in phi[j])
                             {
-                                PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
-                                PairSymbInt conditionTo = new PairSymbInt("S", j);
-                                M[conditionFrom] = conditionTo;
-                            }
-                            if (SLRGrammar.V.Contains(X))
-                            {
-                                PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
-                                PairSymbInt conditionTo = new PairSymbInt("", j);
-                                M[conditionFrom] = conditionTo;
+                                Symbol a = st.GetRHSymbol(SLRGrammar);
+                                Symbol A = st.GetLHSymbol(SLRGrammar);
+                                if (a.Equals(Symbol.Epsilon))
+                                {
+                                    if (A.Equals(startSymbol))
+                                    {
+                                        PairSymbInt conditionFrom = new PairSymbInt("$", j);
+                                        PairSymbInt conditionTo = new PairSymbInt("A", -1);
+                                        M[conditionFrom] = conditionTo;
+                                    }
+                                    else
+                                    {
+                                        // Для просмотра следующего символа требуется FOLLOW(A)
+                                        // foreach (Symbol Y in FOLLOW(A))
+                                        foreach (Symbol Y in SLRGrammar.T)
+                                        {
+                                            PairSymbInt conditionFrom = new PairSymbInt(Y.ToString(), j);
+                                            PairSymbInt conditionTo = new PairSymbInt("R", st.rulePos);
+                                            M[conditionFrom] = conditionTo;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -413,7 +428,7 @@ namespace Translator
          *  синтаксического анализа по одному считывает символы из
          *  входного буфера.
          */
-        // public void override Parse()
+        // todo public void override Parse()
         public void Parse()
         {
             string answer = "y";

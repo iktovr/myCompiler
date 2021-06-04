@@ -30,7 +30,7 @@ namespace Processor.AbstractGrammar
 
         /// Равенсто. Требуется для Dictionary и HashSet
         public override bool Equals(object other)
-        {   
+        {
             return (other is Symbol) && (Value == ((Symbol)other).Value);
         }
 
@@ -74,6 +74,6 @@ namespace Processor.AbstractGrammar
         public override string ToString() => this != Epsilon ? Value : "e";
 
         public static readonly Symbol Epsilon = new Symbol(""); ///< Пустой символ
-        public static readonly Symbol Sentinel = new Symbol("$$"); ///< Cимвол конца строки / Символ дна стека
+        public static readonly Symbol Sentinel = new Symbol("$"); ///< Cимвол конца строки / Символ дна стека
     }
 }

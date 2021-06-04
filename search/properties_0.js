@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dotpos_285',['dotPos',['../class_translator_1_1_s_l_r_parser_1_1_state.html#a0f7adc51776a62ad2b1efd789c8608a5',1,'Translator::SLRParser::State']]]
+  ['dotpos_283',['dotPos',['../class_translator_1_1_s_l_r_grammar_1_1_state.html#aa77b3b08b37d9b70f59c2861bc557961',1,'Translator::SLRGrammar::State']]]
 ];

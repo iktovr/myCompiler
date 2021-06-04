@@ -10,5 +10,5 @@ var searchData=
   ['lhsz_72',['LHSZ',['../class_translator_1_1_delta_q_sigma_gamma.html#a8c8604ccd36b8e7e37522bafe4492d63',1,'Translator::DeltaQSigmaGamma']]],
   ['llparser_73',['LLParser',['../class_translator_1_1_l_l_parser.html',1,'Translator']]],
   ['lltranslator_74',['LLTranslator',['../class_translator_1_1_l_l_translator.html',1,'Translator']]],
-  ['lra_75',['LRA',['../class_translator_1_1_s_l_r_parser.html#a29a9bd9247aa63c9b1fbba34bdccff17',1,'Translator::SLRParser']]]
+  ['lra_75',['LRA',['../class_translator_1_1_s_l_r_grammar.html#a560cbc3cd11c8f8fc417e6acf3a70338',1,'Translator::SLRGrammar']]]
 ];

@@ -31,7 +31,7 @@ namespace Translator
             Console.WriteLine("example ....................... Enter 6.1");
             Console.WriteLine("              ................. Enter 7");
             Console.WriteLine("               ................ Enter 8");
-            Console.WriteLine("lab 14 - 16 EngineerXL ........ Enter 9");
+            Console.WriteLine("lab 14 - 16            ........ Enter 9");
             Console.WriteLine("AT-Grammar....... Enter 10");
             Console.WriteLine("Chain Translation example ..... Enter 11");
             Console.WriteLine("L-attribute translation ....... Enter 12");
@@ -463,9 +463,9 @@ namespace Translator
                         SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("i") });
                         SLRGrammar.AddRule("L", new List<Symbol>() { new Symbol("j") });
 
-                        SLRParser LR0Parser = new SLRParser(SLRGrammar);
+                        SLRParser LR0Grammar = new SLRParser(SLRGrammar);
 
-                        LR0Parser.Execute();
+                        LR0Grammar.Parse();
                         break;
                     case "10":
                         // S, Er    *, +, cr     {ANS}r

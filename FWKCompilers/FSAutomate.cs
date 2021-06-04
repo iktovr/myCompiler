@@ -9,10 +9,10 @@ namespace Translator
     /// Delta: Q x Sigma -> Q
     public class DeltaQSigma
     { //: AbstractProduction {
-        public string LHSQ { set; get; } = null; ///< Q
-        public string LHSS { set; get; } = null; ///< Sigma
+        public Symbol LHSQ { set; get; } = null; ///< Q
+        public Symbol LHSS { set; get; } = null; ///< Sigma
         public List<Symbol> RHSQ { set; get; } = null; ///< Q
-        public DeltaQSigma(string LHSQ, string LHSS, List<Symbol> RHSQ)
+        public DeltaQSigma(Symbol LHSQ, Symbol LHSS, List<Symbol> RHSQ)
         {
             this.LHSQ = LHSQ;
             this.LHSS = LHSS;

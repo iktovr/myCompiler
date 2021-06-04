@@ -5,6 +5,7 @@
 
 # Other files
 *.DS_Store
+makefile
 
 # User-specific files
 *.rsuser

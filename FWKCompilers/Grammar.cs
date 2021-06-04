@@ -20,20 +20,7 @@ namespace Translator
 
         public Grammar() : base() { Production.Count = 0; }
 
-        /// порождение цепочек символов по правилам вывода
-        public override string Execute()
-        { //
-            string bornedLine = null;
-            string currState = "S0";
-            foreach (var p in this.P)
-            {
-                if (p.LHS.symbol == currState)
-                {
-                    //
-                }
-            }
-            return bornedLine;
-        }
+        public override void Parse() {}
 
         /// проверка на принадлежность к терминалам/нетерминалам
         public bool isNoTerm(string v)

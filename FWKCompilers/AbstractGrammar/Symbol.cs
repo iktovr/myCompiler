@@ -25,6 +25,9 @@ namespace Processor.AbstractGrammar
             this.Attr = null;
         }
 
+        /// Неявное преобразование строки в Symbol
+        public static implicit operator Symbol(string str) => new Symbol(str);
+
         public bool Equals(Symbol other)
         {
             if (other == null)
@@ -48,20 +51,31 @@ namespace Processor.AbstractGrammar
             return symbol.GetHashCode();
         }
 
-        /*
-                public static bool operator == (Symbol symbol1,Symbol symbol2) {
-                    return symbol1.Equals(symbol2);
-                }
-                public override int GetHashCode() { return this.symbol.GetHashCode(); }
+        public static bool operator == (Symbol a, Symbol b)
+        {
+            // If both are null, or both are same instance, return true.
+            if (System.Object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
 
-                public static bool operator !=(Symbol symbol1,Symbol symbol2) {
-                    return !symbol1.Equals(symbol2);
-                }   
-        */
+            // If one is null, but not both, return false.
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return a.symbol == b.symbol;
+        }
+
+        public static bool operator != (Symbol symbol1,Symbol symbol2) {
+            return !(symbol1 == symbol2);
+        }
+
         public override string ToString() {
             return this.symbol;
         }
-        
 
         public virtual void print()
         {

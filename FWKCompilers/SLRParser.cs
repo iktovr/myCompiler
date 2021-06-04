@@ -8,33 +8,44 @@ using Processor.AbstractGrammar;
 
 namespace Translator
 {
-    // todo CLOSURE и GOTO в грамматику
-    // написать подробнее про LR(0) и LR(1)
-    // картинку автомата в Word в виде объекта
+    // todo наследование LR Grammar
+    // todo переименовать C на phi
+
+    // todo написать подробнее про LR(0) и LR(1)
+    // todo картинку автомата в Word в виде объекта
+
+    // class LRGrammar : Grammar
+
     class SLRParser
     {
-        /// Пара строка-число
-        protected class PairStrInt : IEquatable<PairStrInt>
+        /// Пара символ-число
+        protected class PairSymbInt : IEquatable<PairSymbInt>
         {
-            public string First { get; set; }
+            public Symbol First { get; set; }
             public int Second { get; set; }
 
-            public PairStrInt() {}
+            public PairSymbInt() {}
 
-            public PairStrInt(char c, int num)
+            public PairSymbInt(char c, int num)
             {
-                First = c.ToString();
+                First = new Symbol(c.ToString());
                 Second = num;
             }
 
-            public PairStrInt(string str, int num)
+            public PairSymbInt(string str, int num)
             {
-                First = str;
+                First = new Symbol(str);
+                Second = num;
+            }
+
+            public PairSymbInt(Symbol sym, int num)
+            {
+                First = sym;
                 Second = num;
             }
 
             /// Проверка двух пар на равенство
-            public bool Equals(PairStrInt pair)
+            public bool Equals(PairSymbInt pair)
             {
                 return (pair.Second == Second) && Equals(pair.First, First);
             }
@@ -46,18 +57,18 @@ namespace Translator
         }
 
         /// Компаратор пар. Требуется для корректной работы Dictionary
-        protected class PairComparer : IEqualityComparer<PairStrInt>
+        protected class PairComparer : IEqualityComparer<PairSymbInt>
         {
             /// Метод проверки равенства
-            public bool Equals(PairStrInt lhs, PairStrInt rhs)
+            public bool Equals(PairSymbInt lhs, PairSymbInt rhs)
             {
                 return lhs.Equals(rhs);
             }
 
             /// Метод вычисления хеш-функции
-            public int GetHashCode(PairStrInt pair)
+            public int GetHashCode(PairSymbInt pair)
             {
-                string s = pair.First + pair.Second.ToString();
+                string s = pair.First.ToString() + pair.Second.ToString();
                 return s.GetHashCode();
             }
         }
@@ -130,9 +141,9 @@ namespace Translator
         /// Канонический набор множеств LR(0)-ситуаций
         protected List< List< State > > C = new List< List< State > >();
         /// LR(0)-автомат переходов грамматики
-        protected FSAutomate KA = new FSAutomate();
+        protected FSAutomate LRA = new FSAutomate();
         /// Управляющая SLR-таблица, представленная в виде словаря
-        protected Dictionary<PairStrInt, PairStrInt> M = null;
+        protected Dictionary<PairSymbInt, PairSymbInt> M = null;
         /// Новый начальный нетерминал S'
         protected Symbol startSymbol = new Symbol("S'");
         /// Пустая цепочка
@@ -148,24 +159,24 @@ namespace Translator
             SLRGrammar.DebugPrules();
 
             InitAutomate();
-            BuildAutomate();
-            BuildTable();
+            BuildLRAutomate();
+            BuildControlTable();
         }
 
         /// Инициализация автомата и добавление символов в алфавит
         protected void InitAutomate()
         {
-            KA.Q = new List<Symbol>() { new Symbol("0") };
-            KA.Sigma = new List<Symbol>();
+            LRA.Q = new List<Symbol>() { new Symbol("0") };
+            LRA.Sigma = new List<Symbol>();
             foreach (Symbol t in SLRGrammar.T)
             {
-                KA.Sigma.Add(t);
+                LRA.Sigma.Add(t);
             }
             foreach (Symbol v in SLRGrammar.V)
             {
-                KA.Sigma.Add(v);
+                LRA.Sigma.Add(v);
             }
-            KA.D = new List<DeltaQSigma>();
+            LRA.D = new List<DeltaQSigma>();
         }
 
         /// Построение замыкания множества LR(0)-ситуаций
@@ -227,13 +238,13 @@ namespace Translator
         }
 
         /// Возвращает истину, если уже есть правило перехода в автомате
-        protected bool FindDeltaRuleInKA(DeltaQSigma rule)
+        protected bool FindDeltaRuleInLRA(DeltaQSigma rule)
         {
             if (rule == null)
             {
                 return false;
             }
-            foreach (DeltaQSigma d in KA.D)
+            foreach (DeltaQSigma d in LRA.D)
             {
                 if (rule.LHSQ == d.LHSQ && rule.LHSS == d.LHSS)
                 {
@@ -277,7 +288,7 @@ namespace Translator
         }
 
         /// Построение канонического набора множеств LR(0)-ситуаций и автомата перехода между ситуациями
-        protected void BuildAutomate()
+        protected void BuildLRAutomate()
         {
             List< List< State > > C0 = new List< List< State > >();
             List<State> I = new List<State>();
@@ -290,7 +301,7 @@ namespace Translator
                 for (int i = 0; i < C.Count; ++i)
                 {
                     List<State> c = C[i];
-                    foreach (Symbol X in KA.Sigma)
+                    foreach (Symbol X in LRA.Sigma)
                     {
                         List<State> nextState = Goto(c, X);
                         if (nextState != null)
@@ -300,14 +311,14 @@ namespace Translator
                             if (nextStateId == -1)
                             {
                                 nextStateId = C0.Count;
-                                KA.Q.Add(new Symbol(nextStateId.ToString()));
+                                LRA.Q.Add(new Symbol(nextStateId.ToString()));
                                 C0.Add(nextState);
                                 changed = true;
                             }
-                            DeltaQSigma nextStateEdge = new DeltaQSigma(i.ToString(), X.ToString(), new List<Symbol> { new Symbol(nextStateId.ToString()) });
-                            if (!FindDeltaRuleInKA(nextStateEdge))
+                            DeltaQSigma nextStateEdge = new DeltaQSigma(new Symbol(i.ToString()), X, new List<Symbol> { new Symbol(nextStateId.ToString()) });
+                            if (!FindDeltaRuleInLRA(nextStateEdge))
                             {
-                                KA.D.Add(nextStateEdge);
+                                LRA.D.Add(nextStateEdge);
                             }
                         }
 
@@ -327,10 +338,10 @@ namespace Translator
         }
 
         /// Построение управляющей таблицы КС-грамматики
-        protected void BuildTable()
+        protected void BuildControlTable()
         {
             PairComparer comp = new PairComparer();
-            M = new Dictionary<PairStrInt, PairStrInt>(comp);
+            M = new Dictionary<PairSymbInt, PairSymbInt>(comp);
             for (int i = 0; i < C.Count; ++i)
             {
                 List<State> I = C[i];
@@ -342,8 +353,8 @@ namespace Translator
                     {
                         if (A.Equals(startSymbol))
                         {
-                            PairStrInt conditionFrom = new PairStrInt("$", i);
-                            PairStrInt conditionTo = new PairStrInt("A", -1);
+                            PairSymbInt conditionFrom = new PairSymbInt("$", i);
+                            PairSymbInt conditionTo = new PairSymbInt("A", -1);
                             M[conditionFrom] = conditionTo;
                         }
                         else
@@ -352,29 +363,29 @@ namespace Translator
                             // foreach (string terminal in FOLLOW(A))
                             foreach (Symbol X in SLRGrammar.T)
                             {
-                                PairStrInt conditionFrom = new PairStrInt(X.ToString(), i);
-                                PairStrInt conditionTo = new PairStrInt("R", st.rulePos);
+                                PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
+                                PairSymbInt conditionTo = new PairSymbInt("R", st.rulePos);
                                 M[conditionFrom] = conditionTo;
                             }
                         }
                     }
 
-                    foreach (DeltaQSigma edge in KA.D)
+                    foreach (DeltaQSigma edge in LRA.D)
                     {
-                        if (i.ToString() == edge.LHSQ)
+                        if (i.ToString() == edge.LHSQ.symbol)
                         {
-                            Symbol X = new Symbol(edge.LHSS);
+                            Symbol X = edge.LHSS;
                             int j = int.Parse(edge.RHSQ[0].symbol);
                             if (SLRGrammar.T.Contains(X))
                             {
-                                PairStrInt conditionFrom = new PairStrInt(X.ToString(), i);
-                                PairStrInt conditionTo = new PairStrInt("S", j);
+                                PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
+                                PairSymbInt conditionTo = new PairSymbInt("S", j);
                                 M[conditionFrom] = conditionTo;
                             }
                             if (SLRGrammar.V.Contains(X))
                             {
-                                PairStrInt conditionFrom = new PairStrInt(X.ToString(), i);
-                                PairStrInt conditionTo = new PairStrInt("", j);
+                                PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
+                                PairSymbInt conditionTo = new PairSymbInt("", j);
                                 M[conditionFrom] = conditionTo;
                             }
                         }
@@ -383,7 +394,7 @@ namespace Translator
             }
 
             Console.WriteLine("Debug M...");
-            foreach (PairStrInt from in M.Keys)
+            foreach (PairSymbInt from in M.Keys)
             {
                 Console.Write("From ");
                 from.Debug();
@@ -402,7 +413,8 @@ namespace Translator
          *  синтаксического анализа по одному считывает символы из
          *  входного буфера.
          */
-        public void Execute()
+        // public void override Parse()
+        public void Parse()
         {
             string answer = "y";
             do
@@ -421,14 +433,14 @@ namespace Translator
                 do
                 {
                     char a = w[i];
-                    PairStrInt curCondition = new PairStrInt(a, st.Peek());
-                    PairStrInt tableCondition = null;
+                    PairSymbInt curCondition = new PairSymbInt(a, st.Peek());
+                    PairSymbInt tableCondition = null;
                     if (!M.TryGetValue(curCondition, out tableCondition))
                     {
                         error = true;
                         break;
                     }
-                    switch (tableCondition.First)
+                    switch (tableCondition.First.symbol)
                     {
                         // Accept - Принятие
                         case "A":
@@ -447,7 +459,7 @@ namespace Translator
                             {
                                 st.Pop();
                             }
-                            curCondition = new PairStrInt(rule.LHS.ToString(), st.Peek());
+                            curCondition = new PairSymbInt(rule.LHS.ToString(), st.Peek());
                             tableCondition = M[curCondition];
                             st.Push(tableCondition.Second);
                             res.Push(rulePos + 1);

@@ -28,7 +28,8 @@ namespace Processor.AbstractGrammar
             this.S0 = new Symbol(S0);
             this.P = new List<Production>();
         }
-        abstract public string Execute(); // abstract
+
+        abstract public void Parse();
 
         public void AddRule(string LeftNoTerm, List<Symbol> RHS) { this.P.Add(new Production(new Symbol(LeftNoTerm), RHS)); }
 

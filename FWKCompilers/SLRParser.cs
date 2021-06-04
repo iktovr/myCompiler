@@ -8,13 +8,7 @@ using Processor.AbstractGrammar;
 
 namespace Translator
 {
-
-    // todo картинку автомата в Word в виде объекта
-
-    // todo наследование LR Grammar
-    // class LRGrammar : Grammar
-
-    class SLRParser
+    class SLRGrammar : Grammar
     {
         /// Пара символ-число
         protected class PairSymbInt : IEquatable<PairSymbInt>
@@ -93,9 +87,9 @@ namespace Translator
             }
 
             /// Получение символа, стоящего после точки
-            public Symbol GetRHSymbol(Grammar grammar)
+            public Symbol GetRHSymbol(List<Production> P)
             {
-                Production rule = grammar.P[rulePos];
+                Production rule = P[rulePos];
                 if (dotPos == rule.RHS.Count)
                 {
                     return new Symbol("");
@@ -107,16 +101,16 @@ namespace Translator
             }
 
             /// Получение символа, стоящего в левой части ситуации
-            public Symbol GetLHSymbol(Grammar grammar)
+            public Symbol GetLHSymbol(List<Production> P)
             {
-                Production rule = grammar.P[rulePos];
+                Production rule = P[rulePos];
                 return rule.LHS;
             }
 
             /// Отладочная печать ситуации
-            public void Debug(Grammar grammar)
+            public void Debug(List<Production> P)
             {
-                Production rule = grammar.P[rulePos];
+                Production rule = P[rulePos];
                 string curStateRHS = "";
                 for (int i = 0; i < rule.RHS.Count; ++i)
                 {
@@ -134,8 +128,6 @@ namespace Translator
             }
         }
 
-        /// Пополненная контекстно-свободная грамматика
-        protected Grammar SLRGrammar = null;
         /// Канонический набор множеств LR(0)-ситуаций
         protected List< List< State > > phi = new List< List< State > >();
         /// LR(0)-автомат переходов грамматики
@@ -145,14 +137,21 @@ namespace Translator
         /// Новый начальный нетерминал S'
         protected Symbol startSymbol = new Symbol("S'");
 
-        public SLRParser(Grammar grammar)
+        public SLRGrammar() : base() { Production.Count = 0; }
+
+        public SLRGrammar(List<Symbol> T, List<Symbol> V, List<Production> production, string S0) : base(T, V, S0)
         {
-            SLRGrammar = grammar;
+            Production.Count = 0;
+            this.P = production;
+        }
+
+        public void Construct()
+        {
             // Пополнение грамматики
-            SLRGrammar.AddRule(startSymbol.ToString(), new List<Symbol>() { SLRGrammar.S0 });
-            SLRGrammar.V.Add(startSymbol);
-            SLRGrammar.T.Add(Symbol.Sentinel);
-            SLRGrammar.DebugPrules();
+            AddRule(startSymbol.ToString(), new List<Symbol>() { S0 });
+            V.Add(startSymbol);
+            T.Add(Symbol.Sentinel);
+            DebugPrules();
 
             InitAutomate();
             BuildLRAutomate();
@@ -164,11 +163,11 @@ namespace Translator
         {
             LRA.Q = new List<Symbol>() { new Symbol("0") };
             LRA.Sigma = new List<Symbol>();
-            foreach (Symbol t in SLRGrammar.T)
+            foreach (Symbol t in T)
             {
                 LRA.Sigma.Add(t);
             }
-            foreach (Symbol v in SLRGrammar.V)
+            foreach (Symbol v in V)
             {
                 LRA.Sigma.Add(v);
             }
@@ -188,9 +187,9 @@ namespace Translator
                 J = new List<State>(J0);
                 foreach (State curState in J)
                 {
-                    Symbol B = curState.GetRHSymbol(SLRGrammar);
-                    for (int i = 0; i < SLRGrammar.P.Count; ++i) {
-                        Production rule = SLRGrammar.P[i];
+                    Symbol B = curState.GetRHSymbol(P);
+                    for (int i = 0; i < P.Count; ++i) {
+                        Production rule = P[i];
                         if (B.Equals(rule.LHS))
                         {
                             State gammaState = new State(i, 0);
@@ -213,7 +212,7 @@ namespace Translator
             List<State> J = null;
             foreach (State st in I)
             {
-                if (X.Equals(st.GetRHSymbol(SLRGrammar)))
+                if (X.Equals(st.GetRHSymbol(P)))
                 {
                     List<State> movedDotState = new List<State>();
                     movedDotState.Add(new State(st.rulePos, st.dotPos + 1));
@@ -289,7 +288,7 @@ namespace Translator
         {
             List< List< State > > phi0 = new List< List< State > >();
             List<State> I0 = new List<State>();
-            I0.Add(new State(SLRGrammar.P.Count - 1, 0));
+            I0.Add(new State(P.Count - 1, 0));
             phi0.Add(Closure(I0));
             bool changed = false;
             List<Symbol> nonTerminalStates = new List<Symbol>();
@@ -344,7 +343,7 @@ namespace Translator
                 List<State> I = phi[i];
                 Console.WriteLine("Debug I_" + i.ToString());
                 foreach (State st in I) {
-                    st.Debug(SLRGrammar);
+                    st.Debug(P);
                 }
             }
         }
@@ -364,13 +363,13 @@ namespace Translator
                         Symbol X = edge.LHSS;
                         Symbol I_j = edge.RHSQ[0];
                         int j = int.Parse(I_j.Value);
-                        if (SLRGrammar.T.Contains(X))
+                        if (T.Contains(X))
                         {
                             PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
                             PairSymbInt conditionTo = new PairSymbInt("S", j);
                             M[conditionFrom] = conditionTo;
                         }
-                        if (SLRGrammar.V.Contains(X))
+                        if (V.Contains(X))
                         {
                             PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
                             PairSymbInt conditionTo = new PairSymbInt("", j);
@@ -380,8 +379,8 @@ namespace Translator
                         {
                             foreach (State st in phi[j])
                             {
-                                Symbol a = st.GetRHSymbol(SLRGrammar);
-                                Symbol A = st.GetLHSymbol(SLRGrammar);
+                                Symbol a = st.GetRHSymbol(P);
+                                Symbol A = st.GetLHSymbol(P);
                                 if (a.Equals(Symbol.Epsilon))
                                 {
                                     if (A.Equals(startSymbol))
@@ -394,7 +393,7 @@ namespace Translator
                                     {
                                         // Для просмотра следующего символа требуется FOLLOW(A)
                                         // foreach (Symbol Y in FOLLOW(A))
-                                        foreach (Symbol Y in SLRGrammar.T)
+                                        foreach (Symbol Y in T)
                                         {
                                             PairSymbInt conditionFrom = new PairSymbInt(Y.ToString(), j);
                                             PairSymbInt conditionTo = new PairSymbInt("R", st.rulePos);
@@ -428,8 +427,7 @@ namespace Translator
          *  синтаксического анализа по одному считывает символы из
          *  входного буфера.
          */
-        // todo public void override Parse()
-        public void Parse()
+        public override void Parse()
         {
             string answer = "y";
             do
@@ -469,7 +467,7 @@ namespace Translator
                         // Reduction - Свёртка
                         case "R":
                             int rulePos = tableCondition.Second;
-                            Production rule = SLRGrammar.P[rulePos];
+                            Production rule = P[rulePos];
                             for (int j = 0; j < rule.RHS.Count; ++j)
                             {
                                 st.Pop();

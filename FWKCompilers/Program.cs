@@ -433,18 +433,18 @@ namespace Translator
                     case "8":
                         break;
                     case "9":
-                        Grammar SLRGrammar = new Grammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("&"), new Symbol("^"), new Symbol("("), new Symbol(")") },
-                                                   new List<Symbol>() { new Symbol("S"),new Symbol("F"),new Symbol("L") },
+                        SLRGrammar LR0Grammar = new SLRGrammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("&"), new Symbol("^"), new Symbol("("), new Symbol(")") },
+                                                   new List<Symbol>() { new Symbol("S"), new Symbol("F"), new Symbol("L") },
+                                                   new List<Production>(),
                                                    "S");
 
-                        SLRGrammar.AddRule("S", new List<Symbol>() { new Symbol("F"), new Symbol("^"), new Symbol("L") });
-                        SLRGrammar.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("S"), new Symbol(")") });
-                        SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("&"), new Symbol("L") });
-                        SLRGrammar.AddRule("F", new List<Symbol>() { new Symbol("i") });
-                        SLRGrammar.AddRule("L", new List<Symbol>() { new Symbol("j") });
+                        LR0Grammar.AddRule("S", new List<Symbol>() { new Symbol("F"), new Symbol("^"), new Symbol("L") });
+                        LR0Grammar.AddRule("S", new List<Symbol>() { new Symbol("("), new Symbol("S"), new Symbol(")") });
+                        LR0Grammar.AddRule("F", new List<Symbol>() { new Symbol("&"), new Symbol("L") });
+                        LR0Grammar.AddRule("F", new List<Symbol>() { new Symbol("i") });
+                        LR0Grammar.AddRule("L", new List<Symbol>() { new Symbol("j") });
 
-                        SLRParser LR0Grammar = new SLRParser(SLRGrammar);
-
+                        LR0Grammar.Construct();
                         LR0Grammar.Parse();
                         break;
                     case "10":

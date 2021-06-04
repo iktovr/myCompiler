@@ -124,7 +124,7 @@ namespace Translator
                 {
                     curStateRHS += ".";
                 }
-                Console.WriteLine(rule.LHS.ToString() + " -> " + curStateRHS);
+                Console.Write(rule.LHS.ToString() + " -> " + curStateRHS);
             }
         }
 
@@ -148,7 +148,8 @@ namespace Translator
         public void Construct()
         {
             // Пополнение грамматики
-            AddRule(startSymbol.ToString(), new List<Symbol>() { S0 });
+            Production newStartProduction = new Production(startSymbol, new List<Symbol>() { S0 });
+            P.Insert(0, newStartProduction);
             V.Add(startSymbol);
             T.Add(Symbol.Sentinel);
             DebugPrules();
@@ -172,6 +173,7 @@ namespace Translator
                 LRA.Sigma.Add(v);
             }
             LRA.D = new List<DeltaQSigma>();
+            LRA.Q0 = "0";
             LRA.F = new List<Symbol>();
         }
 
@@ -288,7 +290,7 @@ namespace Translator
         {
             List< List< State > > phi0 = new List< List< State > >();
             List<State> I0 = new List<State>();
-            I0.Add(new State(P.Count - 1, 0));
+            I0.Add(new State(0, 0));
             phi0.Add(Closure(I0));
             bool changed = false;
             List<Symbol> nonTerminalStates = new List<Symbol>();
@@ -337,14 +339,90 @@ namespace Translator
                 }
             }
 
-            Console.WriteLine("Debug canonical set of states C");
+            Console.WriteLine("Сanonical set of states phi");
             for (int i = 0; i < phi.Count; ++i)
             {
                 List<State> I = phi[i];
-                Console.WriteLine("Debug I_" + i.ToString());
+                Console.Write("I_" + i.ToString() + " = CLOSURE( ");
+                I[0].Debug(P);
+                Console.WriteLine(" )");
                 foreach (State st in I) {
                     st.Debug(P);
+                    Console.WriteLine();
                 }
+            }
+
+            Console.WriteLine("LR-automate");
+            LRA.DebugAuto();
+        }
+
+        /// Отладочная печать управляющей таблицы M
+        protected void DebugControlTable()
+        {
+            // Это было сделано на скорую руку...
+            Console.WriteLine("Contol table M");
+            Console.Write("    | ");
+            foreach (Symbol X in LRA.Sigma)
+            {
+                for (int i = 2; i > X.Value.Count(); --i)
+                {
+                    Console.Write(" ");
+                }
+                Console.Write(X.Value + "  | ");
+            }
+            Console.WriteLine();
+            for (int i = 0; i < phi.Count; ++i)
+            {
+                for (int j = 0; j < 71; ++j)
+                {
+                    Console.Write("-");
+                }
+                Console.WriteLine();
+                if (i > 9)
+                {
+                    Console.Write(i.ToString());
+                }
+                else
+                {
+                    Console.Write(" " + i.ToString());
+                }
+                Console.Write("  | ");
+                foreach (Symbol X in LRA.Sigma)
+                {
+                    PairSymbInt conditionFrom = new PairSymbInt(X, i);
+                    PairSymbInt conditionTo = null;
+                    if (!M.TryGetValue(conditionFrom, out conditionTo))
+                    {
+                        Console.Write("    | ");
+                    }
+                    else
+                    {
+                        if (conditionTo.First.Value == "A")
+                        {
+                            Console.Write(" A  | ");
+                        }
+                        else
+                        {
+                            if (conditionTo.First.Value == "G")
+                            {
+                                Console.Write(" ");
+                            }
+                            else
+                            {
+                                Console.Write(conditionTo.First.ToString());
+                            }
+                            if (conditionTo.Second > 9)
+                            {
+                                Console.Write(conditionTo.Second.ToString() + " | ");
+                            }
+                            else
+                            {
+                                Console.Write(" " + conditionTo.Second.ToString() + " | ");
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine();
             }
         }
 
@@ -372,7 +450,7 @@ namespace Translator
                         if (V.Contains(X))
                         {
                             PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
-                            PairSymbInt conditionTo = new PairSymbInt("", j);
+                            PairSymbInt conditionTo = new PairSymbInt("G", j);
                             M[conditionFrom] = conditionTo;
                         }
                         if (LRA.F.Contains(I_j))
@@ -406,15 +484,7 @@ namespace Translator
                     }
                 }
             }
-
-            Console.WriteLine("Debug M...");
-            foreach (PairSymbInt from in M.Keys)
-            {
-                Console.Write("From ");
-                from.Debug();
-                Console.Write("To ");
-                M[from].Debug();
-            }
+            DebugControlTable();
         }
 
         /// Выполнение LR-анализа
@@ -475,7 +545,7 @@ namespace Translator
                             curCondition = new PairSymbInt(rule.LHS.ToString(), st.Peek());
                             tableCondition = M[curCondition];
                             st.Push(tableCondition.Second);
-                            res.Push(rulePos + 1);
+                            res.Push(rulePos);
                             break;
                         default:
                             error = true;

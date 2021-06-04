@@ -302,7 +302,7 @@ namespace Translator
         }
 
         public void debugDeltaRule(string step,DeltaQSigma d) {
-            Console.WriteLine(step+": ("+d.LHSQ+" , "+d.LHSS+" ) -> "+d.RHSQ);
+            Console.WriteLine(step+": ("+d.LHSQ+" , "+d.LHSS+" ) -> "+d.RHSQ[0]);
         }
         public void debugDeltaRule(string step, DeltaQSigmaGamma d)
         {

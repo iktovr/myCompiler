@@ -115,7 +115,7 @@ List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">S
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#aee49de6df2c142384c9765e5227eab17">FindDeltaRuleInLRA</a> (<a class="el" href="class_translator_1_1_delta_q_sigma.html">DeltaQSigma</a> rule)</td></tr>
 <tr class="memdesc:aee49de6df2c142384c9765e5227eab17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает истину, если уже есть правило перехода в автомате <br /></td></tr>
 <tr class="separator:aee49de6df2c142384c9765e5227eab17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ebfc41bc52637ea2a3950af85eea412"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a5ebfc41bc52637ea2a3950af85eea412">FindSetOfStates</a> (List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt; <a class="el" href="class_translator_1_1_s_l_r_parser.html#a12dd5970880afc5cc94e2540b3e8e6ae">C</a>, List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; I)</td></tr>
+<tr class="memitem:a5ebfc41bc52637ea2a3950af85eea412"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a5ebfc41bc52637ea2a3950af85eea412">FindSetOfStates</a> (List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt; C, List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; I)</td></tr>
 <tr class="separator:a5ebfc41bc52637ea2a3950af85eea412"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75721882fc4e880deb2620b2f68983fb"><td class="memItemLeft" align="right" valign="top"><a id="a75721882fc4e880deb2620b2f68983fb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a75721882fc4e880deb2620b2f68983fb">BuildLRAutomate</a> ()</td></tr>
@@ -132,10 +132,10 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="class_translator_1_1_grammar.html">Grammar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a36ec83780b1a9cc11d5523ac75b1dd46">SLRGrammar</a> = null</td></tr>
 <tr class="memdesc:a36ec83780b1a9cc11d5523ac75b1dd46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пополненная контекстно-свободная грамматика <br /></td></tr>
 <tr class="separator:a36ec83780b1a9cc11d5523ac75b1dd46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12dd5970880afc5cc94e2540b3e8e6ae"><td class="memItemLeft" align="right" valign="top"><a id="a12dd5970880afc5cc94e2540b3e8e6ae"></a>
-List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a12dd5970880afc5cc94e2540b3e8e6ae">C</a> = new List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt;()</td></tr>
-<tr class="memdesc:a12dd5970880afc5cc94e2540b3e8e6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Канонический набор множеств LR(0)-ситуаций <br /></td></tr>
-<tr class="separator:a12dd5970880afc5cc94e2540b3e8e6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8a6a549adf4c94f4eb7ac8c5bf4cb34"><td class="memItemLeft" align="right" valign="top"><a id="aa8a6a549adf4c94f4eb7ac8c5bf4cb34"></a>
+List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#aa8a6a549adf4c94f4eb7ac8c5bf4cb34">phi</a> = new List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt;()</td></tr>
+<tr class="memdesc:aa8a6a549adf4c94f4eb7ac8c5bf4cb34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Канонический набор множеств LR(0)-ситуаций <br /></td></tr>
+<tr class="separator:aa8a6a549adf4c94f4eb7ac8c5bf4cb34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29a9bd9247aa63c9b1fbba34bdccff17"><td class="memItemLeft" align="right" valign="top"><a id="a29a9bd9247aa63c9b1fbba34bdccff17"></a>
 <a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a29a9bd9247aa63c9b1fbba34bdccff17">LRA</a> = new <a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>()</td></tr>
 <tr class="memdesc:a29a9bd9247aa63c9b1fbba34bdccff17"><td class="mdescLeft">&#160;</td><td class="mdescRight">LR(0)-автомат переходов грамматики <br /></td></tr>
@@ -148,10 +148,6 @@ Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_sy
 <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a8b59bed6945d92468129b27529fffbb3">startSymbol</a> = new <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>(&quot;S'&quot;)</td></tr>
 <tr class="memdesc:a8b59bed6945d92468129b27529fffbb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Новый начальный нетерминал S'. <br /></td></tr>
 <tr class="separator:a8b59bed6945d92468129b27529fffbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b738c5af4eec68327e51fb732ef8afa"><td class="memItemLeft" align="right" valign="top"><a id="a8b738c5af4eec68327e51fb732ef8afa"></a>
-<a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a8b738c5af4eec68327e51fb732ef8afa">EPS</a> = new <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>(&quot;&quot;)</td></tr>
-<tr class="memdesc:a8b738c5af4eec68327e51fb732ef8afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пустая цепочка <br /></td></tr>
-<tr class="separator:a8b738c5af4eec68327e51fb732ef8afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5ebfc41bc52637ea2a3950af85eea412"></a>

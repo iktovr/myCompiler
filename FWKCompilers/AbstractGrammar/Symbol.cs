@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Processor.AbstractGrammar
 {
-    public class Symbol : IEquatable<Symbol>
+    public class Symbol
     {
-        public string Value { set; get; } //
+        public string Value; ///< Строковое значение/имя символа
         public List<Symbol> Attr = null; ///< Множество атрибутов символа
 
         public Symbol() {}
@@ -19,33 +19,22 @@ namespace Processor.AbstractGrammar
             Attr = new List<Symbol>(a);
         }
 
-        public Symbol(string Value)
+        public Symbol(string value)
         {
-            this.Value = Value;
+            this.Value = value;
             this.Attr = null;
         }
 
         /// Неявное преобразование строки в Symbol
         public static implicit operator Symbol(string str) => new Symbol(str);
 
-        public bool Equals(Symbol other)
-        {
-            if (other == null)
-                return false;
-            return (this.Value.Equals(other.Value));
+        /// Равенсто. Требуется для Dictionary и HashSet
+        public override bool Equals(object other)
+        {   
+            return (other is Symbol) && (Value == ((Symbol)other).Value);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            Symbol objAsSymbol = obj as Symbol;
-            if (objAsSymbol == null)
-                return false;
-            else
-                return Equals(objAsSymbol);
-        }
-
+        /// Хеш-функция. Требуется для Dictionary и HashSet
         public override int GetHashCode()
         {
             return Value.GetHashCode();
@@ -73,10 +62,6 @@ namespace Processor.AbstractGrammar
             return !(symbol1 == symbol2);
         }
 
-        public override string ToString() {
-            return this.Value;
-        }
-
         public virtual void print()
         {
             Console.Write(this.Value);
@@ -85,5 +70,10 @@ namespace Processor.AbstractGrammar
             foreach (var a in Attr)
                 Console.Write("_" + a.Value + " ");
         }
+
+        public override string ToString() => this != Epsilon ? Value : "e";
+
+        public static readonly Symbol Epsilon = new Symbol(""); ///< Пустой символ
+        public static readonly Symbol Sentinel = new Symbol("$$"); ///< Cимвол конца строки / Символ дна стека
     }
 }

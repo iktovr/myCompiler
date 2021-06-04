@@ -2,48 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
+using Processor.AbstractGrammar;
 
-namespace SDT
+namespace Translator
 {
     /// Обычный символ грамматики
-    class Symbol : ICloneable
+    class SDTSymbol : Symbol, ICloneable
     {
-        public string Value; ///< Строковое значение/имя символа
         public Dictionary<string, object> Attributes = null; ///< Атрибуты символа. Доступны также через индексатор
 
-        public Symbol(string value)
-        {
-            Value = value;
-        }
+        public SDTSymbol(string value) : base(value) {}
 
-        public Symbol(string value, Dictionary<string, object> attributes) : this(value)
+        public SDTSymbol(string value, Dictionary<string, object> attributes) : this(value)
         {
             AddAttributes(attributes);
         }
 
-        public Symbol(Symbol other)
+        public SDTSymbol(SDTSymbol other)
         {
-            Symbol symbol = (Symbol)other.Clone();
+            SDTSymbol symbol = (SDTSymbol)other.Clone();
             Value = symbol.Value;
             Attributes = symbol.Attributes;
         }
 
-        /// Неявное преобразование строки в Symbol
-        public static implicit operator Symbol(string str) => new Symbol(str);
+        /// Неявное преобразование строки в SDTSymbol
+        public static implicit operator SDTSymbol(string str) => new SDTSymbol(str);
 
-        /// Неявное преобразование словаря в Symbol
+        /// Неявное преобразование словаря в SDTSymbol
         /**
          *  Словарь должен иметь запись "NAME", значение которой будет использовано как имя/значение символа
          */
-        public static implicit operator Symbol(Dictionary<string, object> dict)
+        public static implicit operator SDTSymbol(Dictionary<string, object> dict)
         {
             string name = (string)dict["NAME"];
             dict.Remove("NAME");
-            return new Symbol(name, dict);
+            return new SDTSymbol(name, dict);
         }
 
         /// Неявное преобразование функции в OperationSymbol
-        public static implicit operator Symbol(Types.Actions func) => new OperationSymbol(func);
+        public static implicit operator SDTSymbol(Types.Actions func) => new OperationSymbol(func);
 
         /// Доступ к атрибутам
         public object this[string name]
@@ -76,56 +73,18 @@ namespace SDT
         /// Глубокая копия
         public virtual object Clone()
         {
-            Symbol clone = new Symbol((string)Value.Clone());
-            // Symbol clone = new Symbol(Value is null ? null : (string)Value.Clone());
+            SDTSymbol clone = new SDTSymbol((string)Value.Clone());
+            // SDTSymbol clone = new SDTSymbol(Value is null ? null : (string)Value.Clone());
             clone.AddAttributes(Attributes);
             return clone;
         }
 
-        /// Равенсто. Требуется для Dictionary и HashSet
-        public override bool Equals(object other)
-        {   
-            return (other is Symbol) && (Value == ((Symbol)other).Value);
-        }
-
-        /// Хеш-функция. Требуется для Dictionary и HashSet
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
-
-        /// Оператор взят из документации
-        public static bool operator ==(Symbol a, Symbol b)
-        {
-            // If both are null, or both are same instance, return true.
-            if (System.Object.ReferenceEquals(a, b))
-            {
-                return true;
-            }
-
-            // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return a.Value == b.Value;
-        }
-
-        public static bool operator !=(Symbol a, Symbol b)
-        {
-            return !(a == b);
-        }
-
-        public override string ToString() => this != Epsilon ? Value : "e";
-
-        public static readonly Symbol Epsilon = new Symbol(""); ///< Пустой символ
-        public static readonly Symbol Sentinel = new Symbol("$$"); ///< Cимвол конца строки / Символ дна стека
+        public static new readonly SDTSymbol Epsilon = new SDTSymbol(""); ///< Пустой символ
+        public static new readonly SDTSymbol Sentinel = new SDTSymbol("$$"); ///< Cимвол конца строки / Символ дна стека
     }
 
     /// Операционный символ (Семантическое действие)
-    class OperationSymbol : Symbol
+    class OperationSymbol : SDTSymbol
     {
         public new Types.Actions Value; ///< Функция семантического действия
 
@@ -143,19 +102,19 @@ namespace SDT
     }
 
     /// Запись синтеза. Используется в LL-трансляции.
-    class SynthSymbol : Symbol
+    class SynthSymbol : SDTSymbol
     {
         public string Name; ///< Имя символа
-        public Dictionary<string, Symbol> Copies; ///< Копии других записей синтеза
+        public Dictionary<string, SDTSymbol> Copies; ///< Копии других записей синтеза
 
         public SynthSymbol() : base(null)
         {
-            Copies = new Dictionary<string, Symbol>();
+            Copies = new Dictionary<string, SDTSymbol>();
         }
 
-        public SynthSymbol(string name, Symbol symbol) : this()
+        public SynthSymbol(string name, SDTSymbol symbol) : this()
         {
-            Copies = new Dictionary<string, Symbol>();
+            Copies = new Dictionary<string, SDTSymbol>();
             Name = name;
             Value = symbol.Value;
             Attributes = symbol.Attributes;
@@ -163,7 +122,7 @@ namespace SDT
 
         public SynthSymbol(string name, string value, Dictionary<string, object> attributes) : this()
         {
-            Copies = new Dictionary<string, Symbol>();
+            Copies = new Dictionary<string, SDTSymbol>();
             Name = name;
             Value = value;
             Attributes = attributes;
@@ -173,7 +132,7 @@ namespace SDT
         public void Add(SynthSymbol other)
         {
             Copies.Add(other.Name, other);
-            foreach (KeyValuePair<string, Symbol> pair in other.Copies)
+            foreach (KeyValuePair<string, SDTSymbol> pair in other.Copies)
             {
                 Copies.Add(pair.Key, pair.Value);
             }
@@ -183,12 +142,12 @@ namespace SDT
     }
 
     /// Правило синтаксически управляемой схемы трансляции
-    class Rule
+    class SDTRule
     {
-        public Symbol LeftNoTerm; ///< Левая часть продукции
-        public List<Symbol> RightChain; ///< Правая часть продукции
+        public SDTSymbol LeftNoTerm; ///< Левая часть продукции
+        public List<SDTSymbol> RightChain; ///< Правая часть продукции
 
-        public Rule(Symbol leftNoTerm, List<Symbol> rightChain)
+        public SDTRule(SDTSymbol leftNoTerm, List<SDTSymbol> rightChain)
         {
             LeftNoTerm = leftNoTerm;
             RightChain = rightChain;
@@ -198,13 +157,13 @@ namespace SDT
         public override string ToString()
         {
             string str = LeftNoTerm.Value + " -> ";
-            foreach (Symbol symbol in RightChain)
+            foreach (SDTSymbol symbol in RightChain)
             {
                 if (symbol is OperationSymbol)
                 {
                     str += "{}";
                 }
-                else if (symbol == Symbol.Epsilon)
+                else if (symbol == SDTSymbol.Epsilon)
                 {
                     str += "e";
                 }
@@ -218,31 +177,31 @@ namespace SDT
     }
 
     /// Синтаксически управляемая схема трансляции
-    class Scheme
+    class SDTScheme
     {
-        public Symbol S0; ///< Начальный символ
-        public List<Symbol> T; ///< Терминальные символы
-        public List<Symbol> V; ///< Нетерминальные символы
-        public List<Rule> Prules; ///< Продукции
+        public SDTSymbol S0; ///< Начальный символ
+        public List<SDTSymbol> T; ///< Терминальные символы
+        public List<SDTSymbol> V; ///< Нетерминальные символы
+        public List<SDTRule> Prules; ///< Продукции
 
-        private Dictionary<Symbol, HashSet<Symbol>> FirstSet;
-        private Dictionary<Symbol, HashSet<Symbol>> FollowSet;
+        private Dictionary<SDTSymbol, HashSet<SDTSymbol>> FirstSet;
+        private Dictionary<SDTSymbol, HashSet<SDTSymbol>> FollowSet;
 
-        public Scheme(List<Symbol> t, List<Symbol> v, Symbol s0)
+        public SDTScheme(List<SDTSymbol> t, List<SDTSymbol> v, SDTSymbol s0)
         {
             T = t;
             V = v;
             S0 = s0;
-            Prules = new List<Rule>();
-            FirstSet = new Dictionary<Symbol, HashSet<Symbol>>();
-            FollowSet = new Dictionary<Symbol, HashSet<Symbol>>();
+            Prules = new List<SDTRule>();
+            FirstSet = new Dictionary<SDTSymbol, HashSet<SDTSymbol>>();
+            FollowSet = new Dictionary<SDTSymbol, HashSet<SDTSymbol>>();
 
             S0.AddAttributes(V.Find(x => x == S0).Attributes);
         }
 
-        public Scheme(List<Symbol> t, List<Symbol> v, Symbol s0, List<Rule> prules) : this(t, v, s0)
+        public SDTScheme(List<SDTSymbol> t, List<SDTSymbol> v, SDTSymbol s0, List<SDTRule> prules) : this(t, v, s0)
         {
-            foreach (Rule rule in prules)
+            foreach (SDTRule rule in prules)
             {
                 AddRule(rule.LeftNoTerm, rule.RightChain);
             }
@@ -255,18 +214,18 @@ namespace SDT
             ComputeFollowSets();
         }
 
-        public void AddRule(Symbol leftNoTerm, List<Symbol> rightChain)
+        public void AddRule(SDTSymbol leftNoTerm, List<SDTSymbol> rightChain)
         {
-            Rule rule = new Rule(leftNoTerm, rightChain);
+            SDTRule rule = new SDTRule(leftNoTerm, rightChain);
 
             // Клонирование атрибутов для каждого символа
             if (rule.LeftNoTerm.Attributes is null)
             {
                 rule.LeftNoTerm.AddAttributes(V.Find(x => x == rule.LeftNoTerm).Attributes);
             }
-            foreach (Symbol s in rule.RightChain)
+            foreach (SDTSymbol s in rule.RightChain)
             {
-                if (s is OperationSymbol || !(s.Attributes is null) || s == Symbol.Epsilon)
+                if (s is OperationSymbol || !(s.Attributes is null) || s == SDTSymbol.Epsilon)
                 {
                     continue;
                 }
@@ -289,33 +248,33 @@ namespace SDT
         private void ComputeFirstSets()
         {
             FirstSet.Clear();
-            foreach (Symbol term in T)
-                FirstSet[term] = new HashSet<Symbol>() { term }; // FIRST[c] = {c}
-            FirstSet[Symbol.Epsilon] = new HashSet<Symbol>() { Symbol.Epsilon }; // для единообразия
-            foreach (Symbol noTerm in V)
-                FirstSet[noTerm] = new HashSet<Symbol>(); // First[X] = empty set
+            foreach (SDTSymbol term in T)
+                FirstSet[term] = new HashSet<SDTSymbol>() { term }; // FIRST[c] = {c}
+            FirstSet[SDTSymbol.Epsilon] = new HashSet<SDTSymbol>() { SDTSymbol.Epsilon }; // для единообразия
+            foreach (SDTSymbol noTerm in V)
+                FirstSet[noTerm] = new HashSet<SDTSymbol>(); // First[X] = empty set
             bool changes = true;
             while (changes)
             {
                 changes = false;
-                foreach (Rule rule in Prules)
+                foreach (SDTRule rule in Prules)
                 {
                     // Для каждого правила X-> Y0Y1…Yn
-                    Symbol X = rule.LeftNoTerm;
-                    foreach (Symbol Y in rule.RightChain)
+                    SDTSymbol X = rule.LeftNoTerm;
+                    foreach (SDTSymbol Y in rule.RightChain)
                     {
                         if (Y is OperationSymbol)
                         {
                             continue;
                         }
-                        foreach (Symbol curFirstSymb in FirstSet[Y])
+                        foreach (SDTSymbol curFirstSymb in FirstSet[Y])
                         {
                             if (FirstSet[X].Add(curFirstSymb)) // Добавить а в FirstSets[X]
                             {
                                 changes = true;
                             }
                         }
-                        if (!FirstSet[Y].Contains(Symbol.Epsilon))
+                        if (!FirstSet[Y].Contains(SDTSymbol.Epsilon))
                         {
                             break;
                         }
@@ -324,26 +283,26 @@ namespace SDT
             } // пока вносятся изменения
         }
 
-        public HashSet<Symbol> First(Symbol X)
+        public HashSet<SDTSymbol> First(SDTSymbol X)
         {
             return FirstSet[X];
         }
 
-        public HashSet<Symbol> First(List<Symbol> X)
+        public HashSet<SDTSymbol> First(List<SDTSymbol> X)
         {
-            HashSet<Symbol> result = new HashSet<Symbol>();
-            foreach (Symbol Y in X)
+            HashSet<SDTSymbol> result = new HashSet<SDTSymbol>();
+            foreach (SDTSymbol Y in X)
             {
                 if (Y is OperationSymbol)
                 {
                     continue;
                 }
 
-                foreach (Symbol curFirstSymb in FirstSet[Y])
+                foreach (SDTSymbol curFirstSymb in FirstSet[Y])
                 {
                     result.Add(curFirstSymb);
                 }
-                if (!FirstSet[Y].Contains(Symbol.Epsilon))
+                if (!FirstSet[Y].Contains(SDTSymbol.Epsilon))
                 {
                     break;
                 }
@@ -355,19 +314,19 @@ namespace SDT
         private void ComputeFollowSets()
         {
             FollowSet.Clear();
-            foreach (Symbol noTerm in V)
-                FollowSet[noTerm] = new HashSet<Symbol>();
-            FollowSet[S0].Add(Symbol.Sentinel);
+            foreach (SDTSymbol noTerm in V)
+                FollowSet[noTerm] = new HashSet<SDTSymbol>();
+            FollowSet[S0].Add(SDTSymbol.Sentinel);
             bool changes = true;
             while (changes)
             {
                 changes = false;
-                foreach (Rule rule in Prules)
+                foreach (SDTRule rule in Prules)
                 {
                     for (int curIndex = 0; curIndex < rule.RightChain.Count; ++curIndex)
                     {
-                        Symbol curSymbol = rule.RightChain[curIndex];
-                        if (T.Contains(curSymbol) || curSymbol is OperationSymbol || curSymbol == Symbol.Epsilon)
+                        SDTSymbol curSymbol = rule.RightChain[curIndex];
+                        if (T.Contains(curSymbol) || curSymbol is OperationSymbol || curSymbol == SDTSymbol.Epsilon)
                         {
                             continue;
                         }
@@ -378,20 +337,20 @@ namespace SDT
                         {
                             ++nextIndex;
                         }
-                        Symbol nextSymbol;
+                        SDTSymbol nextSymbol;
                         if (nextIndex < rule.RightChain.Count)
                         {
                             nextSymbol = rule.RightChain[nextIndex];
                         }
                         else
                         {
-                            nextSymbol = Symbol.Epsilon;
+                            nextSymbol = SDTSymbol.Epsilon;
                         }
 
                         bool epsFound = false;
-                        foreach (Symbol symbol in First(nextSymbol))
+                        foreach (SDTSymbol symbol in First(nextSymbol))
                         {
-                            if (symbol != Symbol.Epsilon)
+                            if (symbol != SDTSymbol.Epsilon)
                             {
                                 if (FollowSet[curSymbol].Add(symbol))
                                 {
@@ -405,7 +364,7 @@ namespace SDT
                         }
                         if (epsFound)
                         {
-                            foreach (Symbol symbol in FollowSet[rule.LeftNoTerm])
+                            foreach (SDTSymbol symbol in FollowSet[rule.LeftNoTerm])
                             {
                                 if (FollowSet[curSymbol].Add(symbol))
                                 {
@@ -418,7 +377,7 @@ namespace SDT
             }
         }
 
-        public HashSet<Symbol> Follow(Symbol X)
+        public HashSet<SDTSymbol> Follow(SDTSymbol X)
         {
             return FollowSet[X];
         }
@@ -427,30 +386,30 @@ namespace SDT
     /// Реализация L-атрибутного СУТ в процессе LL анализа
     class LLTranslator
     {
-        protected Scheme G; ///< АТ-грамматика
-        protected Stack<Symbol> Stack; ///< Стек символов
-        protected Dictionary<Symbol, Dictionary<Symbol, Rule>> Table; ///< Управляющая таблица. Table[нетерминал][терминал]
+        protected SDTScheme G; ///< АТ-грамматика
+        protected Stack<SDTSymbol> Stack; ///< Стек символов
+        protected Dictionary<SDTSymbol, Dictionary<SDTSymbol, SDTRule>> Table; ///< Управляющая таблица. Table[нетерминал][терминал]
 
-        public LLTranslator(Scheme grammar)
+        public LLTranslator(SDTScheme grammar)
         {
             G = grammar;
             G.ComputeFirstFollow();
-            Table = new Dictionary<Symbol, Dictionary<Symbol, Rule>>();
-            Stack = new Stack<Symbol>();
+            Table = new Dictionary<SDTSymbol, Dictionary<SDTSymbol, SDTRule>>();
+            Stack = new Stack<SDTSymbol>();
 
             // Построение управляющей таблицы
-            foreach (Symbol noTermSymbol in G.V)
+            foreach (SDTSymbol noTermSymbol in G.V)
             {
-                Table[noTermSymbol] = new Dictionary<Symbol, Rule>();
+                Table[noTermSymbol] = new Dictionary<SDTSymbol, SDTRule>();
             }
 
             // Для каждого правила A -> alpha
-            foreach (Rule rule in G.Prules)
+            foreach (SDTRule rule in G.Prules)
             {
                 // Для каждого a из First(alpha)
-                foreach (Symbol firstSymbol in G.First(rule.RightChain))
+                foreach (SDTSymbol firstSymbol in G.First(rule.RightChain))
                 {
-                    if (firstSymbol != Symbol.Epsilon)
+                    if (firstSymbol != SDTSymbol.Epsilon)
                     {
                         // Добавлем правило в таблицу на пересечение A и a
                         Table[rule.LeftNoTerm][firstSymbol] = rule;
@@ -459,7 +418,7 @@ namespace SDT
                     else
                     {
                         // Для каждого b из Follow(A)
-                        foreach (Symbol followSymbol in G.Follow(rule.LeftNoTerm))
+                        foreach (SDTSymbol followSymbol in G.Follow(rule.LeftNoTerm))
                         {
                             // Добавлем правило в таблицу на пересечении A и b
                             Table[rule.LeftNoTerm][followSymbol] = rule;
@@ -470,21 +429,21 @@ namespace SDT
             // DebugMTable();
         }
 
-        private static readonly Symbol EndOfRule = "~EOR~"; ///< Символ конца правила
+        private static readonly SDTSymbol EndOfRule = "~EOR~"; ///< Символ конца правила
 
         /// Анализ строки
-        public bool Parse(List<Symbol> input)
+        public bool Parse(List<SDTSymbol> input)
         {
-            input.Add(Symbol.Sentinel); // Символ окончания входной последовательности
+            input.Add(SDTSymbol.Sentinel); // Символ окончания входной последовательности
 
             Stack.Clear();
-            Stack.Push(Symbol.Sentinel); // Символ дна стека
-            Stack.Push(new SynthSymbol(G.S0.Value, new Symbol(G.S0)));
+            Stack.Push(SDTSymbol.Sentinel); // Символ дна стека
+            Stack.Push(new SynthSymbol(G.S0.Value, new SDTSymbol(G.S0)));
             Stack.Push(G.S0);
 
             int i = 0;
-            Symbol curInputSymbol = input[i];
-            Symbol curStackSymbol;
+            SDTSymbol curInputSymbol = input[i];
+            SDTSymbol curStackSymbol;
             do
             {
                 curStackSymbol = Stack.Peek();
@@ -493,7 +452,7 @@ namespace SDT
                     Stack.Pop();
                     // Функции операционного символа передаются записи синтеза до конца правила
                     SynthSymbol symbols = new SynthSymbol();
-                    Stack<Symbol> tmp = new Stack<Symbol>();
+                    Stack<SDTSymbol> tmp = new Stack<SDTSymbol>();
                     while (Stack.Peek() != EndOfRule)
                     {
                         if (Stack.Peek() is SynthSymbol)
@@ -514,7 +473,7 @@ namespace SDT
                 {
                     Stack.Pop();
                     // Запись синтеза копируется в запись синтеза ниже, в пределах данного правила
-                    Stack<Symbol> tmp = new Stack<Symbol>();
+                    Stack<SDTSymbol> tmp = new Stack<SDTSymbol>();
                     while (Stack.Count > 0 && !(Stack.Peek() is SynthSymbol))
                     {
                         if (Stack.Peek() == EndOfRule)
@@ -556,7 +515,7 @@ namespace SDT
                 }
                 else // в вершине стека нетерминал
                 {
-                    Rule rule;
+                    SDTRule rule;
                     if (Table[curStackSymbol].TryGetValue(curInputSymbol, out rule)) // в клетке[вершина стека, распознанный символ] таблицы разбора существует правило
                     {
                         Stack.Pop();
@@ -564,9 +523,9 @@ namespace SDT
                         // Подсчет индексов символов
                         Dictionary<string, int> count = new Dictionary<string, int>();
                         List<int> indexes = new List<int>();
-                        foreach (Symbol s in rule.RightChain)
+                        foreach (SDTSymbol s in rule.RightChain)
                         {
-                            if (s is OperationSymbol || s == Symbol.Epsilon)
+                            if (s is OperationSymbol || s == SDTSymbol.Epsilon)
                             {
                                 indexes.Add(0);
                                 continue;
@@ -583,9 +542,9 @@ namespace SDT
                         Stack.Push(EndOfRule); // Конец правила
                         Stack.Push(headSynth); // Локальная запись синтеза для заголовка
                         int j = rule.RightChain.Count - 1;
-                        foreach (Symbol rightSymbol in Enumerable.Reverse(rule.RightChain))
+                        foreach (SDTSymbol rightSymbol in Enumerable.Reverse(rule.RightChain))
                         {
-                            if (rightSymbol == Symbol.Epsilon)
+                            if (rightSymbol == SDTSymbol.Epsilon)
                             {
                                 continue;
                             }
@@ -596,7 +555,7 @@ namespace SDT
                             }
                             else
                             {
-                                Symbol copy = new Symbol(rightSymbol);
+                                SDTSymbol copy = new SDTSymbol(rightSymbol);
                                 // Запись синтеза копии
                                 Stack.Push(new SynthSymbol(copy.Value + (count[rightSymbol.Value] > 1 || copy == rule.LeftNoTerm ? indexes[j].ToString() : ""), copy));
                                 // Копия символа
@@ -611,9 +570,9 @@ namespace SDT
                         return false;
                     }
                 }
-            } while (Stack.Peek() != Symbol.Sentinel); // вершина стека не равна дну стека
+            } while (Stack.Peek() != SDTSymbol.Sentinel); // вершина стека не равна дну стека
 
-            if (curInputSymbol != Symbol.Sentinel) // распознанный символ не равен концу входной последовательности
+            if (curInputSymbol != SDTSymbol.Sentinel) // распознанный символ не равен концу входной последовательности
             {
                 // ERROR
                 return false;
@@ -626,34 +585,34 @@ namespace SDT
         public void DebugMTable()
         {
             int maxLenV = 0;
-            foreach (Symbol s in G.V)
+            foreach (SDTSymbol s in G.V)
             {
                 maxLenV = Math.Max(maxLenV, s.Value.Length);
             }
             int maxLenSymb = Math.Max(maxLenV, 2);
-            foreach (Symbol s in G.T)
+            foreach (SDTSymbol s in G.T)
             {
                 maxLenSymb = Math.Max(maxLenSymb, s.Value.Length);
             }
             int maxLenRule = 0;
-            foreach (Rule rule in G.Prules)
+            foreach (SDTRule rule in G.Prules)
             {
                 maxLenRule = Math.Max(maxLenRule, rule.RightChain.Count);
             }
             maxLenRule = maxLenV + 4 + maxLenRule * maxLenSymb;
 
             Console.Write("{0,-" + maxLenV.ToString() + "} | ", " ");
-            foreach (Symbol s in G.T)
+            foreach (SDTSymbol s in G.T)
             {
                 Console.Write("{0,-" + maxLenRule.ToString() + "} | ", s.Value);
             }
-            Console.WriteLine("{0,-" + maxLenRule.ToString() + "} | ", Symbol.Sentinel.Value);
-            foreach (Symbol s in G.V)
+            Console.WriteLine("{0,-" + maxLenRule.ToString() + "} | ", SDTSymbol.Sentinel.Value);
+            foreach (SDTSymbol s in G.V)
             {
                 Console.Write("{0,-" + maxLenV.ToString() + "} | ", s.Value);
-                Rule rule;
+                SDTRule rule;
                 string str;
-                foreach (Symbol s2 in G.T)
+                foreach (SDTSymbol s2 in G.T)
                 {
                     if (Table[s].TryGetValue(s2, out rule))
                     {
@@ -665,7 +624,7 @@ namespace SDT
                     }
                     Console.Write("{0,-" + maxLenRule.ToString() + "} | ", str);
                 }
-                if (Table[s].TryGetValue(Symbol.Sentinel, out rule))
+                if (Table[s].TryGetValue(SDTSymbol.Sentinel, out rule))
                 {
                     str = rule.ToString();
                 }
@@ -682,7 +641,7 @@ namespace SDT
     namespace Types
     {
         /// Функция семантического действия
-        delegate void Actions(Dictionary<string, Symbol> _);
+        delegate void Actions(Dictionary<string, SDTSymbol> _);
 
         /// Словарь атрибутов
         class Attrs : Dictionary<string, object> {}

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MyCompiler: SDT.SimpleLexer Class Reference</title>
+<title>MyCompiler: Translator.ArithmLexer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,40 +61,40 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespace_s_d_t.html">SDT</a></li><li class="navelem"><a class="el" href="class_s_d_t_1_1_simple_lexer.html">SimpleLexer</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespace_translator.html">Translator</a></li><li class="navelem"><a class="el" href="class_translator_1_1_arithm_lexer.html">ArithmLexer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_s_d_t_1_1_simple_lexer-members.html">List of all members</a>  </div>
+<a href="class_translator_1_1_arithm_lexer-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SDT.SimpleLexer Class Reference</div>  </div>
+<div class="title">Translator.ArithmLexer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Простой лексический анализатор  
- <a href="class_s_d_t_1_1_simple_lexer.html#details">More...</a></p>
+<p>Лексический анализатор для арифметических выражений c положительными целыми числами  
+ <a href="class_translator_1_1_arithm_lexer.html#details">More...</a></p>
 <div class="dynheader">
-Inheritance diagram for SDT.SimpleLexer:</div>
+Inheritance diagram for Translator.ArithmLexer:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_s_d_t_1_1_simple_lexer.png" usemap="#SDT.SimpleLexer_map" alt=""/>
-  <map id="SDT.SimpleLexer_map" name="SDT.SimpleLexer_map">
-<area href="class_s_d_t_1_1_lexer.html" title="Абстрактный класс лексического анализатора" alt="SDT.Lexer" shape="rect" coords="0,0,109,24"/>
+  <img src="class_translator_1_1_arithm_lexer.png" usemap="#Translator.ArithmLexer_map" alt=""/>
+  <map id="Translator.ArithmLexer_map" name="Translator.ArithmLexer_map">
+<area href="class_translator_1_1_lexer.html" title="Абстрактный класс лексического анализатора" alt="Translator.Lexer" shape="rect" coords="0,0,141,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5e1b02a4cda7e32ab7915d686ad636d"><td class="memItemLeft" align="right" valign="top"><a id="ae5e1b02a4cda7e32ab7915d686ad636d"></a>
-override List&lt; <a class="el" href="class_s_d_t_1_1_symbol.html">Symbol</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_d_t_1_1_simple_lexer.html#ae5e1b02a4cda7e32ab7915d686ad636d">Parse</a> (string str)</td></tr>
-<tr class="memdesc:ae5e1b02a4cda7e32ab7915d686ad636d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Парсинг строки в список токенов <br /></td></tr>
-<tr class="separator:ae5e1b02a4cda7e32ab7915d686ad636d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1539659004febb5d5a6be1fa59f0f3d1"><td class="memItemLeft" align="right" valign="top"><a id="a1539659004febb5d5a6be1fa59f0f3d1"></a>
+override List&lt; <a class="el" href="class_translator_1_1_s_d_t_symbol.html">SDTSymbol</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_arithm_lexer.html#a1539659004febb5d5a6be1fa59f0f3d1">Parse</a> (string str)</td></tr>
+<tr class="memdesc:a1539659004febb5d5a6be1fa59f0f3d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Парсинг строки в список токенов <br /></td></tr>
+<tr class="separator:a1539659004febb5d5a6be1fa59f0f3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Простой лексический анализатор </p>
-<p>Токен создается для каждого символа строки </p>
+<div class="textblock"><p>Лексический анализатор для арифметических выражений c положительными целыми числами </p>
+<p>Числа преобразуются в токен с именем number и атрибутом value, который содержит числовое значение. Для остальных символов создаются токены со значением в один символ и без атрибутов. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>FWKCompilers/Lexer.cs</li>
 </ul>

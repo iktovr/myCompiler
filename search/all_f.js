@@ -1,19 +1,19 @@
 var searchData=
 [
-  ['s0_116',['S0',['../class_s_d_t_1_1_scheme.html#acb309a3cc6fe71fe91f8ee502c3f3fa7',1,'SDT.Scheme.S0()'],['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a76660323e3aac5b15eaf7d37889cea10',1,'Processor.AbstractGrammar.AGrammar.S0()']]],
-  ['scheme_117',['Scheme',['../class_s_d_t_1_1_scheme.html',1,'SDT']]],
-  ['sdt_118',['SDT',['../namespace_s_d_t.html',1,'']]],
-  ['sentinel_119',['Sentinel',['../class_s_d_t_1_1_symbol.html#aa2e694ed724796e8d091a25eb1e76562',1,'SDT::Symbol']]],
+  ['s0_115',['S0',['../class_translator_1_1_s_d_t_scheme.html#a9448e8fb6caaea2e4ce4bce3defbfb16',1,'Translator.SDTScheme.S0()'],['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a76660323e3aac5b15eaf7d37889cea10',1,'Processor.AbstractGrammar.AGrammar.S0()']]],
+  ['sdtrule_116',['SDTRule',['../class_translator_1_1_s_d_t_rule.html',1,'Translator']]],
+  ['sdtscheme_117',['SDTScheme',['../class_translator_1_1_s_d_t_scheme.html',1,'Translator']]],
+  ['sdtsymbol_118',['SDTSymbol',['../class_translator_1_1_s_d_t_symbol.html',1,'Translator']]],
+  ['sentinel_119',['Sentinel',['../class_processor_1_1_abstract_grammar_1_1_symbol.html#a14b24f45211f980aa37fb5e700bb28f9',1,'Processor.AbstractGrammar.Symbol.Sentinel()'],['../class_translator_1_1_s_d_t_symbol.html#a4a7078139b33d0a514ea995014f636ef',1,'Translator.SDTSymbol.Sentinel()']]],
   ['setsequal_120',['SetsEqual',['../class_m_p_translator_1_1_canonical_l_r_parser.html#af3b55beb657425fe3b03788470dbec59',1,'MPTranslator::CanonicalLRParser']]],
   ['shortnoterm_121',['ShortNoTerm',['../class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a355c81cbb21993b5e893914fc14809b6',1,'Processor::AbstractGrammar::AGrammar']]],
   ['sigma_122',['Sigma',['../class_translator_1_1_automate.html#a2e6153962f6c9e88f46bf5562fd8acb0',1,'Translator::Automate']]],
-  ['simplelexer_123',['SimpleLexer',['../class_s_d_t_1_1_simple_lexer.html',1,'SDT']]],
+  ['simplelexer_123',['SimpleLexer',['../class_translator_1_1_simple_lexer.html',1,'Translator']]],
   ['slrgrammar_124',['SLRGrammar',['../class_translator_1_1_s_l_r_parser.html#a36ec83780b1a9cc11d5523ac75b1dd46',1,'Translator::SLRParser']]],
   ['slrparser_125',['SLRParser',['../class_translator_1_1_s_l_r_parser.html',1,'Translator']]],
-  ['stack_126',['Stack',['../class_s_d_t_1_1_l_l_translator.html#a09a32b37ff121fab2c1b5f4b372b3238',1,'SDT::LLTranslator']]],
+  ['stack_126',['Stack',['../class_translator_1_1_l_l_translator.html#acb3713a377b527a97e3e9bb274cefe48',1,'Translator::LLTranslator']]],
   ['startsymbol_127',['startSymbol',['../class_translator_1_1_s_l_r_parser.html#a8b59bed6945d92468129b27529fffbb3',1,'Translator::SLRParser']]],
   ['state_128',['State',['../class_translator_1_1_s_l_r_parser_1_1_state.html',1,'Translator::SLRParser']]],
-  ['symbol_129',['Symbol',['../class_processor_1_1_abstract_grammar_1_1_symbol.html',1,'Processor.AbstractGrammar.Symbol'],['../class_s_d_t_1_1_symbol.html',1,'SDT.Symbol']]],
-  ['synthsymbol_130',['SynthSymbol',['../class_s_d_t_1_1_synth_symbol.html',1,'SDT']]],
-  ['types_131',['Types',['../namespace_s_d_t_1_1_types.html',1,'SDT']]]
+  ['symbol_129',['Symbol',['../class_processor_1_1_abstract_grammar_1_1_symbol.html',1,'Processor::AbstractGrammar']]],
+  ['synthsymbol_130',['SynthSymbol',['../class_translator_1_1_synth_symbol.html',1,'Translator']]]
 ];

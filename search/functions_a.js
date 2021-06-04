@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['operator_20symbol_228',['operator Symbol',['../class_processor_1_1_abstract_grammar_1_1_symbol.html#a5ac1935ade2f03bda507074a8e3c6908',1,'Processor.AbstractGrammar.Symbol.operator Symbol()'],['../class_s_d_t_1_1_symbol.html#a9c126aa947d0dface7b519ff37f8c24e',1,'SDT.Symbol.operator Symbol(string str)'],['../class_s_d_t_1_1_symbol.html#a43458357f60bb2f992144f1b6af87da0',1,'SDT.Symbol.operator Symbol(Dictionary&lt; string, object &gt; dict)'],['../class_s_d_t_1_1_symbol.html#a803a0b54b6b93871273eafb17de4b68e',1,'SDT.Symbol.operator Symbol(Types.Actions func)']]],
-  ['operator_3d_3d_229',['operator==',['../class_s_d_t_1_1_symbol.html#af6b74296ae1100ceb16af2dabe5ffa46',1,'SDT::Symbol']]]
+  ['operator_20sdtsymbol_228',['operator SDTSymbol',['../class_translator_1_1_s_d_t_symbol.html#a9edba6701611d8fadd7e2293abb5be5f',1,'Translator.SDTSymbol.operator SDTSymbol(string str)'],['../class_translator_1_1_s_d_t_symbol.html#ade7ab2a97402fc199e783e54cb84eca8',1,'Translator.SDTSymbol.operator SDTSymbol(Dictionary&lt; string, object &gt; dict)'],['../class_translator_1_1_s_d_t_symbol.html#abc6fd2e441a6ca0a18d991c0d8a87e33',1,'Translator.SDTSymbol.operator SDTSymbol(Types.Actions func)']]],
+  ['operator_20symbol_229',['operator Symbol',['../class_processor_1_1_abstract_grammar_1_1_symbol.html#a5ac1935ade2f03bda507074a8e3c6908',1,'Processor::AbstractGrammar::Symbol']]]
 ];

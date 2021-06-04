@@ -80,14 +80,14 @@ $(function() {
 
 
 <h3><a id="index_b"></a>- b -</h3><ul>
-<li>BuildAutomate()
-: <a class="el" href="class_translator_1_1_s_l_r_parser.html#ac4d73407121742352cf55751539c9365">Translator.SLRParser</a>
+<li>BuildControlTable()
+: <a class="el" href="class_translator_1_1_s_l_r_parser.html#ae9721b51c36268806fb2874b65fc158b">Translator.SLRParser</a>
 </li>
 <li>BuildDeltaDKAutomate()
 : <a class="el" href="class_translator_1_1_automate.html#aa6618cc341053a7382f3ba98a00dc1b2">Translator.Automate</a>
 </li>
-<li>BuildTable()
-: <a class="el" href="class_translator_1_1_s_l_r_parser.html#a9d78ab3dd233594550255676b35aeac1">Translator.SLRParser</a>
+<li>BuildLRAutomate()
+: <a class="el" href="class_translator_1_1_s_l_r_parser.html#a75721882fc4e880deb2620b2f68983fb">Translator.SLRParser</a>
 </li>
 </ul>
 
@@ -143,12 +143,8 @@ $(function() {
 </li>
 <li>Equals()
 : <a class="el" href="class_s_d_t_1_1_symbol.html#a1792df91260be1e8ea5c5499a768bdf4">SDT.Symbol</a>
-, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_comparer.html#a4bc9c4aebb6bddb70ba53a8d7ea2fbc7">Translator.SLRParser.PairComparer</a>
-, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html#a1fe13744b6da2a7b1be9a7153cfd01fe">Translator.SLRParser.PairStrInt</a>
-</li>
-<li>Execute()
-: <a class="el" href="class_translator_1_1_grammar.html#ae6b8c40ccdf45352b73cb9fd17e80d55">Translator.Grammar</a>
-, <a class="el" href="class_translator_1_1_s_l_r_parser.html#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">Translator.SLRParser</a>
+, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_comparer.html#abfb6ca2bd1f5d465476d1744d92121d3">Translator.SLRParser.PairComparer</a>
+, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_symb_int.html#a4be7329a58ef6d1b3b4162158204b902">Translator.SLRParser.PairSymbInt</a>
 </li>
 </ul>
 
@@ -157,8 +153,8 @@ $(function() {
 <li>findDelta()
 : <a class="el" href="class_translator_1_1_p_d_a.html#a1d52683222fc1c60434b41b30dbe1aba">Translator.PDA</a>
 </li>
-<li>FindDeltaRuleInKA()
-: <a class="el" href="class_translator_1_1_s_l_r_parser.html#a42d8c74b602856d2a1c503679e6c1aa4">Translator.SLRParser</a>
+<li>FindDeltaRuleInLRA()
+: <a class="el" href="class_translator_1_1_s_l_r_parser.html#aee49de6df2c142384c9765e5227eab17">Translator.SLRParser</a>
 </li>
 <li>FindSetOfStates()
 : <a class="el" href="class_translator_1_1_s_l_r_parser.html#a5ebfc41bc52637ea2a3950af85eea412">Translator.SLRParser</a>
@@ -181,7 +177,7 @@ $(function() {
 </li>
 <li>GetHashCode()
 : <a class="el" href="class_s_d_t_1_1_symbol.html#a50eb0d171ea7649adec7fbb0081f7f37">SDT.Symbol</a>
-, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_comparer.html#a0f46d4df68f2f91c5bd0508604559f5a">Translator.SLRParser.PairComparer</a>
+, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_comparer.html#aa0bd5e16f2645f7d89f19508f2cc6a1a">Translator.SLRParser.PairComparer</a>
 </li>
 <li>GetLHSymbol()
 : <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html#a054c174486f31641df3198525fee798c">Translator.SLRParser.State</a>
@@ -230,7 +226,8 @@ $(function() {
 
 <h3><a id="index_o"></a>- o -</h3><ul>
 <li>operator Symbol()
-: <a class="el" href="class_s_d_t_1_1_symbol.html#a9c126aa947d0dface7b519ff37f8c24e">SDT.Symbol</a>
+: <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html#a5ac1935ade2f03bda507074a8e3c6908">Processor.AbstractGrammar.Symbol</a>
+, <a class="el" href="class_s_d_t_1_1_symbol.html#a9c126aa947d0dface7b519ff37f8c24e">SDT.Symbol</a>
 </li>
 <li>operator==()
 : <a class="el" href="class_s_d_t_1_1_symbol.html#af6b74296ae1100ceb16af2dabe5ffa46">SDT.Symbol</a>
@@ -244,6 +241,7 @@ $(function() {
 , <a class="el" href="class_s_d_t_1_1_lexer.html#a42c2b44e2fa3158c1a822fb856a8ebd6">SDT.Lexer</a>
 , <a class="el" href="class_s_d_t_1_1_l_l_translator.html#a35520b16c7f0a0fb997bec91b0fa7a0a">SDT.LLTranslator</a>
 , <a class="el" href="class_s_d_t_1_1_simple_lexer.html#ae5e1b02a4cda7e32ab7915d686ad636d">SDT.SimpleLexer</a>
+, <a class="el" href="class_translator_1_1_s_l_r_parser.html#a40e66fd87819694b6c354032732388c4">Translator.SLRParser</a>
 </li>
 <li>PDA()
 : <a class="el" href="class_translator_1_1_p_d_a.html#a92dd8446d1cfe141d8bf02c5994818a4">Translator.PDA</a>

@@ -81,8 +81,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_comparer.html">PairComparer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Компаратор пар. Требуется для корректной работы Dictionary.  <a href="class_translator_1_1_s_l_r_parser_1_1_pair_comparer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html">PairStrInt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пара строка-число  <a href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_symb_int.html">PairSymbInt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пара символ-число  <a href="class_translator_1_1_s_l_r_parser_1_1_pair_symb_int.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LR(0)-ситуация - продукция с точкой в некоторой позиции правой части  <a href="class_translator_1_1_s_l_r_parser_1_1_state.html#details">More...</a><br /></td></tr>
@@ -93,9 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada383ede51d0509edc808f8e80fb6577"><td class="memItemLeft" align="right" valign="top"><a id="ada383ede51d0509edc808f8e80fb6577"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SLRParser</b> (<a class="el" href="class_translator_1_1_grammar.html">Grammar</a> grammar)</td></tr>
 <tr class="separator:ada383ede51d0509edc808f8e80fb6577"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">Execute</a> ()</td></tr>
-<tr class="memdesc:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнение LR-анализа  <a href="class_translator_1_1_s_l_r_parser.html#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">More...</a><br /></td></tr>
-<tr class="separator:a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40e66fd87819694b6c354032732388c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a40e66fd87819694b6c354032732388c4">Parse</a> ()</td></tr>
+<tr class="memdesc:a40e66fd87819694b6c354032732388c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполнение LR-анализа  <a href="class_translator_1_1_s_l_r_parser.html#a40e66fd87819694b6c354032732388c4">More...</a><br /></td></tr>
+<tr class="separator:a40e66fd87819694b6c354032732388c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -111,20 +111,20 @@ List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">S
 List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#af62ed9c8a668860d22c258c8464d07ae">Goto</a> (List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; I, <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> X)</td></tr>
 <tr class="memdesc:af62ed9c8a668860d22c258c8464d07ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вычисление множества GOTO(I, X) <br /></td></tr>
 <tr class="separator:af62ed9c8a668860d22c258c8464d07ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42d8c74b602856d2a1c503679e6c1aa4"><td class="memItemLeft" align="right" valign="top"><a id="a42d8c74b602856d2a1c503679e6c1aa4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a42d8c74b602856d2a1c503679e6c1aa4">FindDeltaRuleInKA</a> (<a class="el" href="class_translator_1_1_delta_q_sigma.html">DeltaQSigma</a> rule)</td></tr>
-<tr class="memdesc:a42d8c74b602856d2a1c503679e6c1aa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает истину, если уже есть правило перехода в автомате <br /></td></tr>
-<tr class="separator:a42d8c74b602856d2a1c503679e6c1aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee49de6df2c142384c9765e5227eab17"><td class="memItemLeft" align="right" valign="top"><a id="aee49de6df2c142384c9765e5227eab17"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#aee49de6df2c142384c9765e5227eab17">FindDeltaRuleInLRA</a> (<a class="el" href="class_translator_1_1_delta_q_sigma.html">DeltaQSigma</a> rule)</td></tr>
+<tr class="memdesc:aee49de6df2c142384c9765e5227eab17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает истину, если уже есть правило перехода в автомате <br /></td></tr>
+<tr class="separator:aee49de6df2c142384c9765e5227eab17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ebfc41bc52637ea2a3950af85eea412"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a5ebfc41bc52637ea2a3950af85eea412">FindSetOfStates</a> (List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt; <a class="el" href="class_translator_1_1_s_l_r_parser.html#a12dd5970880afc5cc94e2540b3e8e6ae">C</a>, List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; I)</td></tr>
 <tr class="separator:a5ebfc41bc52637ea2a3950af85eea412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4d73407121742352cf55751539c9365"><td class="memItemLeft" align="right" valign="top"><a id="ac4d73407121742352cf55751539c9365"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#ac4d73407121742352cf55751539c9365">BuildAutomate</a> ()</td></tr>
-<tr class="memdesc:ac4d73407121742352cf55751539c9365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построение канонического набора множеств LR(0)-ситуаций и автомата перехода между ситуациями <br /></td></tr>
-<tr class="separator:ac4d73407121742352cf55751539c9365"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d78ab3dd233594550255676b35aeac1"><td class="memItemLeft" align="right" valign="top"><a id="a9d78ab3dd233594550255676b35aeac1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a9d78ab3dd233594550255676b35aeac1">BuildTable</a> ()</td></tr>
-<tr class="memdesc:a9d78ab3dd233594550255676b35aeac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построение управляющей таблицы КС-грамматики <br /></td></tr>
-<tr class="separator:a9d78ab3dd233594550255676b35aeac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75721882fc4e880deb2620b2f68983fb"><td class="memItemLeft" align="right" valign="top"><a id="a75721882fc4e880deb2620b2f68983fb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a75721882fc4e880deb2620b2f68983fb">BuildLRAutomate</a> ()</td></tr>
+<tr class="memdesc:a75721882fc4e880deb2620b2f68983fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построение канонического набора множеств LR(0)-ситуаций и автомата перехода между ситуациями <br /></td></tr>
+<tr class="separator:a75721882fc4e880deb2620b2f68983fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9721b51c36268806fb2874b65fc158b"><td class="memItemLeft" align="right" valign="top"><a id="ae9721b51c36268806fb2874b65fc158b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#ae9721b51c36268806fb2874b65fc158b">BuildControlTable</a> ()</td></tr>
+<tr class="memdesc:ae9721b51c36268806fb2874b65fc158b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Построение управляющей таблицы КС-грамматики <br /></td></tr>
+<tr class="separator:ae9721b51c36268806fb2874b65fc158b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -136,14 +136,14 @@ Protected Attributes</h2></td></tr>
 List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a12dd5970880afc5cc94e2540b3e8e6ae">C</a> = new List&lt; List&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_state.html">State</a> &gt; &gt;()</td></tr>
 <tr class="memdesc:a12dd5970880afc5cc94e2540b3e8e6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Канонический набор множеств LR(0)-ситуаций <br /></td></tr>
 <tr class="separator:a12dd5970880afc5cc94e2540b3e8e6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9ae744f317435ebe2bbe078df85a0b"><td class="memItemLeft" align="right" valign="top"><a id="a9d9ae744f317435ebe2bbe078df85a0b"></a>
-<a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a9d9ae744f317435ebe2bbe078df85a0b">KA</a> = new <a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>()</td></tr>
-<tr class="memdesc:a9d9ae744f317435ebe2bbe078df85a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">LR(0)-автомат переходов грамматики <br /></td></tr>
-<tr class="separator:a9d9ae744f317435ebe2bbe078df85a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21584e18a691018065dc6220830be3b4"><td class="memItemLeft" align="right" valign="top"><a id="a21584e18a691018065dc6220830be3b4"></a>
-Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html">PairStrInt</a>, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_str_int.html">PairStrInt</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a21584e18a691018065dc6220830be3b4">M</a> = null</td></tr>
-<tr class="memdesc:a21584e18a691018065dc6220830be3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Управляющая SLR-таблица, представленная в виде словаря <br /></td></tr>
-<tr class="separator:a21584e18a691018065dc6220830be3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29a9bd9247aa63c9b1fbba34bdccff17"><td class="memItemLeft" align="right" valign="top"><a id="a29a9bd9247aa63c9b1fbba34bdccff17"></a>
+<a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a29a9bd9247aa63c9b1fbba34bdccff17">LRA</a> = new <a class="el" href="class_translator_1_1_f_s_automate.html">FSAutomate</a>()</td></tr>
+<tr class="memdesc:a29a9bd9247aa63c9b1fbba34bdccff17"><td class="mdescLeft">&#160;</td><td class="mdescRight">LR(0)-автомат переходов грамматики <br /></td></tr>
+<tr class="separator:a29a9bd9247aa63c9b1fbba34bdccff17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14b853211857e1c7b5b091e0836fe778"><td class="memItemLeft" align="right" valign="top"><a id="a14b853211857e1c7b5b091e0836fe778"></a>
+Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_symb_int.html">PairSymbInt</a>, <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_symb_int.html">PairSymbInt</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a14b853211857e1c7b5b091e0836fe778">M</a> = null</td></tr>
+<tr class="memdesc:a14b853211857e1c7b5b091e0836fe778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Управляющая SLR-таблица, представленная в виде словаря <br /></td></tr>
+<tr class="separator:a14b853211857e1c7b5b091e0836fe778"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b59bed6945d92468129b27529fffbb3"><td class="memItemLeft" align="right" valign="top"><a id="a8b59bed6945d92468129b27529fffbb3"></a>
 <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_s_l_r_parser.html#a8b59bed6945d92468129b27529fffbb3">startSymbol</a> = new <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>(&quot;S'&quot;)</td></tr>
 <tr class="memdesc:a8b59bed6945d92468129b27529fffbb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Новый начальный нетерминал S'. <br /></td></tr>
@@ -154,34 +154,6 @@ Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_st
 <tr class="separator:a8b738c5af4eec68327e51fb732ef8afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1e3b0e6e1d6b9dec29c0ad2b45e9a52b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e3b0e6e1d6b9dec29c0ad2b45e9a52b">&#9670;&nbsp;</a></span>Execute()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Translator.SLRParser.Execute </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Выполнение LR-анализа </p>
-<p>LR-анализатор состоит из выходного буфера, выхода, стека, программы-драйвера и таблицы синтаксического анализа, состоящей из двух частей (ACTION и GOTO). Программа-драйвера одинакова для всех LR-анализаторов; от одного к другому меняются таблицы синтаксического анализа. Программа синтаксического анализа по одному считывает символы из входного буфера. </p>
-
-</div>
-</div>
 <a id="a5ebfc41bc52637ea2a3950af85eea412"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ebfc41bc52637ea2a3950af85eea412">&#9670;&nbsp;</a></span>FindSetOfStates()</h2>
 
@@ -216,6 +188,34 @@ Dictionary&lt; <a class="el" href="class_translator_1_1_s_l_r_parser_1_1_pair_st
 </table>
 </div><div class="memdoc">
 <p>Возвращает индекс замыкания множества LR(0)-ситуаций в указанном каноническом наборе. Если множество не было найдено, возращает -1 </p>
+
+</div>
+</div>
+<a id="a40e66fd87819694b6c354032732388c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40e66fd87819694b6c354032732388c4">&#9670;&nbsp;</a></span>Parse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Translator.SLRParser.Parse </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выполнение LR-анализа </p>
+<p>LR-анализатор состоит из выходного буфера, выхода, стека, программы-драйвера и таблицы синтаксического анализа, состоящей из двух частей (ACTION и GOTO). Программа-драйвера одинакова для всех LR-анализаторов; от одного к другому меняются таблицы синтаксического анализа. Программа синтаксического анализа по одному считывает символы из входного буфера. </p>
 
 </div>
 </div>

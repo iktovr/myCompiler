@@ -106,7 +106,7 @@ namespace Processor.AttrGrammar
                     var atrs_l = new List<Symbol>();
                     for (int k = 0; k < Rules[i].F[j].RH.Count; ++k)
                     { //проверка наличия функции в правой чатси правила
-                        if (IsOper(Rules[i].F[j].RH[k].symbol))
+                        if (IsOper(Rules[i].F[j].RH[k].Value))
                         {
                             NewOpS += Rules[i].F[j].RH[k]; //создание имени для нового оперционного символа
                         }

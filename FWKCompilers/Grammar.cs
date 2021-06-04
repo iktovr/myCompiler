@@ -26,7 +26,7 @@ namespace Translator
         public bool isNoTerm(string v)
         {
             foreach (var vi in this.V)
-                if (v.Equals(vi.symbol))
+                if (v.Equals(vi.Value))
                     return true;
             return false;
         }
@@ -34,7 +34,7 @@ namespace Translator
         public bool isTerm(string t)
         {
             foreach (var ti in this.T)
-                if (t.Equals(ti.symbol))
+                if (t.Equals(ti.Value))
                     return true;
             return false;
         }

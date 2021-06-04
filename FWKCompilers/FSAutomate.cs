@@ -39,7 +39,7 @@ namespace Translator
                 {
                     if (d.LHSQ == currState && d.LHSS == chineSymbol.Substring(i, 1))
                     {
-                        currState = d.RHSQ[0].symbol; // Для детерминированного К автомата
+                        currState = d.RHSQ[0].Value; // Для детерминированного К автомата
                         flag = 1;
                         break;
                     }

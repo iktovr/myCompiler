@@ -8,20 +8,20 @@ namespace Processor.AbstractGrammar
 {
     public class Symbol : IEquatable<Symbol>
     {
-        public string symbol { set; get; } //
+        public string Value { set; get; } //
         public List<Symbol> Attr = null; ///< Множество атрибутов символа
 
         public Symbol() {}
 
         public Symbol(string s, List<Symbol> a)
         {
-            symbol = s;
+            Value = s;
             Attr = new List<Symbol>(a);
         }
 
-        public Symbol(string symbol)
+        public Symbol(string Value)
         {
-            this.symbol = symbol;
+            this.Value = Value;
             this.Attr = null;
         }
 
@@ -32,7 +32,7 @@ namespace Processor.AbstractGrammar
         {
             if (other == null)
                 return false;
-            return (this.symbol.Equals(other.symbol));
+            return (this.Value.Equals(other.Value));
         }
 
         public override bool Equals(object obj)
@@ -48,7 +48,7 @@ namespace Processor.AbstractGrammar
 
         public override int GetHashCode()
         {
-            return symbol.GetHashCode();
+            return Value.GetHashCode();
         }
 
         public static bool operator == (Symbol a, Symbol b)
@@ -66,7 +66,7 @@ namespace Processor.AbstractGrammar
             }
 
             // Return true if the fields match:
-            return a.symbol == b.symbol;
+            return a.Value == b.Value;
         }
 
         public static bool operator != (Symbol symbol1,Symbol symbol2) {
@@ -74,16 +74,16 @@ namespace Processor.AbstractGrammar
         }
 
         public override string ToString() {
-            return this.symbol;
+            return this.Value;
         }
 
         public virtual void print()
         {
-            Console.Write(this.symbol);
+            Console.Write(this.Value);
             if (Attr == null)
                 return;
             foreach (var a in Attr)
-                Console.Write("_" + a.symbol + " ");
+                Console.Write("_" + a.Value + " ");
         }
     }
 }

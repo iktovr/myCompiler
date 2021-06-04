@@ -372,10 +372,10 @@ namespace Translator
 
                     foreach (DeltaQSigma edge in LRA.D)
                     {
-                        if (i.ToString() == edge.LHSQ.symbol)
+                        if (i.ToString() == edge.LHSQ.Value)
                         {
                             Symbol X = edge.LHSS;
-                            int j = int.Parse(edge.RHSQ[0].symbol);
+                            int j = int.Parse(edge.RHSQ[0].Value);
                             if (SLRGrammar.T.Contains(X))
                             {
                                 PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
@@ -440,7 +440,7 @@ namespace Translator
                         error = true;
                         break;
                     }
-                    switch (tableCondition.First.symbol)
+                    switch (tableCondition.First.Value)
                     {
                         // Accept - Принятие
                         case "A":

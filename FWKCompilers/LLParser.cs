@@ -30,9 +30,9 @@ namespace Translator
             Console.WriteLine("Создадим таблицу. Сначала создадим по столбцу для каждого из этих терминалов: ");
             foreach (var termSymbol in G.T)
             {
-                Console.Write(termSymbol.symbol);
+                Console.Write(termSymbol.Value);
                 Console.Write(", ");
-                Table.Columns.Add(new DataColumn(termSymbol.symbol, typeof(Production)));
+                Table.Columns.Add(new DataColumn(termSymbol.Value, typeof(Production)));
             }
             Console.WriteLine("\nТакже создаем строку для Эпсилон");
             Table.Columns.Add(new DataColumn("EoI", typeof(Production))); // Epsilon
@@ -41,13 +41,13 @@ namespace Translator
             for (int i = 0; i < grammar.V.Count; i++) // Рассмотрим последовательно все нетерминалы
             {
                 DataRow workRow = Table.NewRow(); //Новая строка
-                workRow["VT"] = (string)grammar.V[i].symbol;
+                workRow["VT"] = (string)grammar.V[i].Value;
 
                 Console.Write("Рассмотрим нетерминал ");
-                Console.Write((grammar.V[i].symbol));
+                Console.Write((grammar.V[i].Value));
                 Console.Write("\n");
 
-                var rules = getRules((string)grammar.V[i].symbol);
+                var rules = getRules((string)grammar.V[i].Value);
                 // Получим все правила, соответствующие текущему нетерминалу
 
                 foreach (var rule in rules)
@@ -78,7 +78,7 @@ namespace Translator
                         }
                         else
                         {
-                            List<string> currFollowSet = Follow(rule.LHS.symbol);
+                            List<string> currFollowSet = Follow(rule.LHS.Value);
                             foreach (var currFollowSymb in currFollowSet)
                             {
                                 string currFollowSymbFix = (currFollowSymb == "") ? "EoI" : currFollowSymb;
@@ -94,7 +94,7 @@ namespace Translator
         public bool Parse(string input)
         {
             Stack.Push("EoS"); // символ окончания входной последовательности
-            Stack.Push(G.S0.symbol);
+            Stack.Push(G.S0.Value);
             int i = 0;
             string currInputSymbol = input[i].ToString();
             string currStackSymbol;
@@ -164,7 +164,7 @@ namespace Translator
             Console.WriteLine(" )\n");
 
             Stack.Push("EoS"); // символ окончания входной последовательности
-            Stack.Push(G.S0.symbol);
+            Stack.Push(G.S0.Value);
             int i = 0;
             string currInputSymbol = input[i].ToString();
             string currStackSymbol;
@@ -292,7 +292,7 @@ namespace Translator
             for (int i = 0; i < G.P.Count; ++i)
             {
                 Production currRule = (Production)G.P[i];
-                if (currRule.LHS.symbol == noTermSymbol)
+                if (currRule.LHS.Value == noTermSymbol)
                 {
                     result.Add(currRule);
                 }
@@ -303,9 +303,9 @@ namespace Translator
         public void ComputeFirstSets(Grammar grammar)
         {
             for (int i = 0; i < grammar.T.Count; i++)
-                FirstSet[grammar.T[i].symbol] = new HashSet<string>() { grammar.T[i].symbol }; // FIRST[c] = {c}*/
+                FirstSet[grammar.T[i].Value] = new HashSet<string>() { grammar.T[i].Value }; // FIRST[c] = {c}*/
             for (int i = 0; i < grammar.V.Count; i++)
-                FirstSet[grammar.V[i].symbol] = new HashSet<string>(); // First[x] = empty list
+                FirstSet[grammar.V[i].Value] = new HashSet<string>(); // First[x] = empty list
             bool changes = true;
             while (changes)
             {
@@ -314,7 +314,7 @@ namespace Translator
                 {
                     // Для каждого правила X-> Y0Y1…Yn
                     var currRule = (Production)(grammar.P[i]);
-                    string X = currRule.LHS.symbol;
+                    string X = currRule.LHS.Value;
                     List<string> Y = currRule.RHS.Cast<string>().ToList();
                     for (int k = 0; k < Y.Count; k++)
                     {
@@ -354,7 +354,7 @@ namespace Translator
         public void ComputeFollowSets(Grammar grammar)
         {
             for (int i = 0; i < grammar.V.Count; i++)
-                FollowSet[grammar.V[i].symbol] = new HashSet<string>();
+                FollowSet[grammar.V[i].Value] = new HashSet<string>();
             FollowSet[G.S0] = new HashSet<string>() { "" };
             bool changes = true;
             while (changes)

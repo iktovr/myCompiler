@@ -88,7 +88,7 @@ namespace Translator
             var nextStates = new List<Symbol>();
             foreach (var s in currStates)
             {
-                nextStates = FromStateToStates(s.symbol, term);
+                nextStates = FromStateToStates(s.Value, term);
                 if (nextStates != null)
                     foreach (var st in nextStates)
                         if (!ReachableStates.Contains(st))
@@ -108,7 +108,7 @@ namespace Translator
                 // debugDeltaRule("AllRules", d);
                 if (d.LHSQ == currState && d.LHSS == term)
                 {
-                    NextStates.Add(new Symbol(d.RHSQ[0].symbol));
+                    NextStates.Add(new Symbol(d.RHSQ[0].Value));
                     // debugDeltaRule("FromStateToStates DeltaRules", d);
                     flag = true;
                 }
@@ -130,14 +130,14 @@ namespace Translator
             // for (int i = 0; i < Sigma.Count; i++) {
             foreach (var a in Sigma)
             {
-                statesSigma = move(currState, a.symbol);
+                statesSigma = move(currState, a.Value);
                 Debug("move", statesSigma);
 
                 newState = EpsClosure(statesSigma);
-                Debug("Dtran " + a.symbol + " " + a.symbol, newState); // index ?
+                Debug("Dtran " + a.Value + " " + a.Value, newState); // index ?
                 if (SetName(newState) != null)
-                    DeltaD.Add(new DeltaQSigma(SetName(currState), a.symbol, new List<Symbol> { new Symbol(SetName(newState)) }));
-                debugDeltaRule("d", new DeltaQSigma(SetName(currState), a.symbol, new List<Symbol> { new Symbol(SetName(newState)) }));
+                    DeltaD.Add(new DeltaQSigma(SetName(currState), a.Value, new List<Symbol> { new Symbol(SetName(newState)) }));
+                debugDeltaRule("d", new DeltaQSigma(SetName(currState), a.Value, new List<Symbol> { new Symbol(SetName(newState)) }));
                 if (config.Contains(new Symbol(SetName(newState))))
                     continue;
                 config.Add(new Symbol(SetName(newState)));
@@ -174,7 +174,7 @@ namespace Translator
             {
                 foreach (var name in this.config)
                 {
-                    if (name != null && name.symbol.Equals(f.symbol))
+                    if (name != null && name.Value.Equals(f.Value))
                     {
                         // Debug("substr",name);
                         // Debug("f", f);
@@ -201,7 +201,7 @@ namespace Translator
                     {
                         if (nextstate == StateTo)
                             return true;
-                        nextstate = d.RHSQ[0].symbol; // DFS
+                        nextstate = d.RHSQ[0].Value; // DFS
                         b = true;
                         break;
                     }
@@ -233,12 +233,12 @@ namespace Translator
                 for (int i = 0; i < this.config.Count; i++)
                 {
                     if (d.LHSQ == this.config[i].ToString())
-                        LHSQ = this.Q[i].symbol;
+                        LHSQ = this.Q[i].Value;
                 }
                 for (int i = 0; i < this.Q.Count; i++)
                 {
-                    if (d.RHSQ[0].symbol == this.config[i].ToString().ToString()) // DFS
-                        RHS.Add(new Symbol(this.Q[i].symbol));
+                    if (d.RHSQ[0].Value == this.config[i].ToString().ToString()) // DFS
+                        RHS.Add(new Symbol(this.Q[i].Value));
                 }
                 D_.Add(new DeltaQSigma(LHSQ, d.LHSQ, RHS));
             }
@@ -253,7 +253,7 @@ namespace Translator
                 return "";
             }
             foreach (var sym in list)
-                line += sym.symbol;
+                line += sym.Value;
             return line;
             /*  Debug("key", line);
                 if (names.ContainsKey(line)){

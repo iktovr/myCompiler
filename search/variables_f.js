@@ -6,5 +6,6 @@ var searchData=
   ['stack_297',['Stack',['../class_translator_1_1_l_l_translator.html#acb3713a377b527a97e3e9bb274cefe48',1,'Translator::LLTranslator']]],
   ['startnoterm_298',['StartNoTerm',['../class_translator_1_1_parse_tree_translator.html#af542994595f653a116c034d0eb7aca6b',1,'Translator::ParseTreeTranslator']]],
   ['startsymbol_299',['startSymbol',['../class_translator_1_1_s_l_r_grammar.html#a557e88122baefd1994b8b79aa7533779',1,'Translator::SLRGrammar']]],
-  ['symbol_300',['Symbol',['../class_translator_1_1_parse_tree.html#a0b2dd971633cbf23936702d51179a50d',1,'Translator::ParseTree']]]
+  ['symbol_300',['symbol',['../class_processor_1_1_abstract_grammar_1_1_symbol.html#a6d4d0d25ef59f5c4d666224f7e8f5437',1,'Processor::AbstractGrammar::Symbol']]],
+  ['symbol_301',['Symbol',['../class_translator_1_1_parse_tree.html#a0b2dd971633cbf23936702d51179a50d',1,'Translator::ParseTree']]]
 ];

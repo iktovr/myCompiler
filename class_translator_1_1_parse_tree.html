@@ -109,10 +109,9 @@ object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_parse_tree.html#a719d1a698ff52218a545a485516ace47">Print</a> (int d=0)</td></tr>
 <tr class="memdesc:a719d1a698ff52218a545a485516ace47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Печать дерева в консоль <br /></td></tr>
 <tr class="separator:a719d1a698ff52218a545a485516ace47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa39acc260a3d5bfb255bd1bfeb8e4a85"><td class="memItemLeft" align="right" valign="top"><a id="aa39acc260a3d5bfb255bd1bfeb8e4a85"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_parse_tree.html#aa39acc260a3d5bfb255bd1bfeb8e4a85">PrintToFile</a> (string filenName)</td></tr>
-<tr class="memdesc:aa39acc260a3d5bfb255bd1bfeb8e4a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Генерация файла для GraphViz. <br /></td></tr>
-<tr class="separator:aa39acc260a3d5bfb255bd1bfeb8e4a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad450eb5dedf0f2ce5d12464d63a36ebf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_parse_tree.html#ad450eb5dedf0f2ce5d12464d63a36ebf">PrintToFile</a> (string filenName, bool printAttrs)</td></tr>
+<tr class="memdesc:ad450eb5dedf0f2ce5d12464d63a36ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Генерация файла для GraphViz.  <a href="class_translator_1_1_parse_tree.html#ad450eb5dedf0f2ce5d12464d63a36ebf">More...</a><br /></td></tr>
+<tr class="separator:ad450eb5dedf0f2ce5d12464d63a36ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -131,14 +130,54 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a060b9fdd60f7f27c1d59e7b1a621e172"><td class="memItemLeft" align="right" valign="top"><a id="a060b9fdd60f7f27c1d59e7b1a621e172"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_parse_tree.html#a060b9fdd60f7f27c1d59e7b1a621e172">PrintToFile</a> (StreamWriter f, ref int id)</td></tr>
-<tr class="memdesc:a060b9fdd60f7f27c1d59e7b1a621e172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Генерация файла для GraphViz. <br /></td></tr>
-<tr class="separator:a060b9fdd60f7f27c1d59e7b1a621e172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c613b631f08ce7d4e996dcec9568149"><td class="memItemLeft" align="right" valign="top"><a id="a0c613b631f08ce7d4e996dcec9568149"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_translator_1_1_parse_tree.html#a0c613b631f08ce7d4e996dcec9568149">PrintToFile</a> (StreamWriter f, ref int id, bool printAttrs)</td></tr>
+<tr class="memdesc:a0c613b631f08ce7d4e996dcec9568149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Генерация файла для GraphViz. <br /></td></tr>
+<tr class="separator:a0c613b631f08ce7d4e996dcec9568149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Дерево разбора </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad450eb5dedf0f2ce5d12464d63a36ebf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad450eb5dedf0f2ce5d12464d63a36ebf">&#9670;&nbsp;</a></span>PrintToFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Translator.ParseTree.PrintToFile </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>filenName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>printAttrs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Генерация файла для GraphViz. </p>
+<p>Получение изображения: <code>dot parse_tree.dot -Tpng &gt; parse_tree.png</code> </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>FWKCompilers/ParseTree.cs</li>
 </ul>
 </div><!-- contents -->

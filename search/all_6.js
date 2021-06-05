@@ -6,7 +6,7 @@ var searchData=
   ['gethashcode_57',['GetHashCode',['../class_processor_1_1_abstract_grammar_1_1_symbol.html#afb99047d887a02cccabcc0fb53049ee8',1,'Processor.AbstractGrammar.Symbol.GetHashCode()'],['../class_translator_1_1_s_l_r_grammar_1_1_pair_comparer.html#ac6fdb53761221e97f2e9fcdaa15d21d8',1,'Translator.SLRGrammar.PairComparer.GetHashCode()']]],
   ['getlhsymbol_58',['GetLHSymbol',['../class_translator_1_1_s_l_r_grammar_1_1_state.html#a580c1f0a83323059f972a22a90bcb7a1',1,'Translator::SLRGrammar::State']]],
   ['getrhsymbol_59',['GetRHSymbol',['../class_translator_1_1_s_l_r_grammar_1_1_state.html#a939434bd60ac57300dfaf11270c8d429',1,'Translator::SLRGrammar::State']]],
-  ['goto_60',['Goto',['../class_translator_1_1_s_l_r_grammar.html#a1a1cfb4cdfdc7b0b51665e971efac041',1,'Translator::SLRGrammar']]],
-  ['goto_61',['GoTo',['../class_m_p_translator_1_1_canonical_l_r_parser.html#a2a1eb7c371e4746ee749c33b3a262d9b',1,'MPTranslator::CanonicalLRParser']]],
+  ['goto_60',['GoTo',['../class_m_p_translator_1_1_canonical_l_r_parser.html#a2a1eb7c371e4746ee749c33b3a262d9b',1,'MPTranslator::CanonicalLRParser']]],
+  ['goto_61',['Goto',['../class_translator_1_1_s_l_r_grammar.html#a1a1cfb4cdfdc7b0b51665e971efac041',1,'Translator::SLRGrammar']]],
   ['grammar_62',['Grammar',['../class_m_p_translator_1_1_canonical_l_r_parser.html#af16b3d7dbd199590342b6eb97e25e8a6',1,'MPTranslator.CanonicalLRParser.Grammar()'],['../class_translator_1_1_grammar.html',1,'Translator.Grammar']]]
 ];

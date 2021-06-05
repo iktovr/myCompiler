@@ -70,7 +70,8 @@ namespace Translator
                 {
                     op.Value.Invoke(symbols);
                 }
-                else {
+                else
+                {
                     child.Execute();
                 }
             }
@@ -98,27 +99,63 @@ namespace Translator
         }
 
         /// Генерация файла для GraphViz
-        public void PrintToFile(string filenName)
+        /**
+         *  Получение изображения: `dot parse_tree.dot -Tpng > parse_tree.png`
+         */
+        public void PrintToFile(string filenName, bool printAttrs)
         {
             StreamWriter f = new StreamWriter(filenName);
             f.WriteLine("graph ParseTree {");
+            f.WriteLine("graph [splines=line]");
             int id = 0;
-            PrintToFile(f, ref id);
+            PrintToFile(f, ref id, printAttrs);
             f.WriteLine("}");
             f.Close();
         }
 
         /// Генерация файла для GraphViz
-        private void PrintToFile(StreamWriter f, ref int id)
+        private void PrintToFile(StreamWriter f, ref int id, bool printAttrs)
         {
             int parent_id = id;
+            
+            if (printAttrs)
+            {
+                string attrs = "";
+                if (Symbol.Attributes != null)
+                {
+                    foreach (KeyValuePair<string, object> kvp in Symbol.Attributes)
+                    {
+                        attrs += kvp.Key.ToString().Replace("\"", "'") + " = " + kvp.Value.ToString().Replace("\"", "'") + "|";
+                    }
+                }
+                if (attrs != "")
+                {
+                    attrs = "|{" + attrs[..^1] + "}";
+                }
+                f.WriteLine("\t\"{0}_{1}\" [label=\"<name> {0} {2}\", shape=Mrecord]", Symbol.ToString().Replace("\"", "'"), parent_id, attrs);
+            }
+            else
+            {
+                f.WriteLine("\t\"{0}_{1}\" [label=\"{0}\", shape=circle]", Symbol.ToString().Replace("\"", "'"), parent_id);
+            }
+
             ++id;
-            f.WriteLine("\t\"{0}_{1}\" [label=\"{0}\"]", Symbol, parent_id);
             foreach (ParseTree child in Next)
             {
+                if (child.Symbol is OperationSymbol)
+                {
+                    continue;
+                }
                 int child_id = id;
-                child.PrintToFile(f, ref id);
-                f.WriteLine("\t\"{0}_{2}\" -- \"{1}_{3}\";", Symbol, child.Symbol, parent_id, child_id);
+                child.PrintToFile(f, ref id, printAttrs);
+                if (printAttrs)
+                {
+                    f.WriteLine("\t\"{0}_{2}\":name -- \"{1}_{3}\":name;", Symbol.ToString().Replace("\"", "'"), child.Symbol.ToString().Replace("\"", "'"), parent_id, child_id);
+                }
+                else
+                {
+                    f.WriteLine("\t\"{0}_{2}\" -- \"{1}_{3}\";", Symbol.ToString().Replace("\"", "'"), child.Symbol.ToString().Replace("\"", "'"), parent_id, child_id);
+                }
             }
         }
     }
@@ -131,7 +168,6 @@ namespace Translator
     {
         private SDTScheme OriginalGrammar; ///< Оригинальная грамматика
         private ParseTree Root = null; ///< Корень дерева
-        private List<int> Output = new List<int>(); ///< Список номеров правил, применённых при разборе
 
         private readonly SDTSymbol StartNoTerm = "~S~"; ///< Стартовый символ пополненной грамматики
 

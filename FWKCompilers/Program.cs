@@ -586,8 +586,8 @@ namespace Translator
                         if (root != null)
                         {
                             root.Print();
-                            root.PrintToFile("../../../../parse_tree.dot");
                             root.Execute();
+                            root.PrintToFile("../../../../parse_tree.dot", true);
                         }
                         else
                         {

@@ -364,11 +364,11 @@ namespace Translator
             Console.Write("    | ");
             foreach (Symbol X in LRA.Sigma)
             {
-                for (int i = 2; i > X.Value.Count(); --i)
+                for (int i = 2; i > X.symbol.Count(); --i)
                 {
                     Console.Write(" ");
                 }
-                Console.Write(X.Value + "  | ");
+                Console.Write(X.symbol + "  | ");
             }
             Console.WriteLine();
             for (int i = 0; i < phi.Count; ++i)
@@ -397,13 +397,13 @@ namespace Translator
                     }
                     else
                     {
-                        if (conditionTo.First.Value == "A")
+                        if (conditionTo.First.symbol == "A")
                         {
                             Console.Write(" A  | ");
                         }
                         else
                         {
-                            if (conditionTo.First.Value == "G")
+                            if (conditionTo.First.symbol == "G")
                             {
                                 Console.Write(" ");
                             }
@@ -436,11 +436,11 @@ namespace Translator
                 List<State> I = phi[i];
                 foreach (DeltaQSigma edge in LRA.D)
                 {
-                    if (i.ToString() == edge.LHSQ.Value)
+                    if (i.ToString() == edge.LHSQ.symbol)
                     {
                         Symbol X = edge.LHSS;
                         Symbol I_j = edge.RHSQ[0];
-                        int j = int.Parse(I_j.Value);
+                        int j = int.Parse(I_j.symbol);
                         if (T.Contains(X))
                         {
                             PairSymbInt conditionFrom = new PairSymbInt(X.ToString(), i);
@@ -523,7 +523,7 @@ namespace Translator
                         error = true;
                         break;
                     }
-                    switch (tableCondition.First.Value)
+                    switch (tableCondition.First.symbol)
                     {
                         // Accept - Принятие
                         case "A":

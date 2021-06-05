@@ -8,20 +8,20 @@ namespace Processor.AbstractGrammar
 {
     public class Symbol
     {
-        public string Value; ///< Строковое значение/имя символа
+        public string symbol; ///< Строковое значение/имя символа
         public List<Symbol> Attr = null; ///< Множество атрибутов символа
 
         public Symbol() {}
 
         public Symbol(string s, List<Symbol> a)
         {
-            Value = s;
+            symbol = s;
             Attr = new List<Symbol>(a);
         }
 
-        public Symbol(string value)
+        public Symbol(string symbol)
         {
-            this.Value = value;
+            this.symbol = symbol;
             this.Attr = null;
         }
 
@@ -31,13 +31,13 @@ namespace Processor.AbstractGrammar
         /// Равенсто. Требуется для Dictionary и HashSet
         public override bool Equals(object other)
         {
-            return (other is Symbol) && (Value == ((Symbol)other).Value);
+            return (other is Symbol) && (symbol == ((Symbol)other).symbol);
         }
 
         /// Хеш-функция. Требуется для Dictionary и HashSet
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return symbol.GetHashCode();
         }
 
         public static bool operator == (Symbol a, Symbol b)
@@ -55,7 +55,7 @@ namespace Processor.AbstractGrammar
             }
 
             // Return true if the fields match:
-            return a.Value == b.Value;
+            return a.symbol == b.symbol;
         }
 
         public static bool operator != (Symbol symbol1,Symbol symbol2) {
@@ -64,14 +64,14 @@ namespace Processor.AbstractGrammar
 
         public virtual void print()
         {
-            Console.Write(this.Value);
+            Console.Write(this.symbol);
             if (Attr == null)
                 return;
             foreach (var a in Attr)
-                Console.Write("_" + a.Value + " ");
+                Console.Write("_" + a.symbol + " ");
         }
 
-        public override string ToString() => this != Epsilon ? Value : "e";
+        public override string ToString() => this != Epsilon ? symbol : "e";
 
         public static readonly Symbol Epsilon = new Symbol(""); ///< Пустой символ
         public static readonly Symbol Sentinel = new Symbol("$"); ///< Cимвол конца строки / Символ дна стека

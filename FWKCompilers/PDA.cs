@@ -113,7 +113,7 @@ namespace Translator
                         q1.Add(new Symbol(Q0));
                     }
                 }
-                delta = new DeltaQSigmaGamma(Q0, "e", v1.Value, q1, z1);
+                delta = new DeltaQSigmaGamma(Q0, "e", v1.symbol, q1, z1);
                 this.D.Add(delta);
             }
 
@@ -121,7 +121,7 @@ namespace Translator
             {
                 Stack e = new Stack();
                 e.Push("e");
-                delta = new DeltaQSigmaGamma(Q0, t1.Value, t1.Value, new List<Symbol>() { new Symbol(Q0) }, new List<Symbol>() { new Symbol("e") });
+                delta = new DeltaQSigmaGamma(Q0, t1.symbol, t1.symbol, new List<Symbol>() { new Symbol(Q0) }, new List<Symbol>() { new Symbol("e") });
                 D.Add(delta);
             }
         }
@@ -418,14 +418,14 @@ namespace Translator
                         q1.Add(new Symbol(Q0));
                     }
                 }
-                delta = new DeltaQSigmaGamma(Q0, "e", v1.Value, q1, z1);
+                delta = new DeltaQSigmaGamma(Q0, "e", v1.symbol, q1, z1);
                 D.Add(delta);
             }
             foreach (var t1 in KCgrammar.T)
             {
                 var e = new Stack();
                 e.Push("e");
-                delta = new DeltaQSigmaGamma(Q0, t1.Value, t1.Value, new List<Symbol>() { new Symbol(Q0) }, new List<Symbol>() { new Symbol("e") });
+                delta = new DeltaQSigmaGamma(Q0, t1.symbol, t1.symbol, new List<Symbol>() { new Symbol(Q0) }, new List<Symbol>() { new Symbol("e") });
                 D.Add(delta);
             }
         }

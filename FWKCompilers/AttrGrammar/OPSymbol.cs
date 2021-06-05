@@ -18,7 +18,7 @@ namespace Processor.AttrGrammar
         public OPSymbol(string s, List<Symbol> a) : base(s, a) {}
 
         public override void print() {      
-            Console.Write(this.Value+ "\n");    
+            Console.Write(this.symbol+ "\n");    
         }
     }
 

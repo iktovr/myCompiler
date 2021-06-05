@@ -9,6 +9,7 @@ namespace Translator
     /// Обычный символ грамматики
     class SDTSymbol : Symbol, ICloneable
     {
+        public string Value; ///< Строковое значение/имя символа
         public Dictionary<string, object> Attributes = null; ///< Атрибуты символа. Доступны также через индексатор
 
         public SDTSymbol(string value) : base(value) {}

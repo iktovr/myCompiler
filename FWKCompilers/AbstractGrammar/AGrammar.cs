@@ -45,13 +45,13 @@ namespace Processor.AbstractGrammar
                 //Если начальный символ переходит в конечную цепочку,
                 //то в множество F добавляется начальный символ S0 и состояние qf
                 // F = {S0, qf}
-                if (p.LHS.Value.Contains("S0") && p.RHS.Contains(new Symbol("e")))
+                if (p.LHS.symbol.Contains("S0") && p.RHS.Contains(new Symbol("e")))
                 {
                     F = new List<Symbol> { p.LHS, new Symbol("qf") };
                     break;
                 }
                 //Иначе F = {qf} множество F(конечных состояний) будет состоять из одного состояния qf
-                else if (p.LHS.Value.Contains("S0"))
+                else if (p.LHS.symbol.Contains("S0"))
                 {
                     F = new List<Symbol> { new Symbol("qf") };
                     break;
@@ -59,7 +59,7 @@ namespace Processor.AbstractGrammar
             }
 
             //Конструируем конечный автомат
-            FSAutomate KA = new FSAutomate(Q, this.T, F, q0.Value);
+            FSAutomate KA = new FSAutomate(Q, this.T, F, q0.symbol);
             bool flag = true;
 
             foreach (var p in this.P)
@@ -67,9 +67,9 @@ namespace Processor.AbstractGrammar
                 //Если существует правило порождения,
                 //в котором из начального символа существует переход в пустую цепочку,
                 //то создаем правило (S0, "e", "qf")
-                if (flag && p.LHS.Value.Contains("S0") && p.RHS.Contains(new Symbol("e")))
+                if (flag && p.LHS.symbol.Contains("S0") && p.RHS.Contains(new Symbol("e")))
                 {
-                    KA.AddRule(p.LHS.Value, "e", "qf");
+                    KA.AddRule(p.LHS.symbol, "e", "qf");
                     flag = false;
                 }
                 //Проходим по всем входным символам
@@ -78,11 +78,11 @@ namespace Processor.AbstractGrammar
                     //Если справа есть символ и этот символ терминал,
                     //то добавляем правило (Нетерминал -> (Терминал,  "qf"))
                     if (p.RHS.Contains(t) && NoTermReturn(p.RHS) == null)
-                        KA.AddRule(p.LHS.Value, t.Value, "qf");
+                        KA.AddRule(p.LHS.symbol, t.symbol, "qf");
                     //Если справа есть символ и этот символ нетерминал,
                     //то добавляем правило (Нетерминал -> (Терминал, Нетерминал))
                     else if (p.RHS.Contains(t) && NoTermReturn(p.RHS) != null)
-                        KA.AddRule(p.LHS.Value, t.Value, NoTerminal(p.RHS));
+                        KA.AddRule(p.LHS.symbol, t.symbol, NoTerminal(p.RHS));
                 }
             }
             return KA;
@@ -125,7 +125,7 @@ namespace Processor.AbstractGrammar
             {
                 flag = 0;
                 for (int i = 0; i < Reachable.Count; i++)
-                    if (Reachable[i].Value == s.Value)
+                    if (Reachable[i].symbol == s.symbol)
                         flag = 1;
                 if (flag == 0)
                     Reachable.Add(s);
@@ -144,7 +144,7 @@ namespace Processor.AbstractGrammar
             Vr = Unify(Vr, NoTermByStep);
             foreach (var NoTerm in NoTermByStep)
             {
-                Vr = Unify(Vr, ReachableByOneStep(NoTerm.Value));
+                Vr = Unify(Vr, ReachableByOneStep(NoTerm.symbol));
             }
             return Vr;
         }
@@ -209,7 +209,7 @@ namespace Processor.AbstractGrammar
             P1.Clear();
             if (!Vp.Contains(this.S0))
             {
-                return new Grammar(new List<Symbol>(), new List<Symbol>(), this.S0.Value);
+                return new Grammar(new List<Symbol>(), new List<Symbol>(), this.S0.symbol);
             }
             var T1 = new List<Symbol>();
             //Создаем множество достижимых символов
@@ -253,7 +253,7 @@ namespace Processor.AbstractGrammar
             Debug("T1", T1);
             Debug("V1", Vp);
             Console.WriteLine("\tUnuseful symbols have been deleted");
-            return new Grammar(T1, Vp, P1, this.S0.Value);
+            return new Grammar(T1, Vp, P1, this.S0.symbol);
         }
 
         private List<Symbol> ShortNoTerm()
@@ -269,7 +269,7 @@ namespace Processor.AbstractGrammar
                 // Console.WriteLine("  {0}",Ve.Count);
                 while ((FromWhat(Ve[i].ToString()) != null) && (Ve.Count < i))
                 {
-                    Ve = Unify(Ve, FromWhat(Ve[0].Value));
+                    Ve = Unify(Ve, FromWhat(Ve[0].symbol));
                     i++;
                 }
             Debug("Ve", Ve);
@@ -367,7 +367,7 @@ namespace Processor.AbstractGrammar
             {
                 Debug("V1:", this.V);
                 Console.WriteLine("\te-rules have benn deleted!");
-                return new Grammar(this.T, this.V, Ps, this.S0.Value);
+                return new Grammar(this.T, this.V, Ps, this.S0.symbol);
             }
         }
 
@@ -410,9 +410,9 @@ namespace Processor.AbstractGrammar
 
             foreach (var c in chain_pair_list) {
                 foreach (var p in this.P) {
-                    if (p.LHS==c[1].Value&&!(TermReturn(p.RHS)==null &&
+                    if (p.LHS==c[1].symbol&&!(TermReturn(p.RHS)==null &&
                                 NoTermReturn(p.RHS)!=null&&NoTermReturn(p.RHS).Count==1)) {
-                        var P_1 = new Production(c[0].Value,p.RHS);
+                        var P_1 = new Production(c[0].symbol,p.RHS);
                         if (!P.Contains(P_1)) {
                             P.Add(P_1);
                         }
@@ -421,7 +421,7 @@ namespace Processor.AbstractGrammar
             }
 */
             Console.WriteLine("\tChainrules have been deleted;");
-            return new Grammar(this.T, this.V, P, this.S0.Value);
+            return new Grammar(this.T, this.V, P, this.S0.symbol);
         }
 
         /// Удаление левой рекурсии
@@ -458,10 +458,10 @@ namespace Processor.AbstractGrammar
                 V_struct v_struct;
                 v_struct.alpha = new List<Symbol>();
                 v_struct.betta = new List<Symbol>();
-                v_struct.V = v.Value;
+                v_struct.V = v.symbol;
                 foreach (var r in this.P)
                 {
-                    if (v.Value == r.LHS.Value)
+                    if (v.symbol == r.LHS.symbol)
                     {
                         if (r.RHS[0] == v)
                         {
@@ -484,7 +484,7 @@ namespace Processor.AbstractGrammar
             }
 /*
             foreach (var v in v_struct_ar) {
-                var new_v = v.Value +"'";
+                var new_v = v.symbol +"'";
                 V1.Add(new Symbol(new_v));
 
                 foreach (var b in v_struct.betta) {
@@ -510,7 +510,7 @@ namespace Processor.AbstractGrammar
             Debug("V1",V1);
             Console.WriteLine("\tLeft Recursion have been deleted!");
 */
-            return new Grammar(this.T,V1,P,this.S0.Value);
+            return new Grammar(this.T,V1,P,this.S0.symbol);
         }
 
         // **   Debug   **
@@ -540,7 +540,7 @@ namespace Processor.AbstractGrammar
                 Console.WriteLine("null");
             else
                 foreach (var s in list)
-                    Console.Write(s.Value + " ");
+                    Console.Write(s.symbol + " ");
             Console.WriteLine("");
         }
 
@@ -612,7 +612,7 @@ namespace Processor.AbstractGrammar
             foreach (var s in array)
             {
                 if (this.V.Contains(s))
-                    NoTermin = s.Value;
+                    NoTermin = s.symbol;
             }
             return NoTermin;
         }

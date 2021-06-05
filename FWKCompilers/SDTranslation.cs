@@ -101,46 +101,6 @@ namespace Translator
         public override object Clone() => new OperationSymbol((Types.Actions)Value.Clone());
     }
 
-    /// Запись синтеза. Используется в LL-трансляции.
-    class SynthSymbol : SDTSymbol
-    {
-        public string Name; ///< Имя символа
-        public Dictionary<string, SDTSymbol> Copies; ///< Копии других записей синтеза
-
-        public SynthSymbol() : base(null)
-        {
-            Copies = new Dictionary<string, SDTSymbol>();
-        }
-
-        public SynthSymbol(string name, SDTSymbol symbol) : this()
-        {
-            Copies = new Dictionary<string, SDTSymbol>();
-            Name = name;
-            Value = symbol.Value;
-            Attributes = symbol.Attributes;
-        }
-
-        public SynthSymbol(string name, string value, Dictionary<string, object> attributes) : this()
-        {
-            Copies = new Dictionary<string, SDTSymbol>();
-            Name = name;
-            Value = value;
-            Attributes = attributes;
-        }
-
-        /// Добавление другой записи синтеза
-        public void Add(SynthSymbol other)
-        {
-            Copies.Add(other.Name, other);
-            foreach (KeyValuePair<string, SDTSymbol> pair in other.Copies)
-            {
-                Copies.Add(pair.Key, pair.Value);
-            }
-        }
-
-        public override string ToString() => "s" + Name;
-    }
-
     /// Правило синтаксически управляемой схемы трансляции
     class SDTRule
     {
@@ -386,9 +346,56 @@ namespace Translator
     /// Реализация L-атрибутного СУТ в процессе LL анализа
     class LLTranslator
     {
+        /// Запись синтеза. Используется в LL-трансляции.
+        class SynthSymbol : SDTSymbol
+        {
+            public string Name; ///< Имя символа
+            public Dictionary<string, SDTSymbol> Copies; ///< Копии других записей синтеза
+
+            public SynthSymbol() : base(null)
+            {
+                Copies = new Dictionary<string, SDTSymbol>();
+            }
+
+            public SynthSymbol(string name, SDTSymbol symbol) : this()
+            {
+                Copies = new Dictionary<string, SDTSymbol>();
+                Name = name;
+                Value = symbol.Value;
+                Attributes = symbol.Attributes;
+            }
+
+            public SynthSymbol(string name, string value, Dictionary<string, object> attributes) : this()
+            {
+                Copies = new Dictionary<string, SDTSymbol>();
+                Name = name;
+                Value = value;
+                Attributes = attributes;
+            }
+
+            /// Добавление другой записи синтеза
+            public void Add(SynthSymbol other)
+            {
+                Copies.Add(other.Name, other);
+                foreach (KeyValuePair<string, SDTSymbol> pair in other.Copies)
+                {
+                    Copies.Add(pair.Key, pair.Value);
+                }
+            }
+
+            public override string ToString() => "s" + Name;
+        }
+    
         protected SDTScheme G; ///< АТ-грамматика
         protected Stack<SDTSymbol> Stack; ///< Стек символов
         protected Dictionary<SDTSymbol, Dictionary<SDTSymbol, SDTRule>> Table; ///< Управляющая таблица. Table[нетерминал][терминал]
+
+        public LLTranslator()
+        {
+            G = null;
+            Stack = null;
+            Table = null;
+        }
 
         public LLTranslator(SDTScheme grammar)
         {
@@ -396,7 +403,11 @@ namespace Translator
             G.ComputeFirstFollow();
             Table = new Dictionary<SDTSymbol, Dictionary<SDTSymbol, SDTRule>>();
             Stack = new Stack<SDTSymbol>();
+            Construct();
+        }
 
+        public void Construct()
+        {
             // Построение управляющей таблицы
             foreach (SDTSymbol noTermSymbol in G.V)
             {

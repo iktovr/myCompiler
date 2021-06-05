@@ -35,6 +35,7 @@ namespace Translator
             Console.WriteLine("AT-Grammar....... Enter 10");
             Console.WriteLine("Chain Translation example ..... Enter 11");
             Console.WriteLine("L-attribute translation ....... Enter 12");
+            Console.WriteLine("Parse Tree translation ........ Enter 13");
         }
 
         static void Main()
@@ -558,6 +559,39 @@ namespace Translator
                         else
                         {
                             Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
+                        }
+                        break;
+
+                    case "13": // Дерево разбора
+                        // Грамматика вычисляет арифметические выражения состоящие из произведений целых положительных числе
+                        // Дерево разбора печатается на экран, конвертируется в .dot файл и выполняется
+                        Types.Attrs sAttrs2 = new Types.Attrs() { ["value"] = 0 };
+                        Types.Attrs lAttrs2 = new Types.Attrs() { ["inh"] = 0, ["syn"] = 0 };
+                        SDTScheme treeGrammar = new SDTScheme(new List<SDTSymbol>() { new SDTSymbol("number", sAttrs2), "*" },
+                                                           new List<SDTSymbol>() { "S", new SDTSymbol("T", sAttrs2), new SDTSymbol("T'", lAttrs2), new SDTSymbol("F", sAttrs2) },
+                                                           "S");
+
+                        treeGrammar.AddRule("S",  new List<SDTSymbol>() { "T", new Types.Actions((S) => Console.Write(S["T"]["value"].ToString())) });
+
+                        treeGrammar.AddRule("T",  new List<SDTSymbol>() { "F", new Types.Actions((S) => S["T'"]["inh"] = S["F"]["value"]), "T'", new Types.Actions((S) => S["T"]["value"] = S["T'"]["syn"]) });
+
+                        treeGrammar.AddRule("T'", new List<SDTSymbol>() { "*", "F", new Types.Actions((S) => S["T'1"]["inh"] = (int)S["T'"]["inh"] * (int)S["F"]["value"]), "T'", new Types.Actions((S) => S["T'"]["syn"] = S["T'1"]["syn"]) });
+
+                        treeGrammar.AddRule("T'", new List<SDTSymbol>() { SDTSymbol.Epsilon, new Types.Actions((S) => S["T'"]["syn"] = S["T'"]["inh"]) });
+
+                        treeGrammar.AddRule("F",  new List<SDTSymbol>() { "number", new Types.Actions((S) => S["F"]["value"] = S["number"]["value"]) });
+
+                        ParseTreeTranslator treeTr = new ParseTreeTranslator(treeGrammar);
+                        ParseTree root = treeTr.Parse(new ArithmLexer().Parse(Console.ReadLine()));
+                        if (root != null)
+                        {
+                            root.Print();
+                            root.PrintToFile("../../../../parse_tree.dot");
+                            root.Execute();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Строка не соответствует грамматике");
                         }
                         break;
 

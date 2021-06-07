@@ -92,7 +92,7 @@ namespace Translator
                 Production rule = P[rulePos];
                 if (dotPos == rule.RHS.Count)
                 {
-                    return new Symbol("");
+                    return Symbol.Epsilon;
                 }
                 else
                 {
@@ -293,23 +293,18 @@ namespace Translator
             I0.Add(new State(0, 0));
             phi0.Add(Closure(I0));
             bool changed = false;
-            List<Symbol> nonTerminalStates = new List<Symbol>();
             do {
                 changed = false;
                 phi = new List< List< State > > (phi0);
                 for (int i = 0; i < phi.Count; ++i)
                 {
                     List<State> I = phi[i];
+                    Symbol curStateSymbol = new Symbol(i.ToString());
                     foreach (Symbol X in LRA.Sigma)
                     {
                         List<State> nextState = Goto(I, X);
                         if (nextState != null)
                         {
-                            Symbol curStateSymbol = new Symbol(i.ToString());
-                            if (!nonTerminalStates.Contains(curStateSymbol))
-                            {
-                                nonTerminalStates.Add(curStateSymbol);
-                            }
                             int nextStateId = FindSetOfStates(phi0, nextState);
                             // Если замыкание не найдено
                             if (nextStateId == -1)
@@ -325,19 +320,21 @@ namespace Translator
                                 LRA.D.Add(nextStateEdge);
                             }
                         }
-
+                    }
+                    if (!LRA.F.Contains(curStateSymbol))
+                    {
+                        foreach (State stateI in I)
+                        {
+                            Symbol stateISymbol = stateI.GetRHSymbol(P);
+                            if (stateISymbol.Equals(Symbol.Epsilon))
+                            {
+                                LRA.F.Add(curStateSymbol);
+                                break;
+                            }
+                        }
                     }
                 }
             } while (changed);
-
-            for (int i = 0; i < phi.Count; ++i)
-            {
-                Symbol curStateSymbol = new Symbol(i.ToString());
-                if (!nonTerminalStates.Contains(curStateSymbol))
-                {
-                    LRA.F.Add(curStateSymbol);
-                }
-            }
 
             Console.WriteLine("Сanonical set of states phi");
             for (int i = 0; i < phi.Count; ++i)
@@ -373,7 +370,7 @@ namespace Translator
             Console.WriteLine();
             for (int i = 0; i < phi.Count; ++i)
             {
-                for (int j = 0; j < 71; ++j)
+                for (int j = 0; j < (1 + LRA.Sigma.Count()) * 6 - 1; ++j)
                 {
                     Console.Write("-");
                 }
@@ -475,7 +472,10 @@ namespace Translator
                                         {
                                             PairSymbInt conditionFrom = new PairSymbInt(Y.ToString(), j);
                                             PairSymbInt conditionTo = new PairSymbInt("R", st.rulePos);
-                                            M[conditionFrom] = conditionTo;
+                                            if (!M.ContainsKey(conditionFrom))
+                                            {
+                                                M[conditionFrom] = conditionTo;
+                                            }
                                         }
                                     }
                                 }
@@ -540,12 +540,22 @@ namespace Translator
                             Production rule = P[rulePos];
                             for (int j = 0; j < rule.RHS.Count; ++j)
                             {
-                                st.Pop();
+                                // Если эпсилон-правило, то снимать со стека ничего не нужно!
+                                if (!rule.RHS[j].Equals(Symbol.Epsilon))
+                                {
+                                    st.Pop();
+                                }
                             }
                             curCondition = new PairSymbInt(rule.LHS.ToString(), st.Peek());
-                            tableCondition = M[curCondition];
-                            st.Push(tableCondition.Second);
-                            res.Push(rulePos);
+                            if (M.TryGetValue(curCondition, out tableCondition))
+                            {
+                                st.Push(tableCondition.Second);
+                                res.Push(rulePos);
+                            }
+                            else
+                            {
+                                error = true;
+                            }
                             break;
                         default:
                             error = true;

@@ -29,13 +29,14 @@ namespace Translator
             Console.WriteLine("LR - analizator");
             Console.WriteLine("lab 12 - 16   ................. Enter 6");
             Console.WriteLine("example ....................... Enter 6.1");
+            Console.WriteLine("LR(0) LR(1) using g(X), f(a) example  Enter 6.2");
+            Console.WriteLine("LR(0) using g(X), f(a)          Enter 6.3");
+            Console.WriteLine("LR(1) using g(X), f(a)          Enter 6.4");
             Console.WriteLine("              ................. Enter 7");
-            Console.WriteLine("               ................ Enter 8");
             Console.WriteLine("lab 14 - 16            ........ Enter 9");
             Console.WriteLine("AT-Grammar....... Enter 10");
             Console.WriteLine("Chain Translation example ..... Enter 11");
             Console.WriteLine("L-attribute translation ....... Enter 12");
-            Console.WriteLine("Parse Tree translation ........ Enter 13");
         }
 
         static void Main()
@@ -395,7 +396,22 @@ namespace Translator
                         break;
                     case "6.1": // LR(k)
                         break;
-
+                    case "6.2":
+                        var myParser1 = new MyLRParser();
+                        Console.WriteLine("Пример ввода продукций:");
+                        myParser1.Example();
+                        myParser1.Execute();
+                        break;
+                    case "6.3":
+                        var myParser2 = new MyLRParser();
+                        myParser2.ReadGrammar();
+                        myParser2.Execute();
+                        break;
+                    case "6.4":
+                        var myParser3 = new MyLRParser();
+                        myParser3.ReadGrammar();
+                        myParser3.Execute_LR1();
+                        break;
                     case "7": //МП - автоматы
                         var pda2 = new PDA(new List<Symbol>() { new Symbol("q0"),new Symbol("q1"),new Symbol("q2"),new Symbol("qf") },
                                                                 new List<Symbol>() { new Symbol("a"),new Symbol("b") },
@@ -430,10 +446,7 @@ namespace Translator
                         Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());
                         */
                         break;
-
-                    case "8":
-                        break;
-                    case "9":
+                        case "9":
                         SLRGrammar LR0Grammar = new SLRGrammar(new List<Symbol>() { new Symbol("i"), new Symbol("j"), new Symbol("&"), new Symbol("^"), new Symbol("("), new Symbol(")") },
                                                    new List<Symbol>() { new Symbol("S"), new Symbol("F"), new Symbol("L") },
                                                    new List<Production>(),
@@ -497,6 +510,7 @@ namespace Translator
                     case "11": // Пример "цепочечного" перевода
                         // Грамматика транслирует выражения из инфиксной записи в постфиксную
                         // Выражения состоят из i, +, * и скобок
+/*
                         SDTScheme chainPostfix = new SDTScheme(new List<SDTSymbol>() { "i", "+", "*", "(", ")" },
                                                                new List<SDTSymbol>() { "E", "E'", "T", "T'", "F" },
                                                                "E");
@@ -522,10 +536,11 @@ namespace Translator
                             Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
                         }
                         break;
-
+*/
                     case "12": // L-атрибутивная грамматика
                         // Грамматика вычисляет результат арифметического выражения
                         // Выражения состоят из целых положительных чисел, +, * и скобок
+                        /*
                         Types.Attrs sAttrs = new Types.Attrs() { ["value"] = 0 };
                         Types.Attrs lAttrs = new Types.Attrs() { ["inh"] = 0, ["syn"] = 0 };
                         SDTScheme lAttrSDT = new SDTScheme(new List<SDTSymbol>() { new SDTSymbol("number", sAttrs), "+", "*", "(", ")" },
@@ -560,39 +575,7 @@ namespace Translator
                         {
                             Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
                         }
-                        break;
-
-                    case "13": // Дерево разбора
-                        // Грамматика вычисляет арифметические выражения состоящие из произведений целых положительных числе
-                        // Дерево разбора печатается на экран, конвертируется в .dot файл и выполняется
-                        Types.Attrs sAttrs2 = new Types.Attrs() { ["value"] = 0 };
-                        Types.Attrs lAttrs2 = new Types.Attrs() { ["inh"] = 0, ["syn"] = 0 };
-                        SDTScheme treeGrammar = new SDTScheme(new List<SDTSymbol>() { new SDTSymbol("number", sAttrs2), "*" },
-                                                           new List<SDTSymbol>() { "S", new SDTSymbol("T", sAttrs2), new SDTSymbol("T'", lAttrs2), new SDTSymbol("F", sAttrs2) },
-                                                           "S");
-
-                        treeGrammar.AddRule("S",  new List<SDTSymbol>() { "T", new Types.Actions((S) => Console.Write(S["T"]["value"].ToString())) });
-
-                        treeGrammar.AddRule("T",  new List<SDTSymbol>() { "F", new Types.Actions((S) => S["T'"]["inh"] = S["F"]["value"]), "T'", new Types.Actions((S) => S["T"]["value"] = S["T'"]["syn"]) });
-
-                        treeGrammar.AddRule("T'", new List<SDTSymbol>() { "*", "F", new Types.Actions((S) => S["T'1"]["inh"] = (int)S["T'"]["inh"] * (int)S["F"]["value"]), "T'", new Types.Actions((S) => S["T'"]["syn"] = S["T'1"]["syn"]) });
-
-                        treeGrammar.AddRule("T'", new List<SDTSymbol>() { SDTSymbol.Epsilon, new Types.Actions((S) => S["T'"]["syn"] = S["T'"]["inh"]) });
-
-                        treeGrammar.AddRule("F",  new List<SDTSymbol>() { "number", new Types.Actions((S) => S["F"]["value"] = S["number"]["value"]) });
-
-                        ParseTreeTranslator treeTr = new ParseTreeTranslator(treeGrammar);
-                        ParseTree root = treeTr.Parse(new ArithmLexer().Parse(Console.ReadLine()));
-                        if (root != null)
-                        {
-                            root.Print();
-                            root.Execute();
-                            root.PrintToFile("../../../../parse_tree.dot", true);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Строка не соответствует грамматике");
-                        }
+                        */
                         break;
 
                     default:

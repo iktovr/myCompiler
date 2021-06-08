@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['sdtrule_182',['SDTRule',['../class_translator_1_1_s_d_t_rule.html',1,'Translator']]],
-  ['sdtscheme_183',['SDTScheme',['../class_translator_1_1_s_d_t_scheme.html',1,'Translator']]],
-  ['sdtsymbol_184',['SDTSymbol',['../class_translator_1_1_s_d_t_symbol.html',1,'Translator']]],
-  ['simplelexer_185',['SimpleLexer',['../class_translator_1_1_simple_lexer.html',1,'Translator']]],
-  ['slrgrammar_186',['SLRGrammar',['../class_translator_1_1_s_l_r_grammar.html',1,'Translator']]],
-  ['state_187',['State',['../class_translator_1_1_s_l_r_grammar_1_1_state.html',1,'Translator::SLRGrammar']]],
-  ['symbol_188',['Symbol',['../class_processor_1_1_abstract_grammar_1_1_symbol.html',1,'Processor::AbstractGrammar']]],
-  ['synthsymbol_189',['SynthSymbol',['../class_translator_1_1_l_l_translator_1_1_synth_symbol.html',1,'Translator::LLTranslator']]]
+  ['paircomparer_177',['PairComparer',['../class_translator_1_1_s_l_r_grammar_1_1_pair_comparer.html',1,'Translator::SLRGrammar']]],
+  ['pairsymbint_178',['PairSymbInt',['../class_translator_1_1_s_l_r_grammar_1_1_pair_symb_int.html',1,'Translator::SLRGrammar']]],
+  ['parsetree_179',['ParseTree',['../class_translator_1_1_parse_tree.html',1,'Translator']]],
+  ['parsetreetranslator_180',['ParseTreeTranslator',['../class_translator_1_1_parse_tree_translator.html',1,'Translator']]],
+  ['pda_181',['PDA',['../class_translator_1_1_p_d_a.html',1,'Translator']]],
+  ['production_182',['Production',['../class_processor_1_1_abstract_grammar_1_1_production.html',1,'Processor::AbstractGrammar']]],
+  ['program_183',['Program',['../class_translator_1_1_program.html',1,'Translator']]]
 ];

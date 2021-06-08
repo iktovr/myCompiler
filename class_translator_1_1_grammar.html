@@ -67,6 +67,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_translator_1_1_grammar-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Translator.Grammar Class Reference</div>  </div>
@@ -102,6 +104,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae999c1a1cdebb7feb34383bd792856c0"><td class="memItemLeft" align="right" valign="top"><a id="ae999c1a1cdebb7feb34383bd792856c0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isTerm</b> (string t)</td></tr>
 <tr class="separator:ae999c1a1cdebb7feb34383bd792856c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01f629e4fbaa865a3b0e06f56dd3b5c5"><td class="memItemLeft" align="right" valign="top"><a id="a01f629e4fbaa865a3b0e06f56dd3b5c5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeFirstFollow</b> ()</td></tr>
+<tr class="separator:a01f629e4fbaa865a3b0e06f56dd3b5c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef01845db3d6197e1805a4130eb521be"><td class="memItemLeft" align="right" valign="top"><a id="aef01845db3d6197e1805a4130eb521be"></a>
+HashSet&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>First</b> (<a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> X)</td></tr>
+<tr class="separator:aef01845db3d6197e1805a4130eb521be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348e7a23066807835bb6f584d4e91a87"><td class="memItemLeft" align="right" valign="top"><a id="a348e7a23066807835bb6f584d4e91a87"></a>
+HashSet&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>First</b> (List&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt; X)</td></tr>
+<tr class="separator:a348e7a23066807835bb6f584d4e91a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89f759c006f64bc658ce4bdc2e12799c"><td class="memItemLeft" align="right" valign="top"><a id="a89f759c006f64bc658ce4bdc2e12799c"></a>
+HashSet&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Follow</b> (<a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> X)</td></tr>
+<tr class="separator:a89f759c006f64bc658ce4bdc2e12799c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_processor_1_1_abstract_grammar_1_1_a_grammar"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_processor_1_1_abstract_grammar_1_1_a_grammar')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_processor_1_1_abstract_grammar_1_1_a_grammar.html">Processor.AbstractGrammar.AGrammar</a></td></tr>
 <tr class="memitem:aa35d5b5f609f278f4b082ec299b9999f inherit pub_methods_class_processor_1_1_abstract_grammar_1_1_a_grammar"><td class="memItemLeft" align="right" valign="top"><a id="aa35d5b5f609f278f4b082ec299b9999f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AGrammar</b> (List&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a1fb139d9c8f4789adc899b2b89176d1a">T</a>, List&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_a_grammar.html#ae3c81e8030f2024b19aa1eee6c26960f">V</a>, string <a class="el" href="class_processor_1_1_abstract_grammar_1_1_a_grammar.html#a76660323e3aac5b15eaf7d37889cea10">S0</a>)</td></tr>
@@ -140,6 +154,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Debug</b> (string ste
 <tr class="memitem:a8207cd67a0a5b8e727f34b9e43507e82 inherit pub_methods_class_processor_1_1_abstract_grammar_1_1_a_grammar"><td class="memItemLeft" align="right" valign="top"><a id="a8207cd67a0a5b8e727f34b9e43507e82"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Debug</b> (string step, string line)</td></tr>
 <tr class="separator:a8207cd67a0a5b8e727f34b9e43507e82 inherit pub_methods_class_processor_1_1_abstract_grammar_1_1_a_grammar"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a8021059423209b969c62530b528762fe"><td class="memItemLeft" align="right" valign="top"><a id="a8021059423209b969c62530b528762fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeFirstSets</b> ()</td></tr>
+<tr class="separator:a8021059423209b969c62530b528762fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c0ef283fef4021abefa3ea9d949fd8"><td class="memItemLeft" align="right" valign="top"><a id="a96c0ef283fef4021abefa3ea9d949fd8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeFollowSets</b> ()</td></tr>
+<tr class="separator:a96c0ef283fef4021abefa3ea9d949fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:accc97e61502c769d10b568af6149a9af"><td class="memItemLeft" align="right" valign="top"><a id="accc97e61502c769d10b568af6149a9af"></a>
+Dictionary&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>, HashSet&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>FirstSet</b></td></tr>
+<tr class="separator:accc97e61502c769d10b568af6149a9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17e7956ca65dee3c16b0287de952246a"><td class="memItemLeft" align="right" valign="top"><a id="a17e7956ca65dee3c16b0287de952246a"></a>
+Dictionary&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a>, HashSet&lt; <a class="el" href="class_processor_1_1_abstract_grammar_1_1_symbol.html">Symbol</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>FollowSet</b></td></tr>
+<tr class="separator:a17e7956ca65dee3c16b0287de952246a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

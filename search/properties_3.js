@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['this_5bstring_20name_5d_318',['this[string name]',['../class_translator_1_1_s_d_t_symbol.html#a99425cdf54170c69a9ed8b988f11fedf',1,'Translator::SDTSymbol']]]
+  ['this_5bstring_20name_5d_324',['this[string name]',['../class_s_d_t_1_1_symbol.html#a6d4f4808234a3b60d9438afd11c51462',1,'SDT::Symbol']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MyCompiler: myCompiler aka Фреймворк</title>
+<title>MyCompiler: myCompiler aka Фреймворк aka FRWK Generic &amp; Recognition Systems</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">myCompiler aka Фреймворк </div>  </div>
+<div class="title">myCompiler aka Фреймворк aka FRWK Generic &amp; Recognition Systems </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> Агрегация курсовых проектов нескольких человек. За основу взята версия от начала 2021 года + внезапная новая версия от июня 2021 года.</p>
@@ -70,12 +70,13 @@ $(function() {
 Основные изменения</h1>
 <ul>
 <li>Унифицированы отступы, комментарии приведены к стилю Doxygen.</li>
-<li>Канонический LR(1) анализатор вынесен в отдельный файл (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/LRParser.cs">LRParser.cs</a>) и собран в класс.</li>
-<li><strike>В класс myGrammar добавлены методы: конструктор копирования, функции для вычисления и доступа к множествам FIRST, FOLLOW</strike>.</li>
-<li>Добавлена синтаксически управляемая трансляция: вспомогателные классы, 1 вид транслятора (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/SDTranslation.cs">SDTranslation.cs</a>).</li>
-<li>Добавлены наброски для лексических анализаторов: абстрактный класс, две простейшие реализации (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/Lexer.cs">Lexer.cs</a>).</li>
-<li>Добавлен простой LR(1) анализатор (<a href="https://github.com/iktovr/myCompiler/blob/main/FWKCompilers/SLRParser.cs">SLRParser.cs</a>).</li>
-<li>...</li>
+<li>Канонический LR(1) анализатор вынесен в отдельный файл и собран в класс.</li>
+<li>Добавлена синтаксически управляемая трансляция: вспомогательные классы, LL-транслятор.</li>
+<li>Добавлены наброски для лексических анализаторов: абстрактный класс, две простейшие реализации.</li>
+<li>Добавлен простой LR(0) / LR(1) анализатор.</li>
+<li>В класс Grammar добавлены функции для вычисления и доступа к множествам FIRST, FOLLOW.</li>
+<li>Добавлены LR(0), LR(1) анализаторы, реализованные через магазинные символы.</li>
+<li>Добавлен класс дерева разбора, реализовано построения дерева разбора по строке через СУТ.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Документация</h1>

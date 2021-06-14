@@ -37,6 +37,7 @@ namespace Translator
             Console.WriteLine("AT-Grammar....... Enter 10");
             Console.WriteLine("Chain Translation example ..... Enter 11");
             Console.WriteLine("L-attribute translation ....... Enter 12");
+            Console.WriteLine("Parse Tree translation ........ Enter 13");
         }
 
         static void Main()
@@ -510,23 +511,22 @@ namespace Translator
                     case "11": // Пример "цепочечного" перевода
                         // Грамматика транслирует выражения из инфиксной записи в постфиксную
                         // Выражения состоят из i, +, * и скобок
-/*
-                        SDTScheme chainPostfix = new SDTScheme(new List<SDTSymbol>() { "i", "+", "*", "(", ")" },
-                                                               new List<SDTSymbol>() { "E", "E'", "T", "T'", "F" },
-                                                               "E");
+                        SDT.Scheme chainPostfix = new SDT.Scheme(new List<SDT.Symbol>() { "i", "+", "*", "(", ")" },
+                                                                 new List<SDT.Symbol>() { "E", "E'", "T", "T'", "F" },
+                                                                 "E");
 
-                        chainPostfix.AddRule("E",  new List<SDTSymbol>() { "T", "E'" });
-                        chainPostfix.AddRule("E'", new List<SDTSymbol>() { "+", "T", Actions.Print("+"), "E'" });
-                        chainPostfix.AddRule("E'", new List<SDTSymbol>() { SDTSymbol.Epsilon });
-                        chainPostfix.AddRule("T",  new List<SDTSymbol>() { "F", "T'" });
-                        chainPostfix.AddRule("T'", new List<SDTSymbol>() { "*", "F", Actions.Print("*"), "T'" });
-                        chainPostfix.AddRule("T'", new List<SDTSymbol>() { SDTSymbol.Epsilon });
-                        chainPostfix.AddRule("F",  new List<SDTSymbol>() { "i", Actions.Print("i") });
-                        chainPostfix.AddRule("F",  new List<SDTSymbol>() { "(", "E", ")" });
+                        chainPostfix.AddRule("E",  new List<SDT.Symbol>() { "T", "E'" });
+                        chainPostfix.AddRule("E'", new List<SDT.Symbol>() { "+", "T", SDT.Actions.Print("+"), "E'" });
+                        chainPostfix.AddRule("E'", new List<SDT.Symbol>() { SDT.Symbol.Epsilon });
+                        chainPostfix.AddRule("T",  new List<SDT.Symbol>() { "F", "T'" });
+                        chainPostfix.AddRule("T'", new List<SDT.Symbol>() { "*", "F", SDT.Actions.Print("*"), "T'" });
+                        chainPostfix.AddRule("T'", new List<SDT.Symbol>() { SDT.Symbol.Epsilon });
+                        chainPostfix.AddRule("F",  new List<SDT.Symbol>() { "i", SDT.Actions.Print("i") });
+                        chainPostfix.AddRule("F",  new List<SDT.Symbol>() { "(", "E", ")" });
 
-                        LLTranslator chainTranslator = new LLTranslator(chainPostfix);
+                        SDT.LLTranslator chainTranslator = new(chainPostfix);
                         // Console.WriteLine("Введите строку: ");
-                        List<SDTSymbol> inp_str = new SimpleLexer().Parse(Console.ReadLine());
+                        List<SDT.Symbol> inp_str = new SDT.SimpleLexer().Parse(Console.ReadLine());
                         if (chainTranslator.Parse(inp_str))
                         {
                             Console.WriteLine("\nУспех. Строка соответствует грамматике.");
@@ -536,38 +536,37 @@ namespace Translator
                             Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
                         }
                         break;
-*/
+
                     case "12": // L-атрибутивная грамматика
                         // Грамматика вычисляет результат арифметического выражения
                         // Выражения состоят из целых положительных чисел, +, * и скобок
-                        /*
-                        Types.Attrs sAttrs = new Types.Attrs() { ["value"] = 0 };
-                        Types.Attrs lAttrs = new Types.Attrs() { ["inh"] = 0, ["syn"] = 0 };
-                        SDTScheme lAttrSDT = new SDTScheme(new List<SDTSymbol>() { new SDTSymbol("number", sAttrs), "+", "*", "(", ")" },
-                                                           new List<SDTSymbol>() { "S", new SDTSymbol("E", sAttrs), new SDTSymbol("E'", lAttrs),
-                                                                                   new SDTSymbol("T", sAttrs), new SDTSymbol("T'", lAttrs), new SDTSymbol("F", sAttrs) },
-                                                           "S");
+                        SDT.Types.Attrs sAttrs = new() { ["value"] = 0 };
+                        SDT.Types.Attrs lAttrs = new() { ["inh"] = 0, ["syn"] = 0 };
+                        SDT.Scheme lAttrSDT = new SDT.Scheme(new List<SDT.Symbol>() { new SDT.Symbol("number", sAttrs), "+", "*", "(", ")" },
+                                                              new List<SDT.Symbol>() { "S", new SDT.Symbol("E", sAttrs), new SDT.Symbol("E'", lAttrs),
+                                                                                       new SDT.Symbol("T", sAttrs), new SDT.Symbol("T'", lAttrs), new SDT.Symbol("F", sAttrs) },
+                                                              "S");
 
-                        lAttrSDT.AddRule("S",  new List<SDTSymbol>() { "E", new Types.Actions((S) => Console.Write(S["E"]["value"].ToString())) });
+                        lAttrSDT.AddRule("S",  new List<SDT.Symbol>() { "E", new SDT.Types.Actions((S) => Console.Write(S["E"]["value"].ToString())) });
 
-                        lAttrSDT.AddRule("E",  new List<SDTSymbol>() { "T", new Types.Actions((S) => S["E'"]["inh"] = S["T"]["value"]), "E'", new Types.Actions((S) => S["E"]["value"] = S["E'"]["syn"]) });
+                        lAttrSDT.AddRule("E",  new List<SDT.Symbol>() { "T", new SDT.Types.Actions((S) => S["E'"]["inh"] = S["T"]["value"]), "E'", new SDT.Types.Actions((S) => S["E"]["value"] = S["E'"]["syn"]) });
 
-                        lAttrSDT.AddRule("E'", new List<SDTSymbol>() { "+", "T", new Types.Actions((S) => S["E'1"]["inh"] = (int)S["E'"]["inh"] + (int)S["T"]["value"]), "E'", new Types.Actions((S) => S["E'"]["syn"] = S["E'1"]["syn"]) });
+                        lAttrSDT.AddRule("E'", new List<SDT.Symbol>() { "+", "T", new SDT.Types.Actions((S) => S["E'1"]["inh"] = (int)S["E'"]["inh"] + (int)S["T"]["value"]), "E'", new SDT.Types.Actions((S) => S["E'"]["syn"] = S["E'1"]["syn"]) });
 
-                        lAttrSDT.AddRule("E'", new List<SDTSymbol>() { SDTSymbol.Epsilon, new Types.Actions((S) => S["E'"]["syn"] = S["E'"]["inh"]) });
+                        lAttrSDT.AddRule("E'", new List<SDT.Symbol>() { SDT.Symbol.Epsilon, new SDT.Types.Actions((S) => S["E'"]["syn"] = S["E'"]["inh"]) });
 
-                        lAttrSDT.AddRule("T",  new List<SDTSymbol>() { "F", new Types.Actions((S) => S["T'"]["inh"] = S["F"]["value"]), "T'", new Types.Actions((S) => S["T"]["value"] = S["T'"]["syn"]) });
+                        lAttrSDT.AddRule("T",  new List<SDT.Symbol>() { "F", new SDT.Types.Actions((S) => S["T'"]["inh"] = S["F"]["value"]), "T'", new SDT.Types.Actions((S) => S["T"]["value"] = S["T'"]["syn"]) });
 
-                        lAttrSDT.AddRule("T'", new List<SDTSymbol>() { "*", "F", new Types.Actions((S) => S["T'1"]["inh"] = (int)S["T'"]["inh"] * (int)S["F"]["value"]), "T'", new Types.Actions((S) => S["T'"]["syn"] = S["T'1"]["syn"]) });
+                        lAttrSDT.AddRule("T'", new List<SDT.Symbol>() { "*", "F", new SDT.Types.Actions((S) => S["T'1"]["inh"] = (int)S["T'"]["inh"] * (int)S["F"]["value"]), "T'", new SDT.Types.Actions((S) => S["T'"]["syn"] = S["T'1"]["syn"]) });
 
-                        lAttrSDT.AddRule("T'", new List<SDTSymbol>() { SDTSymbol.Epsilon, new Types.Actions((S) => S["T'"]["syn"] = S["T'"]["inh"]) });
+                        lAttrSDT.AddRule("T'", new List<SDT.Symbol>() { SDT.Symbol.Epsilon, new SDT.Types.Actions((S) => S["T'"]["syn"] = S["T'"]["inh"]) });
 
-                        lAttrSDT.AddRule("F",  new List<SDTSymbol>() { "number", new Types.Actions((S) => S["F"]["value"] = S["number"]["value"]) });
+                        lAttrSDT.AddRule("F",  new List<SDT.Symbol>() { "number", new SDT.Types.Actions((S) => S["F"]["value"] = S["number"]["value"]) });
 
-                        lAttrSDT.AddRule("F",  new List<SDTSymbol>() { "(", "E", ")",  new Types.Actions((S) => S["F"]["value"] = S["E"]["value"]) });
+                        lAttrSDT.AddRule("F",  new List<SDT.Symbol>() { "(", "E", ")",  new SDT.Types.Actions((S) => S["F"]["value"] = S["E"]["value"]) });
 
-                        LLTranslator lAttrTranslator = new LLTranslator(lAttrSDT);
-                        if (lAttrTranslator.Parse(new ArithmLexer().Parse(Console.ReadLine())))
+                        SDT.LLTranslator lAttrTranslator = new(lAttrSDT);
+                        if (lAttrTranslator.Parse(new SDT.ArithmLexer().Parse(Console.ReadLine())))
                         {
                             Console.WriteLine("\nУспех. Строка соответствует грамматике.");
                         }
@@ -575,7 +574,44 @@ namespace Translator
                         {
                             Console.WriteLine("\nНе успех. Строка не соответствует грамматике.");
                         }
-                        */
+                        break;
+
+                    case "13": // Дерево разбора
+                        // Грамматика вычисляет арифметические выражения состоящие из произведений целых положительных числе
+                        // Дерево разбора печатается на экран, конвертируется в .dot файл и выполняется
+                        SDT.Types.Attrs sAttrs2 = new() { ["value"] = 0 };
+                        SDT.Types.Attrs lAttrs2 = new() { ["inh"] = 0, ["syn"] = 0 };
+                        SDT.Scheme treeGrammar = new SDT.Scheme(new List<SDT.Symbol>() { new SDT.Symbol("number", sAttrs2), "*" },
+                                                                new List<SDT.Symbol>() { "S", new SDT.Symbol("T", sAttrs2), new SDT.Symbol("T'", lAttrs2), new SDT.Symbol("F", sAttrs2) },
+                                                                "S");
+
+                        SDT.OperationSymbol op1 = new(new SDT.Types.Actions((S) => Console.Write(S["T"]["value"].ToString())), "print(T.value)");
+                        SDT.OperationSymbol op2 = new(new SDT.Types.Actions((S) => S["T'"]["inh"] = S["F"]["value"]), "T'.inh = F.value", new(){"T'.inh"}, new(){"F.value"});
+                        SDT.OperationSymbol op3 = new(new SDT.Types.Actions((S) => S["T"]["value"] = S["T'"]["syn"]), "T.value = T'.syn", new(){"T.value"}, new(){"T'.syn"});
+                        SDT.OperationSymbol op4 = new(new SDT.Types.Actions((S) => S["T'1"]["inh"] = (int)S["T'"]["inh"] * (int)S["F"]["value"]), "T'1.inh = T'.inh * F.value", new(){"T'1.inh"}, new(){"T'.inh", "F.value"});
+                        SDT.OperationSymbol op5 = new(new SDT.Types.Actions((S) => S["T'"]["syn"] = S["T'1"]["syn"]), "T'.syn = T'1.syn", new(){"T'.syn"}, new(){"T'1.syn"});
+                        SDT.OperationSymbol op6 = new(new SDT.Types.Actions((S) => S["T'"]["syn"] = S["T'"]["inh"]), "T'.syn = T'.inh", new(){"T'.syn"}, new(){"T'.inh"});
+                        SDT.OperationSymbol op7 = new(new SDT.Types.Actions((S) => S["F"]["value"] = S["number"]["value"]), "F.value = number.value", new(){"F.value"}, new(){"number.value"});
+
+                        treeGrammar.AddRule("S",  new List<SDT.Symbol>() { "T", op1 });
+                        treeGrammar.AddRule("T",  new List<SDT.Symbol>() { "F", op2, "T'", op3 });
+                        treeGrammar.AddRule("T'", new List<SDT.Symbol>() { "*", "F", op4, "T'", op5 });
+                        treeGrammar.AddRule("T'", new List<SDT.Symbol>() { SDT.Symbol.Epsilon, op6 });
+                        treeGrammar.AddRule("F",  new List<SDT.Symbol>() { "number", op7 });
+
+                        SDT.ParseTreeTranslator treeTr = new(treeGrammar);
+                        SDT.ParseTree root = treeTr.Parse(new SDT.ArithmLexer().Parse(Console.ReadLine()));
+                        if (root != null)
+                        {
+                            root.Print();
+                            root.Execute();
+                            // root.PrintToFile("../../../../parse_tree.dot", true);
+                            // root.PrintToFile("../../../../parse_tree2.dot", false);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Строка не соответствует грамматике");
+                        }
                         break;
 
                     default:

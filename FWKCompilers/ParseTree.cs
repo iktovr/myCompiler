@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Translator
+namespace SDT
 {
     /// Дерево разбора
     class ParseTree : ICloneable
     {
-        public SDTSymbol Symbol; ///< Символ
+        public Symbol Symbol; ///< Символ
         public LinkedList<ParseTree> Next; ///< Потомки
         public int Id = -1; ///< Номер правила
 
-        public ParseTree(SDTSymbol symbol)
+        public ParseTree(Symbol symbol)
         {
             Symbol = symbol;
             Next = new LinkedList<ParseTree>();
@@ -22,7 +22,7 @@ namespace Translator
         public void Add(ParseTree node) { Next.AddLast(node); }
 
         /// Добавление дочернего узла
-        public void Add(SDTSymbol symbol) { Next.AddLast(new ParseTree(symbol)); }
+        public void Add(Symbol symbol) { Next.AddLast(new ParseTree(symbol)); }
 
         /// Выполнение СУТ в процессе прямого обхода дерева
         public void Execute()
@@ -37,7 +37,7 @@ namespace Translator
             List<int> indexes = new List<int>();
             foreach (ParseTree node in Next)
             {
-                if (node.Symbol is OperationSymbol || node.Symbol == SDTSymbol.Epsilon)
+                if (node.Symbol is OperationSymbol || node.Symbol == Symbol.Epsilon)
                 {
                     indexes.Add(0);
                     continue;
@@ -49,12 +49,12 @@ namespace Translator
                 indexes.Add(index + 1);
             }
 
-            Dictionary<string, SDTSymbol> symbols = new Dictionary<string, SDTSymbol>() { [Symbol.Value] = Symbol };
+            Dictionary<string, Symbol> symbols = new Dictionary<string, Symbol>() { [Symbol.Value] = Symbol };
 
             int i = 0;
             foreach (ParseTree node in Next)
             {
-                if (node.Symbol is OperationSymbol || node.Symbol == SDTSymbol.Epsilon)
+                if (node.Symbol is OperationSymbol || node.Symbol == Symbol.Epsilon)
                 {
                     ++i;
                     continue;
@@ -80,7 +80,7 @@ namespace Translator
         /// Глубокая копия
         public object Clone()
         {
-            ParseTree clone = new ParseTree((SDTSymbol)Symbol.Clone());
+            ParseTree clone = new ParseTree((Symbol)Symbol.Clone());
             foreach (ParseTree child in Next)
             {
                 clone.Add((ParseTree)child.Clone());
@@ -91,7 +91,7 @@ namespace Translator
         /// Печать дерева в консоль
         public void Print(int d = 0)
         {
-            Console.WriteLine("{0," + (d * 4).ToString() + "}", Symbol);
+            Console.WriteLine("{0," + (d * 4).ToString() + "}", this.Symbol is OperationSymbol ? "{}" : Symbol);
             foreach (ParseTree child in Enumerable.Reverse(Next))
             {
                 child.Print(d + 1);
@@ -101,6 +101,7 @@ namespace Translator
         /// Генерация файла для GraphViz
         /**
          *  Получение изображения: `dot parse_tree.dot -Tpng > parse_tree.png`
+         *  \param [in] printAttrs Выводить значения атрибутов, или нет
          */
         public void PrintToFile(string filenName, bool printAttrs)
         {
@@ -117,8 +118,12 @@ namespace Translator
         private void PrintToFile(StreamWriter f, ref int id, bool printAttrs)
         {
             int parent_id = id;
-            
-            if (printAttrs)
+
+            if (this.Symbol is OperationSymbol) {
+                f.WriteLine("\tOperSymbol_{1} [label=\"{0}\", shape=rectangle]", Symbol.ToString().Replace("\"", "'"), parent_id);
+            }
+
+            else if (printAttrs)
             {
                 string attrs = "";
                 if (Symbol.Attributes != null)
@@ -134,6 +139,7 @@ namespace Translator
                 }
                 f.WriteLine("\t\"{0}_{1}\" [label=\"<name> {0} {2}\", shape=Mrecord]", Symbol.ToString().Replace("\"", "'"), parent_id, attrs);
             }
+            
             else
             {
                 f.WriteLine("\t\"{0}_{1}\" [label=\"{0}\", shape=circle]", Symbol.ToString().Replace("\"", "'"), parent_id);
@@ -142,16 +148,19 @@ namespace Translator
             ++id;
             foreach (ParseTree child in Next)
             {
-                if (child.Symbol is OperationSymbol)
-                {
-                    continue;
-                }
                 int child_id = id;
                 child.PrintToFile(f, ref id, printAttrs);
-                if (printAttrs)
+
+                if (child.Symbol is OperationSymbol)
+                {
+                    f.WriteLine("\t\"{0}_{1}\"{3} -- OperSymbol_{2};", Symbol.ToString().Replace("\"", "'"), parent_id, child_id, printAttrs ? ":name" : "");
+                }
+
+                else if (printAttrs)
                 {
                     f.WriteLine("\t\"{0}_{2}\":name -- \"{1}_{3}\":name;", Symbol.ToString().Replace("\"", "'"), child.Symbol.ToString().Replace("\"", "'"), parent_id, child_id);
                 }
+
                 else
                 {
                     f.WriteLine("\t\"{0}_{2}\" -- \"{1}_{3}\";", Symbol.ToString().Replace("\"", "'"), child.Symbol.ToString().Replace("\"", "'"), parent_id, child_id);
@@ -162,14 +171,14 @@ namespace Translator
 
     /// Получение дерева разбора в ходе выполнения соответствующей СУТ
     /**
-     * **Важно:** Символы грамматики не должны содержать атрибут "node"
+     *  \warning Символы грамматики не должны содержать атрибут "node"
      */
     class ParseTreeTranslator : LLTranslator
     {
-        private SDTScheme OriginalGrammar; ///< Оригинальная грамматика
+        private Scheme OriginalGrammar; ///< Оригинальная грамматика
         private ParseTree Root = null; ///< Корень дерева
 
-        private readonly SDTSymbol StartNoTerm = "~S~"; ///< Стартовый символ пополненной грамматики
+        private readonly Symbol StartNoTerm = "~S~"; ///< Стартовый символ пополненной грамматики
 
         /// Генератор операционных символов составления дерева
         private Types.Actions AttachNodes(string parent, List<string> childs, int id) =>
@@ -181,43 +190,43 @@ namespace Translator
                 }
             );
 
-        public ParseTreeTranslator(SDTScheme grammar)
+        public ParseTreeTranslator(Scheme grammar)
         {
             // Составление транслирующей грамматики для построения дерева
             // Все символы клонируются
-            List<SDTSymbol> V = new List<SDTSymbol>();
-            foreach (SDTSymbol noTerm in grammar.V)
+            List<Symbol> V = new List<Symbol>();
+            foreach (Symbol noTerm in grammar.V)
             {
-                SDTSymbol newNoTerm = new SDTSymbol(noTerm);
+                Symbol newNoTerm = new Symbol(noTerm);
                 // Добавляется новый атрибут
                 if (newNoTerm.Attributes == null) newNoTerm.Attributes = new Types.Attrs();
                 newNoTerm.Attributes["node"] = new ParseTree(noTerm);
                 V.Add(newNoTerm);
             }
-            List<SDTSymbol> T = new List<SDTSymbol>();
-            foreach (SDTSymbol term in grammar.T)
+            List<Symbol> T = new List<Symbol>();
+            foreach (Symbol term in grammar.T)
             {
-                SDTSymbol newTerm = new SDTSymbol(term);
+                Symbol newTerm = new Symbol(term);
                 // Добавляется новый атрибут
                 if (newTerm.Attributes == null) newTerm.Attributes = new Types.Attrs();
                 newTerm.Attributes["node"] = new ParseTree(term);
                 T.Add(newTerm);
             }
-            SDTScheme treeGrammar = new SDTScheme(T, V, grammar.S0.Value);
+            Scheme treeGrammar = new Scheme(T, V, grammar.S0.Value);
 
             // Составление правил новой грамматики
             int ruleNumber = 0;
-            foreach (SDTRule rule in grammar.Prules)
+            foreach (Rule rule in grammar.Prules)
             {
-                SDTSymbol LeftNoTerm = new SDTSymbol(rule.LeftNoTerm.Value);
-                List<SDTSymbol> RightChain = new List<SDTSymbol>();
+                Symbol LeftNoTerm = new Symbol(rule.LeftNoTerm.Value);
+                List<Symbol> RightChain = new List<Symbol>();
 
                 // Подсчет индексов для составления операционных символов
                 Dictionary<string, int> count = new Dictionary<string, int>();
                 List<int> indexes = new List<int>();
-                foreach (SDTSymbol s in rule.RightChain)
+                foreach (Symbol s in rule.RightChain)
                 {
-                    if (s is OperationSymbol || s == SDTSymbol.Epsilon)
+                    if (s is OperationSymbol || s == Symbol.Epsilon)
                     {
                         indexes.Add(0);
                         continue;
@@ -232,7 +241,7 @@ namespace Translator
                 // Составление правила
                 List<string> childs = new List<string>();
                 int symbNumber = 0;
-                foreach (SDTSymbol symbol in rule.RightChain)
+                foreach (Symbol symbol in rule.RightChain)
                 {
                     // Операционные символы пропускаются
                     if (symbol is OperationSymbol)
@@ -241,10 +250,10 @@ namespace Translator
                         continue;
                     }
 
-                    RightChain.Add(new SDTSymbol(symbol.Value));
+                    RightChain.Add(new Symbol(symbol.Value));
 
                     // Эпсилон не учитывается операционным символом
-                    if (symbol == SDTSymbol.Epsilon)
+                    if (symbol == Symbol.Epsilon)
                     {
                         ++symbNumber;
                         continue;
@@ -262,21 +271,21 @@ namespace Translator
             // Пополнение грамматики для возможности получить результат
             treeGrammar.V.Add(StartNoTerm);
             string oldS0 = treeGrammar.S0.Value;
-            treeGrammar.AddRule(StartNoTerm, new List<SDTSymbol>() { treeGrammar.S0, new Types.Actions((S) => Root = (ParseTree)S[oldS0]["node"]) });
-            treeGrammar.S0 = new SDTSymbol(StartNoTerm);
+            treeGrammar.AddRule(StartNoTerm, new List<Symbol>() { treeGrammar.S0, new Types.Actions((S) => Root = (ParseTree)S[oldS0]["node"]) });
+            treeGrammar.S0 = new Symbol(StartNoTerm);
 
             OriginalGrammar = grammar;
             G = treeGrammar;
             G.ComputeFirstFollow();
-            Table = new Dictionary<SDTSymbol, Dictionary<SDTSymbol, SDTRule>>();
-            Stack = new Stack<SDTSymbol>();
+            Table = new Dictionary<Symbol, Dictionary<Symbol, Rule>>();
+            Stack = new Stack<Symbol>();
             Construct();
             // DebugMTable();
         }
 
-        public new ParseTree Parse(List<SDTSymbol> input)
+        public new ParseTree Parse(List<Symbol> input)
         {
-            foreach (SDTSymbol symbol in input)
+            foreach (Symbol symbol in input)
             {
                 // Добавляется новый атрибут
                 if (symbol.Attributes == null) symbol.Attributes = new Types.Attrs();
@@ -296,7 +305,7 @@ namespace Translator
                 ParseTree node = nodes.Pop();
                 node.Next.AddFirst(new ParseTree(null)); // Фиктивный элемент
                 LinkedListNode<ParseTree> iter = node.Next.First;
-                foreach (SDTSymbol symbol in OriginalGrammar.Prules[node.Id].RightChain)
+                foreach (Symbol symbol in OriginalGrammar.Prules[node.Id].RightChain)
                 {
                     if (iter.Value.Id >= 0)
                     {
@@ -308,7 +317,7 @@ namespace Translator
                         iter.Value.Symbol.Attributes.Remove("node");
                     
                     // Добавляем оригинальные операционные символы и эпсилон
-                    if (symbol is OperationSymbol || symbol == SDTSymbol.Epsilon)
+                    if (symbol is OperationSymbol || symbol == Symbol.Epsilon)
                     {
                         node.Next.AddAfter(iter, new ParseTree(symbol));
                     }

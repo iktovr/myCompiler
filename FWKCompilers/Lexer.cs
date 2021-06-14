@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Translator
+namespace SDT
 {
     /// Абстрактный класс лексического анализатора
     abstract class Lexer
     {
         /// Парсинг строки в список токенов
-        public abstract List<SDTSymbol> Parse(string _);
+        public abstract List<Symbol> Parse(string _);
     }
 
     /// Простой лексический анализатор
@@ -17,12 +17,12 @@ namespace Translator
      */
     class SimpleLexer : Lexer
     {
-        public override List<SDTSymbol> Parse(string str)
+        public override List<Symbol> Parse(string str)
         {
-            List<SDTSymbol> result = new List<SDTSymbol>();
+            List<Symbol> result = new List<Symbol>();
             foreach (char c in str)
             {
-                result.Add(new SDTSymbol(c.ToString()));
+                result.Add(new Symbol(c.ToString()));
             }
             return result;
         }
@@ -35,9 +35,9 @@ namespace Translator
      */
     class ArithmLexer : Lexer
     {
-        public override List<SDTSymbol> Parse(string str)
+        public override List<Symbol> Parse(string str)
         {
-            List<SDTSymbol> result = new List<SDTSymbol>();
+            List<Symbol> result = new List<Symbol>();
             for (int i = 0; i < str.Length; ++i)
             {
                 if (Char.IsDigit(str[i]))
@@ -52,7 +52,7 @@ namespace Translator
                 }
                 if (i < str.Length)
                 {
-                    result.Add(new SDTSymbol(str[i].ToString()));
+                    result.Add(new Symbol(str[i].ToString()));
                 }
             }
             return result;
